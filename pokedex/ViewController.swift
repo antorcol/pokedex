@@ -54,7 +54,11 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     }
     
     
+    /* 
     
+        this sets up what info we know from the csv file
+        more available from the api
+    */
     func parsePokemonCSV() {
         
         let path = NSBundle.mainBundle().pathForResource("pokemon", ofType: "csv")
@@ -62,9 +66,13 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             let csv = try CSV(contentsOfURL: path!)
             let rows = csv.rows
             for row in rows {
-                let pokeId = Int(row["id"]!)!
+                let pokeId = Int(row["species_id"]!)!
                 let name = row["identifier"]!
                 let poke = Pokemon(name: name, id: pokeId)
+                poke.speciesId = Int(row["species_id"]!)!
+                poke.height = Int(row["height"]!)!
+                poke.weight = Int(row["weight"]!)!
+//                poke.baseExperience = Int(row["base_experience"]!)!
                 pokemon.append(poke)
             }
         } catch let err as NSError {
@@ -72,7 +80,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         }
 
         pokemon.sortInPlace ({ (element1:Pokemon, element2:Pokemon) -> Bool in
-            return element1.id < element2.id})
+            return element1.name < element2.name})
         
 
     }
@@ -145,12 +153,12 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             view.endEditing(true)
         } else {
             inSearchMode = true
-            filteredPokemon = pokemon.filter {$0.id.rangeOfString(searchText, options: .CaseInsensitiveSearch) != nil }
+            filteredPokemon = pokemon.filter {$0.name.rangeOfString(searchText, options: .CaseInsensitiveSearch) != nil }
             collection.reloadData()
         }
     }
     
-    //MARK: Seque
+    //MARK: Segue
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "PokemonDetailVC" {
             if let detailsVC = segue.destinationViewController as? PokemonDetailVC {

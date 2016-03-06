@@ -29,7 +29,7 @@ class PokeCell: UICollectionViewCell {
     func configureCell(pokemon: Pokemon) {
         
         self.pokemon = pokemon
-        nameLabel.text = self.pokemon.id.capitalizedString
+        nameLabel.text = self.pokemon.name.capitalizedString
         thumbImg.image = UIImage(named: "\(self.pokemon.csvRowId)")
         
     }
