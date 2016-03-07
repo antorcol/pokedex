@@ -3,7 +3,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="Pokemon Solid.ttf">
@@ -23,49 +22,53 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t7b-We-Cxb">
+                            <imageView userInteractionEnabled="NO" alpha="0.40000000000000002" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Pikachu-by-JesharEscoffery" translatesAutoresizingMaskIntoConstraints="NO" id="lui-Jw-HXa">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </imageView>
+                            <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="t7b-We-Cxb">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="688" translatesAutoresizingMaskIntoConstraints="NO" id="f9p-YH-gF4">
-                                        <rect key="frame" x="54" y="38" width="493" height="412"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="f9p-YH-gF4" secondAttribute="height" multiplier="493:412" id="55a-AN-6QN"/>
-                                            <constraint firstAttribute="height" constant="412" id="RhP-Vv-hu7"/>
-                                            <constraint firstAttribute="width" constant="493" id="Wfk-sh-2Yh"/>
-                                        </constraints>
-                                    </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="PokeDex" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="44i-Ps-8Te">
-                                        <rect key="frame" x="0.0" y="376" width="600" height="86"/>
-                                        <fontDescription key="fontDescription" name="PokemonSolidNormal" family="Pokemon Solid" pointSize="55"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="bottom" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="PokeDex!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Dg-B6-H5l">
+                                        <rect key="frame" x="158" y="125" width="284" height="47"/>
+                                        <color key="tintColor" red="0.80392156859999997" green="0.82352941180000006" blue="0.86666666670000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" name="PokemonSolidNormal" family="Pokemon Solid" pointSize="33"/>
+                                        <color key="textColor" red="0.41960784309999999" green="0.35294117650000001" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="highlightedColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="shadowColor" red="0.85098039219999999" green="0.30196078430000001" blue="0.2274509804" alpha="1" colorSpace="calibratedRGB"/>
+                                        <size key="shadowOffset" width="3" height="-1"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Anthony Torrero Collins Copyright (C) 2016" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2XC-S4-KwD">
-                                        <rect key="frame" x="186" y="458" width="228" height="103"/>
+                                        <rect key="frame" x="186" y="180" width="228" height="103"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="228" id="ckW-bE-a4L"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
+                                        <color key="textColor" red="0.41960784309999999" green="0.35294117650000001" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" red="0.55686274509803924" green="0.85882352941176465" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstItem="2XC-S4-KwD" firstAttribute="top" secondItem="44i-Ps-8Te" secondAttribute="bottom" constant="8" id="FBI-N8-uMB"/>
-                                    <constraint firstItem="44i-Ps-8Te" firstAttribute="top" secondItem="f9p-YH-gF4" secondAttribute="bottom" constant="82" id="aBq-3G-cLj"/>
-                                    <constraint firstItem="44i-Ps-8Te" firstAttribute="centerX" secondItem="t7b-We-Cxb" secondAttribute="centerX" id="i38-8a-J9Y"/>
+                                    <constraint firstItem="0Dg-B6-H5l" firstAttribute="top" secondItem="t7b-We-Cxb" secondAttribute="top" constant="125" id="9eZ-6r-kIw"/>
+                                    <constraint firstItem="0Dg-B6-H5l" firstAttribute="centerX" secondItem="t7b-We-Cxb" secondAttribute="centerX" id="9z7-j8-Blq"/>
+                                    <constraint firstItem="2XC-S4-KwD" firstAttribute="top" secondItem="0Dg-B6-H5l" secondAttribute="bottom" constant="8" id="BuW-jD-v2H"/>
+                                    <constraint firstItem="0Dg-B6-H5l" firstAttribute="top" secondItem="t7b-We-Cxb" secondAttribute="top" constant="8" id="GEc-VJ-w8a"/>
                                     <constraint firstItem="2XC-S4-KwD" firstAttribute="centerX" secondItem="t7b-We-Cxb" secondAttribute="centerX" id="jaE-G0-fxD"/>
-                                    <constraint firstItem="44i-Ps-8Te" firstAttribute="width" secondItem="t7b-We-Cxb" secondAttribute="width" id="oPV-MH-qqG"/>
-                                    <constraint firstItem="f9p-YH-gF4" firstAttribute="top" secondItem="t7b-We-Cxb" secondAttribute="top" constant="40" id="qMk-Tz-ZI6"/>
-                                    <constraint firstItem="f9p-YH-gF4" firstAttribute="centerX" secondItem="t7b-We-Cxb" secondAttribute="centerX" id="t1l-4e-7F2"/>
                                 </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="GEc-VJ-w8a"/>
+                                    </mask>
+                                </variation>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="lui-Jw-HXa" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="7ca-Lg-yIO"/>
                             <constraint firstItem="t7b-We-Cxb" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="EBh-CS-QZw"/>
+                            <constraint firstAttribute="trailing" secondItem="lui-Jw-HXa" secondAttribute="trailing" id="V6b-L6-Iho"/>
                             <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="t7b-We-Cxb" secondAttribute="bottom" id="Vdm-SP-ZYm"/>
+                            <constraint firstItem="lui-Jw-HXa" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="kGV-fq-aYM"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="lui-Jw-HXa" secondAttribute="bottom" id="nSm-nN-wcZ"/>
                             <constraint firstAttribute="trailing" secondItem="t7b-We-Cxb" secondAttribute="trailing" id="o40-z9-yXP"/>
                             <constraint firstItem="t7b-We-Cxb" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="qpx-Af-9jf"/>
                         </constraints>
@@ -77,6 +80,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="688" width="120" height="120"/>
+        <image name="Pikachu-by-JesharEscoffery" width="147" height="200"/>
     </resources>
 </document>
