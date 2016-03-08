@@ -3,7 +3,7 @@
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "PokeDexLogo58.png",
+      "filename" : "Pokedex_Hoenn_Region-58.png",
       "scale" : "2x"
     },
     {
@@ -14,7 +14,7 @@
     {
       "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "PokeDexLogo80.png",
+      "filename" : "Pokedex_Hoenn_Region-80.png",
       "scale" : "2x"
     },
     {
@@ -25,7 +25,7 @@
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "PokeDexLogo120.png",
+      "filename" : "Pokedex_Hoenn_Region-120.png",
       "scale" : "2x"
     },
     {
@@ -36,7 +36,7 @@
     {
       "size" : "29x29",
       "idiom" : "ipad",
-      "filename" : "PokeDexLogo29.png",
+      "filename" : "Pokedex_Hoenn_Region-29.png",
       "scale" : "1x"
     },
     {
@@ -47,7 +47,7 @@
     {
       "size" : "40x40",
       "idiom" : "ipad",
-      "filename" : "PokeDexLogo40.png",
+      "filename" : "Pokedex_Hoenn_Region-40.png",
       "scale" : "1x"
     },
     {
@@ -58,19 +58,19 @@
     {
       "size" : "76x76",
       "idiom" : "ipad",
-      "filename" : "PokeDexLogo76.png",
+      "filename" : "Pokedex_Hoenn_Region-76.png",
       "scale" : "1x"
     },
     {
       "size" : "76x76",
       "idiom" : "ipad",
-      "filename" : "PokeDexLogo152.png",
+      "filename" : "Pokedex_Hoenn_Region-152.png",
       "scale" : "2x"
     },
     {
       "size" : "83.5x83.5",
       "idiom" : "ipad",
-      "filename" : "PokeDexLogo167.png",
+      "filename" : "Pokedex_Hoenn_Region-167.png",
       "scale" : "2x"
     }
   ],

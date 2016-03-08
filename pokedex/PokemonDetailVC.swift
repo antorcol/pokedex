@@ -111,5 +111,13 @@ class PokemonDetailVC: UIViewController {
         dismissViewControllerAnimated(true, completion: nil)
     }
 
+    @IBAction func sgmtChooser(sender: UISegmentedControl) {
+        
+        if sender.selectedSegmentIndex == 0 {
+            
+        } else {
+            
+        }
+    }
 
 }

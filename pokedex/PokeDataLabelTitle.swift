@@ -21,5 +21,6 @@ class PokeDataLabelTitle: PaddingLabel {
         self.layer.cornerRadius = 5.0
         self.clipsToBounds = true
         self.preferredMaxLayoutWidth = self.frame.width
+        self.textAlignment = .Center
     }
 }

@@ -86,6 +86,7 @@ class Pokemon {
                 }
                 
                 if let descriptionsDict = dict["descriptions"] as? [Dictionary<String, String>] where descriptionsDict.count > 0 {
+                    //get only the first description
                     if let uri = descriptionsDict[0]["resource_uri"]  {
                         
                         let urlStr :String = "\(URL_BASE)\(uri)"
@@ -107,6 +108,7 @@ class Pokemon {
                 
                 if let evolutionsDict = dict["evolutions"] as? [Dictionary<String, AnyObject>] where evolutionsDict.count > 0 {
                     
+                    //get only the first evolution
                     if let to = evolutionsDict[0]["to"] as? String  {
                         self._next_evolution_text = to
                         

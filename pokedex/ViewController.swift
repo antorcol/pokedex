@@ -72,7 +72,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
                 poke.speciesId = Int(row["species_id"]!)!
                 poke.height = Int(row["height"]!)!
                 poke.weight = Int(row["weight"]!)!
-//                poke.baseExperience = Int(row["base_experience"]!)!
                 pokemon.append(poke)
             }
         } catch let err as NSError {
@@ -113,7 +112,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             return UICollectionViewCell()
         }
     }
-
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let poke : Pokemon!
