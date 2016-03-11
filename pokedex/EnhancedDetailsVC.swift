@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EnhancedDetailsVC: UIViewController {
+class EnhancedDetailsVC: UIViewController, UIScrollViewDelegate {
 
     var pokemon: Pokemon!
 
@@ -26,6 +26,7 @@ class EnhancedDetailsVC: UIViewController {
     @IBOutlet weak var lblDefenseVal: PokeDataLabelData!
     @IBOutlet weak var lblSpAttackVal: PokeDataLabelData!
     @IBOutlet weak var lblSpDefenseVal: PokeDataLabelData!
+    @IBOutlet weak var sgCategories: UISegmentedControl!
     
     //    @IBOutlet weak var abilitesView: UIView!
     //    @IBOutlet weak var movesView: UIView!
@@ -35,9 +36,12 @@ class EnhancedDetailsVC: UIViewController {
     
     //scroller
     @IBOutlet weak var mainHScroller: UIScrollView!
+    @IBOutlet weak var stkStatistics: UIStackView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        mainHScroller.delegate = self
         
         pokemon.downloadPokemonDetails { () -> () in
             self.updateUI()
@@ -51,10 +55,52 @@ class EnhancedDetailsVC: UIViewController {
         
 
     }
-  
+    
+    
+    /* 
+        I had wanted to hide the labels as they went behind the segmented control. However, 
+        the timing is not right with the drag/scroll operation. It looks like I wouldn't have 
+        control over changing the visibility as the scrolling was in progress. So I changed to a covering
+        view farther forward in the UI.
+    
+        Update -- turns out all I needed to do was to turn on 'clip subviews' on the scroller. 
+            problem solved.
+    */
+    /*
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        
+        let topOfCats :CGFloat = sgCategories.frame.origin.y
+        let bottomOfCatsLocation : CGFloat = sgCategories.frame.size.height + topOfCats
+        
+        for case let subStack as UIStackView in stkStatistics.subviews {
+        
+            for case let lblField as UILabel in subStack.subviews {
+                let topOfLabel: CGFloat = lblField.frame.origin.y
+                let bottomOfLabelLocation: CGFloat = lblField.frame.size.height + topOfLabel
+                if bottomOfLabelLocation <= bottomOfCatsLocation && lblField.alpha != 0.0 {
+                    lblField.alpha = 0.2
+                } else if bottomOfLabelLocation > bottomOfCatsLocation {
+                    lblField.alpha = 1.0
+                }
+                
+            }
+        }
+        
+    }
+    */
+    
+    /* 
+        make sure the content size of the scroller is appropriate
+    */
     override func viewDidLayoutSubviews() {
     
-        mainHScroller.contentSize = CGSizeMake(300, 1200)
+        let stkWidth: CGFloat = stkStatistics.frame.size.width
+        
+        let topY : CGFloat = stkStatistics.frame.origin.y
+        let stkSize : CGFloat = stkStatistics.frame.size.height
+        
+        let contentSize = CGSizeMake(stkWidth, topY + stkSize + 20)
+        mainHScroller.contentSize = contentSize
     
     }
 
