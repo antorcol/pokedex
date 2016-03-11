@@ -16,20 +16,27 @@ class Pokemon {
     private var _resourceUrl : String = "\(URL_BASE)\(URL_POKEMON)"
     
     //MARK: in csv file
-    private var _csvRowId : Int!
-    private var _identifier: String!
+    // ---- stats view ---- //
+    private var _csvRowId : Int! //PokeId and Image ID
+    private var _identifier: String! //same as PokeId and Image ID in the csv file
     private var _species_id: Int!
     private var _height: Int!
     private var _weight: Int!
     private var _base_experience: Int!
-    private var _order: Int!
-    private var _is_default: Bool!
+    private var _order: Int! //?
+    private var _is_default: Bool! //?
 
     //MARK: others in app
     private var _description: String!
+    private var _hitPoints: Int!
+    private var _speed: Int!
     private var _type: String!
     private var _attack: Int!
     private var _defense: Int!
+    private var _specialAttack: Int!
+    private var _specialDefense: Int!
+    
+    //part of evo view
     private var _next_evolution_text: String = ""
     private var _next_evolution_id: Int = -1
     private var _next_evolution_level: Int = -1

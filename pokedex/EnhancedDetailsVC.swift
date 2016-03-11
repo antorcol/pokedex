@@ -32,6 +32,10 @@ class EnhancedDetailsVC: UIViewController {
     //    @IBOutlet weak var spritesView: UIView!
     //    @IBOutlet weak var evoView: UIView!
     
+    
+    //scroller
+    @IBOutlet weak var mainHScroller: UIScrollView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -48,6 +52,11 @@ class EnhancedDetailsVC: UIViewController {
 
     }
   
+    override func viewDidLayoutSubviews() {
+    
+        mainHScroller.contentSize = CGSizeMake(300, 1200)
+    
+    }
 
     func updateUI() {
 //        self.lblName.text = self.pokemon.name.capitalizedString
