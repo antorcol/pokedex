@@ -11,7 +11,7 @@ import Foundation
 //works http://pokeapi.co/api/v1/pokemon/1/
 
 let URL_BASE : String = "http://pokeapi.co" //http://pokeapi.co/api/v2/
-let URL_POKEMON: String = "/api/v1/pokemon/"
+let URL_POKEMON: String = "/api/v2/pokemon/"
 
 typealias DownloadComplete = () -> ()
 

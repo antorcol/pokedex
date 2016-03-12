@@ -13,6 +13,7 @@ class EnhancedDetailsVC: UIViewController, UIScrollViewDelegate {
     var pokemon: Pokemon!
 
     //MARK: Basic Stats
+    @IBOutlet weak var lblPokeName: UILabel!
     @IBOutlet weak var imgMain: UIImageView!
     @IBOutlet weak var lblBaseDescription: UILabel!
     @IBOutlet weak var statsView: UIView!
@@ -107,8 +108,11 @@ class EnhancedDetailsVC: UIViewController, UIScrollViewDelegate {
     func updateUI() {
 //        self.lblName.text = self.pokemon.name.capitalizedString
         self.imgMain.image = UIImage(named: String(self.pokemon.speciesId))
+        self.lblPokeName.text = pokemon.name.capitalizedString
         if pokemon.type != "" {
             self.lblTypeVal.text = pokemon.type
+        } else {
+            self.lblTypeVal.text = "Unknown"
         }
         if self.pokemon.height > 0 {
             self.lblHeightVal.text = String(self.pokemon.height)
@@ -120,18 +124,52 @@ class EnhancedDetailsVC: UIViewController, UIScrollViewDelegate {
         } else {
             self.lblWeightVal.text = "Unknown"
         }
+        //TODO: add label
+        if self.pokemon.baseExperience > 0 {
+            //
+        } else {
+            //
+        }
         if String(self.pokemon.attack) != "" {
             self.lblAttackVal.text = String(self.pokemon.attack)
+        }else {
+            self.lblAttackVal.text = "Unknown"
         }
-        
-       // if String(self.pokemon.speciesId) != "" {
-       //     self.lblPokeId.text = String(self.pokemon.speciesId)
-       // }
         if String(self.pokemon.defense) != "" {
             self.lblDefenseVal.text = String(self.pokemon.defense)
+        }else {
+            self.lblDefenseVal.text = "Unknown!"
         }
+        if String(self.pokemon.speed) != nil {
+            self.lblSpeedVal.text = String(self.pokemon.speed)
+        } else {
+            self.lblSpeedVal.text = "Unknown"
+        }
+        if String(self.pokemon.hitPoints) != nil {
+            self.lblHitPointsVal.text = String(self.pokemon.hitPoints)
+        } else {
+            self.lblHitPointsVal.text = String("0")
+        }
+        if String(self.pokemon.specialAttack) != nil {
+            self.lblSpAttackVal.text = String(self.pokemon.specialAttack)
+        } else {
+            self.lblSpAttackVal.text = "Unknown"
+        }
+        if String(self.pokemon.specialDefense) != nil {
+        self.lblSpDefenseVal.text = String(self.pokemon.specialDefense)
+        } else {
+        self.lblSpDefenseVal.text = "Unknown"
+        }
+        if String(self.pokemon.speciesName) != "" {
+            self.lblSpeciesVal.text = String(self.pokemon.speciesName).capitalizedString
+        } else {
+            self.lblSpeciesVal.text = "Unknown"
+        }
+        
         if self.pokemon.description != "" {
             self.lblBaseDescription.text = self.pokemon.description
+        } else {
+            self.lblBaseDescription.text = "Unknown"
         }
     }
 
