@@ -13,19 +13,18 @@ class PokemonDetailVC: UIViewController {
     var pokemon: Pokemon!
     //from csv: id (row id),identifier (name),species_id (img name, same as row id),height,weight,base_experience,order,is_default
     
-    @IBOutlet weak var lblName: UILabel!            //CSV
-    @IBOutlet weak var imgMain: UIImageView!        //CSV
-    
-    @IBOutlet weak var lblDescription: UILabel!     //DS
-    @IBOutlet weak var lblType: UILabel!            //DL
-    @IBOutlet weak var lblDefense: UILabel!         //DL
-    @IBOutlet weak var lblHeight: UILabel!          //CSV
-    @IBOutlet weak var lblPokeId: UILabel!          //DL
-    @IBOutlet weak var lblWeight: UILabel!          //CSV
-    @IBOutlet weak var lblBaseAttack: UILabel!      //DL
+    @IBOutlet weak var lblName: UILabel!
+    @IBOutlet weak var imgMain: UIImageView!
+    @IBOutlet weak var lblDescription: UILabel!
+    @IBOutlet weak var lblType: UILabel!
+    @IBOutlet weak var lblDefense: UILabel!
+    @IBOutlet weak var lblHeight: UILabel!
+    @IBOutlet weak var lblPokeId: UILabel!
+    @IBOutlet weak var lblWeight: UILabel!
+    @IBOutlet weak var lblBaseAttack: UILabel!
     @IBOutlet weak var imgCurrentEvo: UIImageView!
-    @IBOutlet weak var imgNextEvo: UIImageView!     //DL
-    @IBOutlet weak var lblEvolution: UILabel!       //DL
+    @IBOutlet weak var imgNextEvo: UIImageView!
+    @IBOutlet weak var lblEvolution: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()

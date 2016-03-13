@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		240176C51C94E54500CB685D /* AbilityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 240176C41C94E54400CB685D /* AbilityCell.swift */; };
 		2410122D1C8A103B00D74A91 /* constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2410122C1C8A103B00D74A91 /* constants.swift */; };
 		2410122F1C8CEA1400D74A91 /* README in Resources */ = {isa = PBXBuildFile; fileRef = 2410122E1C8CEA1400D74A91 /* README */; };
 		241012311C8D347300D74A91 /* PokeDataLabelTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241012301C8D347300D74A91 /* PokeDataLabelTitle.swift */; };
@@ -30,6 +31,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		240176C41C94E54400CB685D /* AbilityCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AbilityCell.swift; sourceTree = "<group>"; };
 		2410122C1C8A103B00D74A91 /* constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = constants.swift; sourceTree = "<group>"; };
 		2410122E1C8CEA1400D74A91 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		241012301C8D347300D74A91 /* PokeDataLabelTitle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PokeDataLabelTitle.swift; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 				24C7EAB91C84C58400694D8C /* LaunchScreen.storyboard */,
 				24C7EAB41C84C58400694D8C /* Main.storyboard */,
 				24C7EAC91C8550C900694D8C /* PokeCell.swift */,
+				240176C41C94E54400CB685D /* AbilityCell.swift */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -302,6 +305,7 @@
 				24C7EAB11C84C58400694D8C /* AppDelegate.swift in Sources */,
 				24BE41A11C8E87B900ADB3BF /* EnhancedDetailsVC.swift in Sources */,
 				24C7EACA1C8550C900694D8C /* PokeCell.swift in Sources */,
+				240176C51C94E54500CB685D /* AbilityCell.swift in Sources */,
 				2410122D1C8A103B00D74A91 /* constants.swift in Sources */,
 				241012331C8D3A8500D74A91 /* PokeDataLabelData.swift in Sources */,
 				241012351C8D3E6300D74A91 /* PaddingLabel.swift in Sources */,

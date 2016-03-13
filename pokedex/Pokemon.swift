@@ -38,6 +38,9 @@ class Pokemon {
     private var _specialAttack: Int!
     private var _specialDefense: Int!
     
+    //MARK: abilities
+    private var _abilities = [String]()
+    
     //part of evo view
     private var _next_evolution_text: String = ""
     private var _next_evolution_id: Int = -1
@@ -48,6 +51,8 @@ class Pokemon {
         self._csvRowId = id
         self._species_id = id
         self._resourceUrl.appendContentsOf("\(id)/")
+        
+        _abilities = ["one","two","three", "four"]
     }
     
     
@@ -319,14 +324,12 @@ class Pokemon {
         }
     }
 
-    /* the pokemon description */
     var description: String {
         get {
             return self._description
         }
     }
 
-    /* comment */
     var speciesName: String {
         get {
             return self._speciesName
@@ -339,47 +342,48 @@ class Pokemon {
         }
     }
     
-    /* comment */
     var attack: Int {
         get {
             return self._attack
         }
     }
     
-    /* comment */
     var defense: Int {
         get {
             return self._defense
         }
     }
 
-    /* comment */
     var speed: Int {
         get {
             return self._speed
         }
     }
     
-    /* comment */
     var hitPoints: Int {
         get {
             return self._hitPoints
         }
     }
     
-    /* comment */
     var specialAttack: Int {
         get {
             return self._specialAttack
         }
     }
     
-    /* comment */
     var specialDefense: Int {
         get {
             return self._specialDefense
         }
     }
+    
+    var abilities: [String] {
+        get {
+            return self._abilities
+        }
+    }
+    
     /* comment */
     var next_evolution_text: String {
         get {

@@ -8,13 +8,14 @@
 
 import UIKit
 
-class EnhancedDetailsVC: UIViewController, UIScrollViewDelegate {
+class EnhancedDetailsVC: UIViewController, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource {
 
     var pokemon: Pokemon!
 
     //MARK: Basic Stats
     @IBOutlet weak var lblPokeName: UILabel!
     @IBOutlet weak var imgMain: UIImageView!
+    @IBOutlet weak var lblExperience: UILabel!
     @IBOutlet weak var lblBaseDescription: UILabel!
     @IBOutlet weak var statsView: UIView!
     @IBOutlet weak var lblSpeciesVal: PokeDataLabelData!
@@ -29,7 +30,13 @@ class EnhancedDetailsVC: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var lblSpDefenseVal: PokeDataLabelData!
     @IBOutlet weak var sgCategories: UISegmentedControl!
     
-    //    @IBOutlet weak var abilitesView: UIView!
+    //MARK: Abilities
+    @IBOutlet weak var abilitiesView: UIView!
+    @IBOutlet weak var tblAbilities: UITableView!
+    
+    
+    
+    
     //    @IBOutlet weak var movesView: UIView!
     //    @IBOutlet weak var spritesView: UIView!
     //    @IBOutlet weak var evoView: UIView!
@@ -44,12 +51,15 @@ class EnhancedDetailsVC: UIViewController, UIScrollViewDelegate {
         
         mainHScroller.delegate = self
         
+        tblAbilities.delegate = self
+        tblAbilities.dataSource = self
+        
         pokemon.downloadPokemonDetails { () -> () in
             self.updateUI()
         }
         
         statsView.hidden = false
-//        abilitesView.hidden = true
+        abilitiesView.hidden = true
 //        movesView.hidden = true
 //        spritesView.hidden = true
 //        evoView.hidden = true
@@ -124,11 +134,10 @@ class EnhancedDetailsVC: UIViewController, UIScrollViewDelegate {
         } else {
             self.lblWeightVal.text = "Unknown"
         }
-        //TODO: add label
         if self.pokemon.baseExperience > 0 {
-            //
+            self.lblExperience.text = String(self.pokemon.baseExperience)
         } else {
-            //
+            self.lblExperience.text = "Unknown"
         }
         if String(self.pokemon.attack) != "" {
             self.lblAttackVal.text = String(self.pokemon.attack)
@@ -173,19 +182,40 @@ class EnhancedDetailsVC: UIViewController, UIScrollViewDelegate {
         }
     }
 
+    
+    //MARK: Ability Methods
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if let cell = tableView.dequeueReusableCellWithIdentifier("AbilityCell", forIndexPath: indexPath) as? AbilityCell {
+            cell.configureCell(pokemon.abilities[indexPath.row])
+            return cell
+        }
+        
+        return UITableViewCell()
+    }
+    
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.pokemon.abilities.count
+    }
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    //MARK: Actions
     @IBAction func sgCategories_Pressed(sender: UISegmentedControl) {
         
         switch sender.selectedSegmentIndex {
         case 0:
             statsView.hidden = false
-//            abilitesView.hidden = true
+            abilitiesView.hidden = true
 //            movesView.hidden = true
 //            spritesView.hidden = true
 //            evoView.hidden = true
             break
         case 1:
             statsView.hidden = true
-//            abilitesView.hidden = false
+            abilitiesView.hidden = false
 //            movesView.hidden = false
 //            spritesView.hidden = true
 //            evoView.hidden = true
@@ -193,7 +223,7 @@ class EnhancedDetailsVC: UIViewController, UIScrollViewDelegate {
         
         case 2:
             statsView.hidden = true
-//            abilitesView.hidden = true
+            abilitiesView.hidden = true
 //            movesView.hidden = true
 //            spritesView.hidden = false
 //            evoView.hidden = false
@@ -203,6 +233,7 @@ class EnhancedDetailsVC: UIViewController, UIScrollViewDelegate {
         }
         
     }
+    
     
     @IBAction func btnBack_Press(sender: UIButton) {
         dismissViewControllerAnimated(true, completion: nil)
