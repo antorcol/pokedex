@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MoveCell: UITableViewCell {
+class MoveCell: UICollectionViewCell {
     
     
     //MARK: IBOutlets and vars
@@ -26,6 +26,6 @@ class MoveCell: UITableViewCell {
     
     //MARK: Utility
     func configureCell(move: String) {
-        moveLabel.text = move.capitalizedString
+        moveLabel.text = move
     }
 }

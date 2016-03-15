@@ -1,5 +1,5 @@
 //
-//  PokeCellCollectionViewCell.swift
+//  PokeCell.swift
 //  pokedex
 //
 //  Created by Anthony Torrero Collins on 2/29/16.

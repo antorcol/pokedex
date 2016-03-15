@@ -8,7 +8,13 @@
 
 import UIKit
 
-class EnhancedDetailsVC: UIViewController, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource {
+class EnhancedDetailsVC: UIViewController,
+                         UIScrollViewDelegate,
+                         UITableViewDelegate,
+                         UITableViewDataSource,
+                         UICollectionViewDelegate,
+                         UICollectionViewDataSource,
+                         UICollectionViewDelegateFlowLayout {
 
     var pokemon: Pokemon!
 
@@ -30,14 +36,12 @@ class EnhancedDetailsVC: UIViewController, UIScrollViewDelegate, UITableViewDele
     @IBOutlet weak var lblSpDefenseVal: PokeDataLabelData!
     @IBOutlet weak var sgCategories: UISegmentedControl!
     
-    //MARK: Abilities
-    @IBOutlet weak var abilitiesView: UIView!
+    //MARK: Abilities is in StatsView
     @IBOutlet weak var tblAbilities: UITableView!
     
     
     //MARK: Moves
-    @IBOutlet weak var movesView: UIView!
-    @IBOutlet weak var tblMoves: UITableView!
+    @IBOutlet weak var colMoves: UICollectionView!
     
     
     
@@ -56,8 +60,7 @@ class EnhancedDetailsVC: UIViewController, UIScrollViewDelegate, UITableViewDele
         mainHScroller.delegate = self
         
         statsView.hidden = true
-        abilitiesView.hidden = true
-        movesView.hidden = true
+        colMoves.hidden = true
         
         pokemon.downloadPokemonDetails { () -> () in
             self.updateUI()
@@ -66,9 +69,9 @@ class EnhancedDetailsVC: UIViewController, UIScrollViewDelegate, UITableViewDele
             self.tblAbilities.dataSource = self
             self.tblAbilities.reloadData()
             
-            self.tblMoves.delegate = self
-            self.tblMoves.dataSource = self
-            self.tblMoves.reloadData()
+            self.colMoves.delegate = self
+            self.colMoves.dataSource = self
+            self.colMoves.reloadData()
             
             self.statsView.hidden = false
             
@@ -163,18 +166,38 @@ class EnhancedDetailsVC: UIViewController, UIScrollViewDelegate, UITableViewDele
         
     }
 
+    //MARK: collectionView methods
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return self.pokemon.moves.count
+    }
     
-    //MARK: Ability Methods
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        return CGSizeMake(120, 17)
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        if let cell = collectionView.dequeueReusableCellWithReuseIdentifier("MoveCell", forIndexPath: indexPath) as? MoveCell {
+            let moveName : String!
+            moveName = pokemon.moves[indexPath.row]
+            cell.configureCell(moveName)
+            return cell
+            
+        } else {
+            return UICollectionViewCell()
+        }
+    }
+    
+    
+    
+    //MARK: tableView Methods
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if tableView == self.tblAbilities {
             if let cell = tableView.dequeueReusableCellWithIdentifier("AbilityCell", forIndexPath: indexPath) as? AbilityCell {
                 cell.configureCell(pokemon.abilities[indexPath.row])
-                return cell
-            }
-        } else if tableView == self.tblMoves {
-        
-            if let cell = tableView.dequeueReusableCellWithIdentifier("MoveCell", forIndexPath: indexPath) as? MoveCell {
-                cell.configureCell(pokemon.moves[indexPath.row])
                 return cell
             }
         }
@@ -188,8 +211,6 @@ class EnhancedDetailsVC: UIViewController, UIScrollViewDelegate, UITableViewDele
         
         if tableView == self.tblAbilities {
             return self.pokemon.abilities.count
-        } else if tableView == self.tblMoves {
-            return self.pokemon.moves.count
         }
         
         return 1
@@ -206,23 +227,20 @@ class EnhancedDetailsVC: UIViewController, UIScrollViewDelegate, UITableViewDele
         switch sender.selectedSegmentIndex {
         case 0:
             statsView.hidden = false
-            abilitiesView.hidden = true
-            movesView.hidden = true
+            colMoves.hidden = true
 //            spritesView.hidden = true
 //            evoView.hidden = true
             break
         case 1:
             statsView.hidden = true
-            abilitiesView.hidden = false
-            movesView.hidden = false
+            colMoves.hidden = false
 //            spritesView.hidden = true
 //            evoView.hidden = true
             break
         
         case 2:
             statsView.hidden = true
-            abilitiesView.hidden = true
-            movesView.hidden = true
+            colMoves.hidden = true
 //            spritesView.hidden = false
 //            evoView.hidden = false
             break

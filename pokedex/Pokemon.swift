@@ -116,15 +116,24 @@ class Pokemon {
                         if let abilitySpec = abilityDict["ability"] as? Dictionary<String, String> where abilitySpec.count > 0 {
                             let abilityName = abilitySpec["name"]
                             if abilityName != "" {
-                                self._abilities.append(abilityName!)
+                                self._abilities.append(abilityName!.capitalizedString)
                             }
                         }
                     }
                 }
                 
-                /* moves -- there is a limit in the scroller */
-                for i in 0...150 {
-                    self._moves.append("Move: \(i)")
+                /* moves */
+                if let movesArr = dict["moves"] as? [Dictionary<String, AnyObject>] where movesArr.count > 0 {
+                    for moveDict in movesArr {
+                        if let moveSpec = moveDict["move"] as? Dictionary<String, String> where moveSpec.count > 0 {
+                            let moveName = moveSpec["name"]
+                            if moveName != "" {
+                                self._moves.append(moveName!.capitalizedString)
+                            }
+                        }
+                    }
+//                    self.sortInPlace ({ (element1:Pokemon, element2:Pokemon) -> Bool in
+//                        return element1.name < element2.name})
                 }
                 
                 /* I set to a negative value to indicate 'unknown' */
