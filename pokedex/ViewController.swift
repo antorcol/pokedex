@@ -96,7 +96,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         }
     }
 
-    //MARK: Delegation requirements
+    //MARK: Collection View
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCellWithReuseIdentifier("PokeCell", forIndexPath: indexPath) as? PokeCell {
             let poke : Pokemon!
@@ -140,6 +140,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         return CGSizeMake(105, 105)
     }
     
+    //MARK: Search Bar
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         view.endEditing(true)
     }
@@ -158,13 +159,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     
     //MARK: Segue
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//        if segue.identifier == "PokemonDetailVC" {
-//            if let detailsVC = segue.destinationViewController as? PokemonDetailVC {
-//                if let poke = sender as? Pokemon {
-//                    detailsVC.pokemon = poke
-//                }
-//            }
-//        }
         if segue.identifier == "EnhancedDetailsVC" {
             if let detailsVC = segue.destinationViewController as? EnhancedDetailsVC {
                 if let poke = sender as? Pokemon {

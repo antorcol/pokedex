@@ -55,6 +55,7 @@ class EnhancedDetailsVC: UIViewController,
     
     override func viewDidLoad() {
         super.viewDidLoad()
+                
         self.lblPokeName.text = pokemon.name.capitalizedString
         //print("Pokemon: \(pokemon.name), \(pokemon.speciesId)")
         mainHScroller.delegate = self
@@ -191,7 +192,7 @@ class EnhancedDetailsVC: UIViewController,
         }
     }
     
-    
+
     
     //MARK: tableView Methods
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

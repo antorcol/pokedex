@@ -120,6 +120,8 @@ class Pokemon {
                             }
                         }
                     }
+                    self._abilities.sortInPlace ({ (element1:String, element2:String) -> Bool in
+                        return element1 < element2})
                 }
                 
                 /* moves */
@@ -132,8 +134,8 @@ class Pokemon {
                             }
                         }
                     }
-//                    self.sortInPlace ({ (element1:Pokemon, element2:Pokemon) -> Bool in
-//                        return element1.name < element2.name})
+                    self._moves.sortInPlace ({ (element1:String, element2:String) -> Bool in
+                        return element1 < element2})
                 }
                 
                 /* I set to a negative value to indicate 'unknown' */
