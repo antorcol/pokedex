@@ -35,9 +35,12 @@ class EnhancedDetailsVC: UIViewController, UIScrollViewDelegate, UITableViewDele
     @IBOutlet weak var tblAbilities: UITableView!
     
     
+    //MARK: Moves
+    @IBOutlet weak var movesView: UIView!
+    @IBOutlet weak var tblMoves: UITableView!
     
     
-    //    @IBOutlet weak var movesView: UIView!
+    
     //    @IBOutlet weak var spritesView: UIView!
     //    @IBOutlet weak var evoView: UIView!
     
@@ -48,57 +51,35 @@ class EnhancedDetailsVC: UIViewController, UIScrollViewDelegate, UITableViewDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.lblPokeName.text = pokemon.name.capitalizedString
+        //print("Pokemon: \(pokemon.name), \(pokemon.speciesId)")
         mainHScroller.delegate = self
         
-        tblAbilities.delegate = self
-        tblAbilities.dataSource = self
+        statsView.hidden = true
+        abilitiesView.hidden = true
+        movesView.hidden = true
         
         pokemon.downloadPokemonDetails { () -> () in
             self.updateUI()
+            //place these here so that the table isn't loaded until the data is complete.
+            self.tblAbilities.delegate = self
+            self.tblAbilities.dataSource = self
+            self.tblAbilities.reloadData()
+            
+            self.tblMoves.delegate = self
+            self.tblMoves.dataSource = self
+            self.tblMoves.reloadData()
+            
+            self.statsView.hidden = false
+            
+            
         }
         
-        statsView.hidden = false
-        abilitiesView.hidden = true
-//        movesView.hidden = true
-//        spritesView.hidden = true
-//        evoView.hidden = true
         
 
     }
     
     
-    /* 
-        I had wanted to hide the labels as they went behind the segmented control. However, 
-        the timing is not right with the drag/scroll operation. It looks like I wouldn't have 
-        control over changing the visibility as the scrolling was in progress. So I changed to a covering
-        view farther forward in the UI.
-    
-        Update -- turns out all I needed to do was to turn on 'clip subviews' on the scroller. 
-            problem solved.
-    */
-    /*
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        
-        let topOfCats :CGFloat = sgCategories.frame.origin.y
-        let bottomOfCatsLocation : CGFloat = sgCategories.frame.size.height + topOfCats
-        
-        for case let subStack as UIStackView in stkStatistics.subviews {
-        
-            for case let lblField as UILabel in subStack.subviews {
-                let topOfLabel: CGFloat = lblField.frame.origin.y
-                let bottomOfLabelLocation: CGFloat = lblField.frame.size.height + topOfLabel
-                if bottomOfLabelLocation <= bottomOfCatsLocation && lblField.alpha != 0.0 {
-                    lblField.alpha = 0.2
-                } else if bottomOfLabelLocation > bottomOfCatsLocation {
-                    lblField.alpha = 1.0
-                }
-                
-            }
-        }
-        
-    }
-    */
     
     /* 
         make sure the content size of the scroller is appropriate
@@ -116,11 +97,10 @@ class EnhancedDetailsVC: UIViewController, UIScrollViewDelegate, UITableViewDele
     }
 
     func updateUI() {
-//        self.lblName.text = self.pokemon.name.capitalizedString
         self.imgMain.image = UIImage(named: String(self.pokemon.speciesId))
-        self.lblPokeName.text = pokemon.name.capitalizedString
         if pokemon.type != "" {
             self.lblTypeVal.text = pokemon.type
+            self.lblTypeVal.sizeToFit()
         } else {
             self.lblTypeVal.text = "Unknown"
         }
@@ -180,24 +160,42 @@ class EnhancedDetailsVC: UIViewController, UIScrollViewDelegate, UITableViewDele
         } else {
             self.lblBaseDescription.text = "Unknown"
         }
+        
     }
 
     
     //MARK: Ability Methods
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCellWithIdentifier("AbilityCell", forIndexPath: indexPath) as? AbilityCell {
-            cell.configureCell(pokemon.abilities[indexPath.row])
-            return cell
+        if tableView == self.tblAbilities {
+            if let cell = tableView.dequeueReusableCellWithIdentifier("AbilityCell", forIndexPath: indexPath) as? AbilityCell {
+                cell.configureCell(pokemon.abilities[indexPath.row])
+                return cell
+            }
+        } else if tableView == self.tblMoves {
+        
+            if let cell = tableView.dequeueReusableCellWithIdentifier("MoveCell", forIndexPath: indexPath) as? MoveCell {
+                cell.configureCell(pokemon.moves[indexPath.row])
+                return cell
+            }
         }
         
         return UITableViewCell()
     }
     
     
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.pokemon.abilities.count
+        
+        if tableView == self.tblAbilities {
+            return self.pokemon.abilities.count
+        } else if tableView == self.tblMoves {
+            return self.pokemon.moves.count
+        }
+        
+        return 1
     }
     
+    //always 1 section
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
@@ -209,14 +207,14 @@ class EnhancedDetailsVC: UIViewController, UIScrollViewDelegate, UITableViewDele
         case 0:
             statsView.hidden = false
             abilitiesView.hidden = true
-//            movesView.hidden = true
+            movesView.hidden = true
 //            spritesView.hidden = true
 //            evoView.hidden = true
             break
         case 1:
             statsView.hidden = true
             abilitiesView.hidden = false
-//            movesView.hidden = false
+            movesView.hidden = false
 //            spritesView.hidden = true
 //            evoView.hidden = true
             break
@@ -224,7 +222,7 @@ class EnhancedDetailsVC: UIViewController, UIScrollViewDelegate, UITableViewDele
         case 2:
             statsView.hidden = true
             abilitiesView.hidden = true
-//            movesView.hidden = true
+            movesView.hidden = true
 //            spritesView.hidden = false
 //            evoView.hidden = false
             break

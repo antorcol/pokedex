@@ -1,18 +1,18 @@
 //
-//  AbilityCell.swift
+//  MoveCell.swift
 //  pokedex
 //
-//  Created by Anthony Torrero Collins on 3/07/16.
+//  Created by Anthony Torrero Collins on 3/14/16.
 //  Copyright © 2016 Anthony Torrero Collins. All rights reserved.
 //
 
 import UIKit
 
-class AbilityCell: UITableViewCell {
+class MoveCell: UITableViewCell {
     
     
     //MARK: IBOutlets and vars
-    @IBOutlet weak var abilityLabel: UILabel!
+    @IBOutlet weak var moveLabel: UILabel!
     
     var pokemon: Pokemon!
     
@@ -25,7 +25,7 @@ class AbilityCell: UITableViewCell {
     }
     
     //MARK: Utility
-    func configureCell(ability: String) {
-        abilityLabel.text = ability.capitalizedString
+    func configureCell(move: String) {
+        moveLabel.text = move.capitalizedString
     }
 }

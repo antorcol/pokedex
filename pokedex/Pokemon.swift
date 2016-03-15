@@ -41,6 +41,9 @@ class Pokemon {
     //MARK: abilities
     private var _abilities = [String]()
     
+    //MARK: moves
+    private var _moves = [String]()
+    
     //part of evo view
     private var _next_evolution_text: String = ""
     private var _next_evolution_id: Int = -1
@@ -52,20 +55,78 @@ class Pokemon {
         self._species_id = id
         self._resourceUrl.appendContentsOf("\(id)/")
         
-        _abilities = ["one","two","three", "four"]
     }
     
     
     //MARK: util
     func downloadPokemonDetails(completed: DownloadComplete) {
-        //NOTE: the training vid had using nan NSURL in the request, but that 
-            //doesn't work, returns nil. String works.
+        //NOTE: for V1, the training vid had using nan NSURL in the request, but that
+            //doesn't work, as it returns nil. String works. For V2, though the NSURL works
         let url = NSURL(string: self._resourceUrl)!
         
         Alamofire.request(.GET, url).responseJSON { response in
             let result = response.result
             if let dict = result.value as? Dictionary<String,AnyObject> {
 
+                if let speciesDict = dict["species"] as? Dictionary<String, String> where speciesDict.count > 0 {
+                    self._speciesName = speciesDict["name"]
+                    self._speciesUrl = speciesDict["url"] //use for description later
+                } else {
+                    self._speciesName = "Unknown"
+                }
+
+                //v2 descriptions are buried
+                if self._speciesUrl != nil && self._speciesUrl != "" {
+                    
+                    Alamofire.request(.GET, self._speciesUrl).responseJSON(completionHandler: { response in
+                        let destResult = response.result
+                        
+                        //will use the first 'en' encountered - there's one for each of the many version groups
+                        found: if let speciesFullDict = destResult.value as? Dictionary<String, AnyObject> {
+                            if let flavorTextDicts = speciesFullDict["flavor_text_entries"] as? [AnyObject] {
+                                for flavorTextDict in flavorTextDicts {
+                                    if let langDict = flavorTextDict["language"] as? Dictionary<String, AnyObject> {
+                                        if let langName  = langDict["name"] as? String {
+                                            if langName == "en" {
+                                                if let desc = flavorTextDict["flavor_text"] as? String {
+                                                    if desc != "" {
+                                                        self._description = desc.stringByReplacingOccurrencesOfString("\n",withString: " ")
+                                                    } else {
+                                                        self._description = "No description available"
+                                                    }
+                                                }
+                                                break found
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
+                        completed()
+                    })
+                    
+                }
+                
+                
+                
+                //moving here to see if I can get the table to see the count
+                if let abilitiesArr = dict["abilities"] as? [Dictionary<String, AnyObject>] where abilitiesArr.count > 0 {
+                    for abilityDict in abilitiesArr {
+                        if let abilitySpec = abilityDict["ability"] as? Dictionary<String, String> where abilitySpec.count > 0 {
+                            let abilityName = abilitySpec["name"]
+                            if abilityName != "" {
+                                self._abilities.append(abilityName!)
+                            }
+                        }
+                    }
+                }
+                
+                /* moves -- there is a limit in the scroller */
+                for i in 0...150 {
+                    self._moves.append("Move: \(i)")
+                }
+                
                 /* I set to a negative value to indicate 'unknown' */
                 //TODO: Set other integer values to -1 to indicate unknown?
                 
@@ -123,44 +184,7 @@ class Pokemon {
                     
                 }
                 
-// V1 stuff
-//                if let attack = dict["attack"] as? Int {
-//                    self._attack = attack
-//                } else {
-//                    self._attack = 0
-//                }
-//                
-//                if let defense = dict["defense"] as? Int {
-//                    self._defense = defense
-//                } else {
-//                    self._defense = 0
-//                }
-//                
-//                
-//                if let spatk = dict["special-attack"] as? Int {
-//                    self._specialAttack = spatk
-//                } else {
-//                    self._specialAttack = 0
-//                }
-//                
-//                if let spdef = dict["special-defense"] as? Int {
-//                    self._specialDefense = spdef
-//                } else {
-//                    self._specialDefense = 0
-//                }
-//                
-//                if let hp = dict["hp"] as? Int {
-//                    self._hitPoints = hp
-//                } else {
-//                    self._hitPoints = 0
-//                }
                 
-                if let speciesDict = dict["species"] as? Dictionary<String, String> where speciesDict.count > 0 {
-                    self._speciesName = speciesDict["name"]
-                    self._speciesUrl = speciesDict["url"] //use for description later
-                } else {
-                    self._speciesName = "Unknown"
-                }
                 
                 if let typesDict = dict["types"] as? [Dictionary<String, AnyObject>] where typesDict.count > 0 {
 
@@ -170,7 +194,7 @@ class Pokemon {
                         if let typesItem = typesItems["type"] as? Dictionary<String, String> where typesItem.count > 0 {
                             if let typeName = typesItem["name"] {
                                 tmpType.appendContentsOf(typeName)
-                                tmpType.appendContentsOf("/")
+                                tmpType.appendContentsOf("\u{A0}")
                             }
                         }
                     }
@@ -180,39 +204,15 @@ class Pokemon {
                     self._type = ""
                 }
                 
-                //v2 descriptions are buried
-                if self._speciesUrl != nil && self._speciesUrl != "" {
-                    
-                    Alamofire.request(.GET, self._speciesUrl).responseJSON(completionHandler: { response in
-                        let destResult = response.result
-                        
-                        //will use the sapphire version group
-                        found: if let speciesFullDict = destResult.value as? Dictionary<String, AnyObject> {
-                            if let flavorTextDicts = speciesFullDict["flavor_text_entries"] as? [AnyObject] {
-                                for flavorTextDict in flavorTextDicts {
-                                    if let langDict = flavorTextDict["language"] as? Dictionary<String, AnyObject> {
-                                        if let langName  = langDict["name"] as? String {
-                                            if langName == "en" {
-                                                if let desc = flavorTextDict["flavor_text"] as? String {
-                                                    if desc != "" {
-                                                        self._description = desc
-                                                    } else {
-                                                        self._description = "No description available"
-                                                    }
-                                                }
-                                                break found
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        
-                        completed()
-                    })
-                    
-                }
+
                 
+//                
+//                func downloadDescriptions(speciesUrl: String, completed: DownloadComplete) {
+//                    
+//                    
+//                    completed()
+//                }
+
 // v1 descriptions were much easier
 //                if let descriptionsDict = dict["descriptions"] as? [Dictionary<String, String>] where descriptionsDict.count > 0 {
 //                    //get only the first description
@@ -381,6 +381,13 @@ class Pokemon {
     var abilities: [String] {
         get {
             return self._abilities
+        }
+    }
+    
+    /* comment */
+    var moves: [String] {
+        get {
+            return self._moves
         }
     }
     

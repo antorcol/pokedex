@@ -122,7 +122,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         }
 
         performSegueWithIdentifier("EnhancedDetailsVC", sender: poke)
-//        performSegueWithIdentifier("PokemonDetailVC", sender: poke)
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

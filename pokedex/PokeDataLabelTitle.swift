@@ -14,7 +14,7 @@ class PokeDataLabelTitle: PaddingLabel {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        let fontSize = CGFloat(14.0)//let fontSize = self.font.pointSize;
+        let fontSize = CGFloat(14.0)
         self.font = UIFont(name: "HelveticaNeue-Bold", size: fontSize)
         self.textColor = UIColor(colorLiteralRed: 59/255, green: 59/255, blue: 59/255, alpha: 1.0)
         self.backgroundColor = UIColor(colorLiteralRed: 248/255, green: 199/255, blue: 24/255, alpha: 0.75)
