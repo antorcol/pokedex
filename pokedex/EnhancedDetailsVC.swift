@@ -10,15 +10,13 @@ import UIKit
 
 class EnhancedDetailsVC: UIViewController,
                          UIScrollViewDelegate,
-                         UITableViewDelegate,
-                         UITableViewDataSource,
                          UICollectionViewDelegate,
                          UICollectionViewDataSource,
                          UICollectionViewDelegateFlowLayout {
 
     var pokemon: Pokemon!
 
-    //MARK: Basic Stats
+    //MARK: Basic Stats - these are fixed in number
     @IBOutlet weak var lblPokeName: UILabel!
     @IBOutlet weak var imgMain: UIImageView!
     @IBOutlet weak var lblExperience: UILabel!
@@ -35,13 +33,14 @@ class EnhancedDetailsVC: UIViewController,
     @IBOutlet weak var lblSpAttackVal: PokeDataLabelData!
     @IBOutlet weak var lblSpDefenseVal: PokeDataLabelData!
     @IBOutlet weak var sgCategories: UISegmentedControl!
+    @IBOutlet weak var lblDone: UILabel!
     
-    //MARK: Abilities is in StatsView
-    @IBOutlet weak var tblAbilities: UITableView!
-    
-    
+    //there's a maximum of 3 abilities
+    @IBOutlet weak var lblAbilityOne: PokeAbilitiesLabelData!
+    @IBOutlet weak var lblAbilityTwo: PokeAbilitiesLabelData!
+    @IBOutlet weak var lblAbilityThree: PokeAbilitiesLabelData!
     //MARK: Moves
-    @IBOutlet weak var colMoves: UICollectionView!
+//    @IBOutlet weak var colMoves: UICollectionView!
     
     
     
@@ -55,24 +54,22 @@ class EnhancedDetailsVC: UIViewController,
     
     override func viewDidLoad() {
         super.viewDidLoad()
-                
+        
+        self.pokemon.wipePokemon()
         self.lblPokeName.text = pokemon.name.capitalizedString
         //print("Pokemon: \(pokemon.name), \(pokemon.speciesId)")
         mainHScroller.delegate = self
         
         statsView.hidden = true
-        colMoves.hidden = true
+//        colMoves.hidden = true
         
         pokemon.downloadPokemonDetails { () -> () in
             self.updateUI()
             //place these here so that the table isn't loaded until the data is complete.
-            self.tblAbilities.delegate = self
-            self.tblAbilities.dataSource = self
-            self.tblAbilities.reloadData()
             
-            self.colMoves.delegate = self
-            self.colMoves.dataSource = self
-            self.colMoves.reloadData()
+//            self.colMoves.delegate = self
+//            self.colMoves.dataSource = self
+//            self.colMoves.reloadData()
             
             self.statsView.hidden = false
             
@@ -87,15 +84,17 @@ class EnhancedDetailsVC: UIViewController,
     
     /* 
         make sure the content size of the scroller is appropriate
+        got burned by this after I changed the view in IB
     */
     override func viewDidLayoutSubviews() {
     
-        let stkWidth: CGFloat = stkStatistics.frame.size.width
+        //TODO: adjust for moves, sprites segments
+        let lblWidth: CGFloat = lblDone.frame.size.width
         
-        let topY : CGFloat = stkStatistics.frame.origin.y
-        let stkSize : CGFloat = stkStatistics.frame.size.height
+        let lblTopY : CGFloat = lblDone.frame.origin.y
+        let lblSize : CGFloat = lblDone.frame.size.height
         
-        let contentSize = CGSizeMake(stkWidth, topY + stkSize + 20)
+        let contentSize = CGSizeMake(lblWidth, lblTopY + lblSize + 5)
         mainHScroller.contentSize = contentSize
     
     }
@@ -108,51 +107,61 @@ class EnhancedDetailsVC: UIViewController,
         } else {
             self.lblTypeVal.text = "Unknown"
         }
+        
         if self.pokemon.height > 0 {
             self.lblHeightVal.text = String(self.pokemon.height)
         } else {
             self.lblHeightVal.text = "Unknown"
         }
+        
         if self.pokemon.weight > 0 {
             self.lblWeightVal.text = String(self.pokemon.weight)
         } else {
             self.lblWeightVal.text = "Unknown"
         }
+        
         if self.pokemon.baseExperience > 0 {
             self.lblExperience.text = String(self.pokemon.baseExperience)
         } else {
             self.lblExperience.text = "Unknown"
         }
+        
         if String(self.pokemon.attack) != "" {
             self.lblAttackVal.text = String(self.pokemon.attack)
         }else {
             self.lblAttackVal.text = "Unknown"
         }
+        
         if String(self.pokemon.defense) != "" {
             self.lblDefenseVal.text = String(self.pokemon.defense)
         }else {
             self.lblDefenseVal.text = "Unknown!"
         }
+        
         if String(self.pokemon.speed) != nil {
             self.lblSpeedVal.text = String(self.pokemon.speed)
         } else {
             self.lblSpeedVal.text = "Unknown"
         }
+        
         if String(self.pokemon.hitPoints) != nil {
             self.lblHitPointsVal.text = String(self.pokemon.hitPoints)
         } else {
             self.lblHitPointsVal.text = String("0")
         }
+        
         if String(self.pokemon.specialAttack) != nil {
             self.lblSpAttackVal.text = String(self.pokemon.specialAttack)
         } else {
             self.lblSpAttackVal.text = "Unknown"
         }
+        
         if String(self.pokemon.specialDefense) != nil {
         self.lblSpDefenseVal.text = String(self.pokemon.specialDefense)
         } else {
         self.lblSpDefenseVal.text = "Unknown"
         }
+        
         if String(self.pokemon.speciesName) != "" {
             self.lblSpeciesVal.text = String(self.pokemon.speciesName).capitalizedString
         } else {
@@ -163,6 +172,27 @@ class EnhancedDetailsVC: UIViewController,
             self.lblBaseDescription.text = self.pokemon.description
         } else {
             self.lblBaseDescription.text = "Unknown"
+        }
+        
+        //TODO: create the number of needed cells in a loop
+        self.lblAbilityOne.hidden = true
+        self.lblAbilityTwo.hidden = true
+        self.lblAbilityThree.hidden = true
+        if self.pokemon.abilities.count > 0 {
+            self.lblAbilityOne.text = self.pokemon.abilities[0]
+            self.lblAbilityOne.hidden = false
+            if self.pokemon.abilities.count == 3 {
+                self.lblAbilityTwo.text = self.pokemon.abilities[1]
+                self.lblAbilityThree.text = self.pokemon.abilities[2]
+                self.lblAbilityTwo.hidden = false
+                self.lblAbilityThree.hidden = false
+            } else if self.pokemon.abilities.count == 2 {
+                self.lblAbilityTwo.text = self.pokemon.abilities[1]
+                self.lblAbilityTwo.hidden = false
+                self.lblAbilityThree.hidden = true
+            }
+        } else {
+            self.lblAbilityOne.text = "None"
         }
         
     }
@@ -193,55 +223,26 @@ class EnhancedDetailsVC: UIViewController,
     }
     
 
-    
-    //MARK: tableView Methods
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if tableView == self.tblAbilities {
-            if let cell = tableView.dequeueReusableCellWithIdentifier("AbilityCell", forIndexPath: indexPath) as? AbilityCell {
-                cell.configureCell(pokemon.abilities[indexPath.row])
-                return cell
-            }
-        }
-        
-        return UITableViewCell()
-    }
-    
-    
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        if tableView == self.tblAbilities {
-            return self.pokemon.abilities.count
-        }
-        
-        return 1
-    }
-    
-    //always 1 section
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
-    }
-    
     //MARK: Actions
     @IBAction func sgCategories_Pressed(sender: UISegmentedControl) {
         
         switch sender.selectedSegmentIndex {
         case 0:
             statsView.hidden = false
-            colMoves.hidden = true
+//            colMoves.hidden = true
 //            spritesView.hidden = true
 //            evoView.hidden = true
             break
         case 1:
             statsView.hidden = true
-            colMoves.hidden = false
+//            colMoves.hidden = false
 //            spritesView.hidden = true
 //            evoView.hidden = true
             break
         
         case 2:
             statsView.hidden = true
-            colMoves.hidden = true
+ //           colMoves.hidden = true
 //            spritesView.hidden = false
 //            evoView.hidden = false
             break

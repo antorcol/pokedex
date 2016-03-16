@@ -124,7 +124,7 @@ class Pokemon {
                         return element1 < element2})
                 }
                 
-                /* moves */
+                /* moves
                 if let movesArr = dict["moves"] as? [Dictionary<String, AnyObject>] where movesArr.count > 0 {
                     for moveDict in movesArr {
                         if let moveSpec = moveDict["move"] as? Dictionary<String, String> where moveSpec.count > 0 {
@@ -137,6 +137,7 @@ class Pokemon {
                     self._moves.sortInPlace ({ (element1:String, element2:String) -> Bool in
                         return element1 < element2})
                 }
+                */
                 
                 /* I set to a negative value to indicate 'unknown' */
                 //TODO: Set other integer values to -1 to indicate unknown?
@@ -274,6 +275,20 @@ class Pokemon {
                 
             }
         }
+    }
+    
+    
+    //MARK: utility
+    
+    /*
+        Call this before assigning new items to prevent previous entry content
+        from being displayed with the new one
+    
+        TODO: all items, not just arrays.
+    */
+    func wipePokemon() {
+        self._abilities.removeAll()
+        self._moves.removeAll()
     }
     
     //MARK: getter / setter
