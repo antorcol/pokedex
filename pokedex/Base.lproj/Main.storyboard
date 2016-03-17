@@ -12,10 +12,10 @@
         </mutableArray>
     </customFonts>
     <scenes>
-        <!--View Controller-->
+        <!--MainVC-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="pokedex" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MainVC" id="BYZ-38-t0r" customClass="MainVC" customModule="pokedex" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -307,7 +307,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="560" height="400"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Basic Status" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LfI-Wk-5lu">
-                                                <rect key="frame" x="231" y="8" width="99" height="21"/>
+                                                <rect key="frame" x="8" y="9" width="99" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 <nil key="highlightedColor"/>
@@ -460,8 +460,34 @@
                                                     </stackView>
                                                 </subviews>
                                             </stackView>
+                                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2Pb-jq-zn5" userLabel="uHR">
+                                                <rect key="frame" x="0.0" y="283" width="560" height="1"/>
+                                                <color key="backgroundColor" red="0.41960784309999999" green="0.35294117650000001" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="1" id="1rs-BY-ZzQ"/>
+                                                </constraints>
+                                            </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Abilities" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c1y-AL-paj">
+                                                <rect key="frame" x="8" y="292" width="61" height="21"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c83-dC-ECO" userLabel="lHR">
+                                                <rect key="frame" x="0.0" y="381" width="560" height="1"/>
+                                                <color key="backgroundColor" red="0.41960784309999999" green="0.35294117650000001" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="1" id="w9Q-ac-KeT"/>
+                                                </constraints>
+                                            </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="End" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kOc-Ik-F5c" userLabel="lblDone">
+                                                <rect key="frame" x="540" y="382" width="19" height="12"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="10"/>
+                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                             <stackView autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="kyh-wc-u9s" userLabel="stkAbilities">
-                                                <rect key="frame" x="180" y="320" width="200" height="61"/>
+                                                <rect key="frame" x="8" y="321" width="200" height="61"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rock and Roll " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="none" minimumFontSize="10" preferredMaxLayoutWidth="100" translatesAutoresizingMaskIntoConstraints="NO" id="gHX-7Y-Bki" userLabel="firstAbility" customClass="PokeAbilitiesLabelData" customModule="pokedex" customModuleProvider="target">
                                                         <rect key="frame" x="51" y="0.0" width="98" height="17"/>
@@ -487,32 +513,6 @@
                                                     <constraint firstAttribute="width" constant="200" id="rRH-AA-Aj6"/>
                                                 </constraints>
                                             </stackView>
-                                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2Pb-jq-zn5" userLabel="uHR">
-                                                <rect key="frame" x="0.0" y="283" width="560" height="1"/>
-                                                <color key="backgroundColor" red="0.41960784309999999" green="0.35294117650000001" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="1" id="1rs-BY-ZzQ"/>
-                                                </constraints>
-                                            </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Abilities" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c1y-AL-paj">
-                                                <rect key="frame" x="250" y="292" width="61" height="21"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c83-dC-ECO" userLabel="lHR">
-                                                <rect key="frame" x="0.0" y="381" width="560" height="1"/>
-                                                <color key="backgroundColor" red="0.41960784309999999" green="0.35294117650000001" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="1" id="w9Q-ac-KeT"/>
-                                                </constraints>
-                                            </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="End" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kOc-Ik-F5c" userLabel="lblDone">
-                                                <rect key="frame" x="540" y="382" width="19" height="12"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="10"/>
-                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>

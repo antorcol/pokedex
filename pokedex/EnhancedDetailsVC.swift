@@ -15,6 +15,7 @@ class EnhancedDetailsVC: UIViewController,
                          UICollectionViewDelegateFlowLayout {
 
     var pokemon: Pokemon!
+    var pokemonCache: PokemonCache = PokemonCache()
 
     //MARK: Basic Stats - these are fixed in number
     @IBOutlet weak var lblPokeName: UILabel!
@@ -55,27 +56,38 @@ class EnhancedDetailsVC: UIViewController,
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.pokemon.wipePokemon()
+        var pokeExists: Bool = false
+        
+        if(!pokemonCache.isInCache(pokemon)) {
+            self.pokemon.wipePokemon()
+            pokemonCache.addToCache(pokemon)
+        } else {
+            pokeExists = true
+        }
+        
         self.lblPokeName.text = pokemon.name.capitalizedString
-        //print("Pokemon: \(pokemon.name), \(pokemon.speciesId)")
         mainHScroller.delegate = self
         
         statsView.hidden = true
 //        colMoves.hidden = true
-        
-        pokemon.downloadPokemonDetails { () -> () in
+
+        if !pokeExists {
+            pokemon.downloadPokemonDetails { () -> () in
+                self.updateUI()
+                //place these here so that the table isn't loaded until the data is complete.
+                
+    //            self.colMoves.delegate = self
+    //            self.colMoves.dataSource = self
+    //            self.colMoves.reloadData()
+                
+                self.statsView.hidden = false
+                
+                
+            }
+        } else {
             self.updateUI()
-            //place these here so that the table isn't loaded until the data is complete.
-            
-//            self.colMoves.delegate = self
-//            self.colMoves.dataSource = self
-//            self.colMoves.reloadData()
-            
             self.statsView.hidden = false
-            
-            
         }
-        
         
 
     }
@@ -257,5 +269,13 @@ class EnhancedDetailsVC: UIViewController,
         dismissViewControllerAnimated(true, completion: nil)
     }
     
+    //MARK: Segue
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "MainVC" {
+            if let mainVC = segue.destinationViewController as? MainVC {
+                    mainVC.pokemonCache = pokemonCache
+            }
+        }
+    }
 
 }

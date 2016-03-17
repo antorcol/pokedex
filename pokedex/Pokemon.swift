@@ -10,7 +10,7 @@
 import Foundation
 import Alamofire
 
-class Pokemon {
+class Pokemon { //: NSObject
     
     //MARK: data source
     private var _resourceUrl : String = "\(URL_BASE)\(URL_POKEMON)"
@@ -56,6 +56,16 @@ class Pokemon {
         self._resourceUrl.appendContentsOf("\(id)/")
         
     }
+    
+    
+//    override func isEqual(object: AnyObject?) -> Bool {
+//        if let rhs = object as? Pokemon {
+//            if rhs.csvRowId == self.csvRowId {
+//                return true
+//            }
+//        }
+//        return false
+//    }
     
     
     //MARK: util

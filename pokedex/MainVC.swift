@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MainVC.swift
 //  pokedex
 //
 //  Created by Anthony Torrero Collins on 2/29/16.
@@ -9,12 +9,13 @@
 import UIKit
 import AVFoundation
 
-class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDelegate {
+class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDelegate {
 
     //MARK: IBOutlets and Vars
    
     var pokemon: [Pokemon] = [Pokemon]()
     var filteredPokemon: [Pokemon] = [Pokemon]()
+    var pokemonCache: PokemonCache = PokemonCache()
     var musicPlayer: AVAudioPlayer!
     var inSearchMode: Bool = false
     
@@ -163,6 +164,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             if let detailsVC = segue.destinationViewController as? EnhancedDetailsVC {
                 if let poke = sender as? Pokemon {
                     detailsVC.pokemon = poke
+                    detailsVC.pokemonCache = pokemonCache
                 }
             }
         }
