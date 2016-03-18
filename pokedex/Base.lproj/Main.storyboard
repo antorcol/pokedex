@@ -228,44 +228,6 @@
                                     <constraint firstItem="dHX-L3-Jsb" firstAttribute="leading" secondItem="Yao-Kt-QxA" secondAttribute="leading" id="VbJ-LY-EdC"/>
                                 </constraints>
                             </view>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" fixedFrame="YES" layoutMarginsFollowReadableWidth="YES" bounces="NO" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="aKx-tu-6Ve" userLabel="movesCollection">
-                                <rect key="frame" x="155" y="110" width="289" height="380"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="5" minimumInteritemSpacing="5" id="okX-0f-zIt">
-                                    <size key="itemSize" width="105" height="17"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                </collectionViewFlowLayout>
-                                <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="top" reuseIdentifier="MoveCell" id="CcG-Lx-NYX" customClass="MoveCell" customModule="pokedex" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="105" height="17"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="105" height="17"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bEB-lG-Gch" customClass="PokeDataLabelData" customModule="pokedex" customModuleProvider="target">
-                                                    <rect key="frame" x="5" y="0.0" width="100" height="17"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        </view>
-                                        <constraints>
-                                            <constraint firstAttribute="bottom" secondItem="bEB-lG-Gch" secondAttribute="bottom" id="RrB-m0-Nwz"/>
-                                            <constraint firstAttribute="trailing" secondItem="bEB-lG-Gch" secondAttribute="trailing" id="Tlv-bV-APQ"/>
-                                            <constraint firstItem="bEB-lG-Gch" firstAttribute="leading" secondItem="CcG-Lx-NYX" secondAttribute="leading" id="YH8-Xw-JFb"/>
-                                            <constraint firstItem="bEB-lG-Gch" firstAttribute="top" secondItem="CcG-Lx-NYX" secondAttribute="top" id="fAW-wJ-RmA"/>
-                                        </constraints>
-                                        <connections>
-                                            <outlet property="moveLabel" destination="bEB-lG-Gch" id="f6Q-RB-3J9"/>
-                                        </connections>
-                                    </collectionViewCell>
-                                </cells>
-                            </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -295,6 +257,55 @@
                             <scrollView autoresizesSubviews="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" bounces="NO" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tzO-MQ-SWI" userLabel="mainHScroller">
                                 <rect key="frame" x="20" y="200" width="560" height="400"/>
                                 <subviews>
+                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nvQ-mA-A9b" userLabel="movesView">
+                                        <rect key="frame" x="0.0" y="0.0" width="560" height="400"/>
+                                        <subviews>
+                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" ambiguous="YES" misplaced="YES" layoutMarginsFollowReadableWidth="YES" bounces="NO" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="aKx-tu-6Ve" userLabel="movesCollection">
+                                                <rect key="frame" x="135" y="10" width="289" height="380"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="5" minimumInteritemSpacing="5" id="okX-0f-zIt">
+                                                    <size key="itemSize" width="105" height="17"/>
+                                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                </collectionViewFlowLayout>
+                                                <cells>
+                                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="top" reuseIdentifier="MoveCell" id="CcG-Lx-NYX" customClass="MoveCell" customModule="pokedex" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="0.0" width="105" height="17"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                                            <rect key="frame" x="0.0" y="0.0" width="105" height="17"/>
+                                                            <autoresizingMask key="autoresizingMask"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bEB-lG-Gch" customClass="PokeDataLabelData" customModule="pokedex" customModuleProvider="target">
+                                                                    <rect key="frame" x="5" y="0.0" width="100" height="17"/>
+                                                                    <color key="tintColor" red="0.96470588239999999" green="0.90196078430000004" blue="0.32156862749999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <color key="textColor" red="0.41960784309999999" green="0.35294117650000001" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                        </view>
+                                                        <constraints>
+                                                            <constraint firstAttribute="bottom" secondItem="bEB-lG-Gch" secondAttribute="bottom" id="RrB-m0-Nwz"/>
+                                                            <constraint firstAttribute="trailing" secondItem="bEB-lG-Gch" secondAttribute="trailing" id="Tlv-bV-APQ"/>
+                                                            <constraint firstItem="bEB-lG-Gch" firstAttribute="leading" secondItem="CcG-Lx-NYX" secondAttribute="leading" id="YH8-Xw-JFb"/>
+                                                            <constraint firstItem="bEB-lG-Gch" firstAttribute="top" secondItem="CcG-Lx-NYX" secondAttribute="top" id="fAW-wJ-RmA"/>
+                                                        </constraints>
+                                                        <connections>
+                                                            <outlet property="moveLabel" destination="bEB-lG-Gch" id="f6Q-RB-3J9"/>
+                                                        </connections>
+                                                    </collectionViewCell>
+                                                </cells>
+                                            </collectionView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="aKx-tu-6Ve" firstAttribute="centerX" secondItem="nvQ-mA-A9b" secondAttribute="centerX" id="CSx-eN-3Fq"/>
+                                            <constraint firstItem="aKx-tu-6Ve" firstAttribute="top" secondItem="nvQ-mA-A9b" secondAttribute="top" constant="10" id="pIh-kN-qWt"/>
+                                        </constraints>
+                                    </view>
                                     <view autoresizesSubviews="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3EE-0Y-UHY" userLabel="statsView">
                                         <rect key="frame" x="0.0" y="0.0" width="560" height="400"/>
                                         <subviews>
@@ -529,14 +540,18 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstItem="nvQ-mA-A9b" firstAttribute="centerX" secondItem="tzO-MQ-SWI" secondAttribute="centerX" id="1IA-K0-7tx"/>
                                     <constraint firstAttribute="trailing" secondItem="kyh-wc-u9s" secondAttribute="trailing" id="4jN-v5-ipa"/>
                                     <constraint firstAttribute="trailing" secondItem="3EE-0Y-UHY" secondAttribute="trailing" id="5uS-oQ-z49"/>
                                     <constraint firstItem="3EE-0Y-UHY" firstAttribute="centerX" secondItem="tzO-MQ-SWI" secondAttribute="centerX" id="FlG-Xg-wDQ"/>
                                     <constraint firstItem="c83-dC-ECO" firstAttribute="width" secondItem="tzO-MQ-SWI" secondAttribute="width" id="IoW-Ra-Cna"/>
                                     <constraint firstItem="3EE-0Y-UHY" firstAttribute="bottom" secondItem="tzO-MQ-SWI" secondAttribute="bottom" id="SGl-rb-grf"/>
                                     <constraint firstItem="2Pb-jq-zn5" firstAttribute="width" secondItem="tzO-MQ-SWI" secondAttribute="width" id="Ve4-qm-xQX"/>
+                                    <constraint firstAttribute="bottom" secondItem="nvQ-mA-A9b" secondAttribute="bottom" id="bMB-sg-pmL"/>
                                     <constraint firstItem="3EE-0Y-UHY" firstAttribute="top" secondItem="tzO-MQ-SWI" secondAttribute="top" id="fue-vH-V8k"/>
+                                    <constraint firstItem="nvQ-mA-A9b" firstAttribute="top" secondItem="tzO-MQ-SWI" secondAttribute="top" id="hKg-7O-2IJ"/>
                                     <constraint firstItem="kOc-Ik-F5c" firstAttribute="bottom" secondItem="tzO-MQ-SWI" secondAttribute="bottom" constant="-2" id="jrQ-Y1-gqI"/>
+                                    <constraint firstAttribute="trailing" secondItem="nvQ-mA-A9b" secondAttribute="trailing" id="nJb-93-6Qj"/>
                                 </constraints>
                             </scrollView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gs2-5w-pUX" userLabel="titleView">
@@ -650,14 +665,32 @@
                         <outlet property="lblTypeVal" destination="X7K-Xz-RnA" id="Oxw-UI-hIB"/>
                         <outlet property="lblWeightVal" destination="zCD-jI-ozO" id="Oop-f1-cIb"/>
                         <outlet property="mainHScroller" destination="tzO-MQ-SWI" id="HoH-98-zFc"/>
+                        <outlet property="movesCol" destination="aKx-tu-6Ve" id="PhT-Ad-6uC"/>
+                        <outlet property="movesView" destination="nvQ-mA-A9b" id="2VG-BL-ydq"/>
                         <outlet property="sgCategories" destination="kCc-in-gat" id="pA9-zE-SbG"/>
                         <outlet property="statsView" destination="3EE-0Y-UHY" id="JRu-TB-z13"/>
-                        <outlet property="stkStatistics" destination="I2c-wn-YbV" id="npk-qb-OFm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J2O-dq-aiB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1004" y="406"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="bzx-AG-10T">
+            <objects>
+                <viewController id="GfT-Nd-OVZ" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="i8r-MW-bed"/>
+                        <viewControllerLayoutGuide type="bottom" id="3Wu-Cw-Fm5"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="uWb-2b-kkJ">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="l2S-Aj-D1U" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
         </scene>
     </scenes>
     <resources>

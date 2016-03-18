@@ -23,6 +23,7 @@ class EnhancedDetailsVC: UIViewController,
     @IBOutlet weak var lblExperience: UILabel!
     @IBOutlet weak var lblBaseDescription: UILabel!
     @IBOutlet weak var statsView: UIView!
+    
     @IBOutlet weak var lblSpeciesVal: PokeDataLabelData!
     @IBOutlet weak var lblHitPointsVal: PokeDataLabelData!
     @IBOutlet weak var lblHeightVal: PokeDataLabelData!
@@ -40,9 +41,10 @@ class EnhancedDetailsVC: UIViewController,
     @IBOutlet weak var lblAbilityOne: PokeAbilitiesLabelData!
     @IBOutlet weak var lblAbilityTwo: PokeAbilitiesLabelData!
     @IBOutlet weak var lblAbilityThree: PokeAbilitiesLabelData!
+
     //MARK: Moves
-//    @IBOutlet weak var colMoves: UICollectionView!
-    
+    @IBOutlet weak var movesView: UIView!
+    @IBOutlet weak var movesCol: UICollectionView!
     
     
     //    @IBOutlet weak var spritesView: UIView!
@@ -51,7 +53,6 @@ class EnhancedDetailsVC: UIViewController,
     
     //scroller
     @IBOutlet weak var mainHScroller: UIScrollView!
-    @IBOutlet weak var stkStatistics: UIStackView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,15 +70,16 @@ class EnhancedDetailsVC: UIViewController,
         mainHScroller.delegate = self
         
         statsView.hidden = true
-//        colMoves.hidden = true
+        movesView.hidden = true
 
         if !pokeExists {
             
             pokemon.downloadPokemonBasicDetails({ () -> () in
                 self.updateUI()
-//            self.colMoves.delegate = self
-//            self.colMoves.dataSource = self
-//            self.colMoves.reloadData()
+                
+                self.movesCol.delegate = self
+                self.movesCol.dataSource = self
+                self.movesCol.reloadData()
 
                 self.statsView.hidden = false
                 print("updated UI")
@@ -86,6 +88,9 @@ class EnhancedDetailsVC: UIViewController,
             
         } else {
             self.updateUI()
+            self.movesCol.delegate = self
+            self.movesCol.dataSource = self
+            
             self.statsView.hidden = false
         }
         
@@ -241,20 +246,20 @@ class EnhancedDetailsVC: UIViewController,
         switch sender.selectedSegmentIndex {
         case 0:
             statsView.hidden = false
-//            colMoves.hidden = true
+            movesView.hidden = true
 //            spritesView.hidden = true
 //            evoView.hidden = true
             break
         case 1:
             statsView.hidden = true
-//            colMoves.hidden = false
+            movesView.hidden = false
 //            spritesView.hidden = true
 //            evoView.hidden = true
             break
         
         case 2:
             statsView.hidden = true
- //           colMoves.hidden = true
+            movesView.hidden = true
 //            spritesView.hidden = false
 //            evoView.hidden = false
             break
