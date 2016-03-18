@@ -14,6 +14,8 @@ class Pokemon { //: NSObject
     
     //MARK: data source
     private var _resourceUrl : String = "\(URL_BASE)\(URL_POKEMON)"
+    var myPokemonApiResult : Alamofire.Result<AnyObject, NSError>!
+    var myPokemonSpeciesApiResult : Alamofire.Result<AnyObject, NSError>!
     
     //MARK: in csv file
     // ---- stats view ---- //
@@ -67,224 +69,78 @@ class Pokemon { //: NSObject
 //        return false
 //    }
     
-    
-    //MARK: util
-    func downloadPokemonDetails(completed: DownloadComplete) {
-        //NOTE: for V1, the training vid had using nan NSURL in the request, but that
-            //doesn't work, as it returns nil. String works. For V2, though the NSURL works
+    func downloadPokemonBasicDetails(completed: DownloadComplete) {
         let url = NSURL(string: self._resourceUrl)!
         
         Alamofire.request(.GET, url).responseJSON { response in
-            let result = response.result
-            if let dict = result.value as? Dictionary<String,AnyObject> {
+            //let result = response.result
+            self.myPokemonApiResult = response.result
+            if let dict = self.myPokemonApiResult.value as? Dictionary<String,AnyObject> {
 
-                if let speciesDict = dict["species"] as? Dictionary<String, String> where speciesDict.count > 0 {
-                    self._speciesName = speciesDict["name"]
-                    self._speciesUrl = speciesDict["url"] //use for description later
-                } else {
-                    self._speciesName = "Unknown"
-                }
-
-                //v2 descriptions are buried
-                if self._speciesUrl != nil && self._speciesUrl != "" {
-                    
-                    Alamofire.request(.GET, self._speciesUrl).responseJSON(completionHandler: { response in
-                        let destResult = response.result
-                        
-                        //will use the first 'en' encountered - there's one for each of the many version groups
-                        found: if let speciesFullDict = destResult.value as? Dictionary<String, AnyObject> {
-                            if let flavorTextDicts = speciesFullDict["flavor_text_entries"] as? [AnyObject] {
-                                for flavorTextDict in flavorTextDicts {
-                                    if let langDict = flavorTextDict["language"] as? Dictionary<String, AnyObject> {
-                                        if let langName  = langDict["name"] as? String {
-                                            if langName == "en" {
-                                                if let desc = flavorTextDict["flavor_text"] as? String {
-                                                    if desc != "" {
-                                                        self._description = desc.stringByReplacingOccurrencesOfString("\n",withString: " ")
-                                                    } else {
-                                                        self._description = "No description available"
-                                                    }
-                                                }
-                                                break found
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        
-                        completed()
-                    })
-                    
-                }
-                
-                
-                
-                //moving here to see if I can get the table to see the count
-                if let abilitiesArr = dict["abilities"] as? [Dictionary<String, AnyObject>] where abilitiesArr.count > 0 {
-                    for abilityDict in abilitiesArr {
-                        if let abilitySpec = abilityDict["ability"] as? Dictionary<String, String> where abilitySpec.count > 0 {
-                            let abilityName = abilitySpec["name"]
-                            if abilityName != "" {
-                                self._abilities.append(abilityName!.capitalizedString)
-                            }
-                        }
-                    }
-                    self._abilities.sortInPlace ({ (element1:String, element2:String) -> Bool in
-                        return element1 < element2})
-                }
-                
-                /* moves
-                if let movesArr = dict["moves"] as? [Dictionary<String, AnyObject>] where movesArr.count > 0 {
-                    for moveDict in movesArr {
-                        if let moveSpec = moveDict["move"] as? Dictionary<String, String> where moveSpec.count > 0 {
-                            let moveName = moveSpec["name"]
-                            if moveName != "" {
-                                self._moves.append(moveName!.capitalizedString)
-                            }
-                        }
-                    }
-                    self._moves.sortInPlace ({ (element1:String, element2:String) -> Bool in
-                        return element1 < element2})
-                }
-                */
-                
-                /* I set to a negative value to indicate 'unknown' */
-                //TODO: Set other integer values to -1 to indicate unknown?
-                
-                if let weight = dict["weight"] as? Int {
-                    self._weight = weight
-                } else {
-                    self._weight = -1
-                }
-                
-                if let height = dict["height"] as? Int {
-                    self._height = height
-                } else {
-                    self._height = -1
-                }
-                
-                if let expBase = dict["base_experience"] as? Int {
-                    self._base_experience = expBase
-                } else {
-                    self._base_experience = -1
-                }
+                self.loadLevel1Stats(dict)
                 
                 if let statsDict = dict["stats"] as? [Dictionary<String, AnyObject>] where statsDict.count > 0 {
-                    for statItems in statsDict {
-                        if let statValue = statItems["base_stat"] as? Int  {
-                            
-                            if let statNameDict = statItems["stat"] as? Dictionary<String, String> where statNameDict.count > 0 {
-                                let curName = statNameDict["name"]!
-                                switch curName {
-                                case "hp" :
-                                    self._hitPoints = statValue
-                                    break
-                                case "attack" :
-                                    self._attack = statValue
-                                    break
-                                case "defense" :
-                                    self._defense = statValue
-                                    break
-                                case "speed" :
-                                    self._speed = statValue
-                                    break
-                                case "special-defense" :
-                                    self._specialDefense = statValue
-                                    break
-                                case "special-attack" :
-                                    self._specialAttack = statValue
-                                    break
-                                default:
-                                    break
-                                }
-                                
-                            }
-                            
-                        }
-                    }
-                    
+                    self.loadBasicStats(statsDict)
                 }
                 
-                
+                if let abilitiesArr = dict["abilities"] as? [Dictionary<String, AnyObject>] where abilitiesArr.count > 0 {
+                    self.loadAbilities(abilitiesArr)
+                }
                 
                 if let typesDict = dict["types"] as? [Dictionary<String, AnyObject>] where typesDict.count > 0 {
-
-                    var tmpType: String = ""
-                    for typesItems in typesDict {
-                        
-                        if let typesItem = typesItems["type"] as? Dictionary<String, String> where typesItem.count > 0 {
-                            if let typeName = typesItem["name"] {
-                                tmpType.appendContentsOf(typeName)
-                                tmpType.appendContentsOf("\u{A0}")
-                            }
-                        }
-                    }
-                    //cut the last slash
-                    self._type = String(tmpType.characters.dropLast()).capitalizedString
+                    self.loadTypes(typesDict)
                 } else {
                     self._type = ""
                 }
                 
-
+                if let movesArr = dict["moves"] as? [Dictionary<String, AnyObject>] where movesArr.count > 0 {
+                    self.loadMoves(movesArr)
+                }
                 
-//                
-//                func downloadDescriptions(speciesUrl: String, completed: DownloadComplete) {
-//                    
-//                    
-//                    completed()
-//                }
-
-// v1 descriptions were much easier
-//                if let descriptionsDict = dict["descriptions"] as? [Dictionary<String, String>] where descriptionsDict.count > 0 {
-//                    //get only the first description
-//                    if let uri = descriptionsDict[0]["resource_uri"]  {
-//                        
-//                        let urlStr :String = "\(URL_BASE)\(uri)"
-//                        Alamofire.request(.GET, urlStr).responseJSON(completionHandler: { response in
-//                            let destResult = response.result
-//                            if let descDict = destResult.value as? Dictionary<String, AnyObject> {
-//                                if let description = descDict["description"] as? String {
-//                                    self._description = description
-//                                    print("description: \(description)")
-//                                }
-//                            }
-//                            
-//                            completed()
-//                        })
-//                    }
-//                } else {
-//                    self._description = ""
-//                }
+                if let evolutionsArr = dict["evolutions"] as? [Dictionary<String, AnyObject>] where evolutionsArr.count > 0 {
+                    self.loadEvolutions(evolutionsArr)
+                }
                 
+                self.loadSpeciesNameAndUrl(dict)
                 
-                
-                
-//                if let evolutionsDict = dict["evolutions"] as? [Dictionary<String, AnyObject>] where evolutionsDict.count > 0 {
-//                    
-//                    //get only the first evolution
-//                    if let to = evolutionsDict[0]["to"] as? String  {
-//                        self._next_evolution_text = to
-//                        
-//                        
-//                        if  to.rangeOfString("mega") == nil {
-//                            if let evo1Uri = evolutionsDict[0]["resource_uri"] as? String {
-//                                var evo2Uri = String(evo1Uri.characters.dropLast()) //lose the slash
-//                                evo2Uri = evo2Uri.stringByReplacingOccurrencesOfString("/api/v1/pokemon/", withString: "")
-//                                if let evoId = Int(evo2Uri) {
-//                                    self._next_evolution_id = evoId
-//                                }
-//                            }
-//                            if let evo1Lev = evolutionsDict[0]["level"] as? Int {
-//                                self._next_evolution_level = evo1Lev
-//                            }
-//                        }
-//                        
-//                    }
-//                }
-                
+                completed()
             }
         }
+    }
+
+    /* 
+        species name and url required to get description
+    */
+    func downloadPokemonSpeciesDescription(speciesUrl: String, completed: DownloadComplete) {
+        let url = NSURL(string: speciesUrl)!
+        
+        Alamofire.request(.GET, url).responseJSON { response in
+            //let result = response.result
+            self.myPokemonSpeciesApiResult = response.result
+            found: if let speciesFullDict = self.myPokemonSpeciesApiResult.value as? Dictionary<String, AnyObject> {
+                
+                if let flavorTextDicts = speciesFullDict["flavor_text_entries"] as? [AnyObject] {
+                    for flavorTextDict in flavorTextDicts {
+                        if let langDict = flavorTextDict["language"] as? Dictionary<String, AnyObject> {
+                            if let langName  = langDict["name"] as? String {
+                                if langName == "en" {
+                                    if let desc = flavorTextDict["flavor_text"] as? String {
+                                        if desc != "" {
+                                            self._description = desc.stringByReplacingOccurrencesOfString("\n",withString: " ")
+                                        } else {
+                                            self._description = "No description available"
+                                        }
+                                    }
+                                    break found
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            completed()
+        }
+        
     }
     
     
@@ -299,6 +155,168 @@ class Pokemon { //: NSObject
     func wipePokemon() {
         self._abilities.removeAll()
         self._moves.removeAll()
+    }
+    
+    
+    /*
+        height, weight, base_experience
+    */
+    func loadLevel1Stats(topDict:Dictionary<String,AnyObject>) {
+        if let weight = topDict["weight"] as? Int {
+            self._weight = weight
+        } else {
+            self._weight = -1
+        }
+        
+        if let height = topDict["height"] as? Int {
+            self._height = height
+        } else {
+            self._height = -1
+        }
+        
+        if let expBase = topDict["base_experience"] as? Int {
+            self._base_experience = expBase
+        } else {
+            self._base_experience = -1
+        }
+        
+    }
+    
+    /*
+        hp, name, attack, defense, speed, special-defense, special-attack
+    */
+    func loadBasicStats(statsDict:[Dictionary<String,AnyObject>]) {
+        
+        for statItems in statsDict {
+            if let statValue = statItems["base_stat"] as? Int  {
+                
+                if let statNameDict = statItems["stat"] as? Dictionary<String, String> where statNameDict.count > 0 {
+                    let curName = statNameDict["name"]!
+                    switch curName {
+                    case "hp" :
+                        self._hitPoints = statValue
+                        break
+                    case "attack" :
+                        self._attack = statValue
+                        break
+                    case "defense" :
+                        self._defense = statValue
+                        break
+                    case "speed" :
+                        self._speed = statValue
+                        break
+                    case "special-defense" :
+                        self._specialDefense = statValue
+                        break
+                    case "special-attack" :
+                        self._specialAttack = statValue
+                        break
+                    default:
+                        break
+                    }
+                    
+                }
+                
+            }
+        }
+        
+    }
+
+    /*
+        1-3 types
+    */
+    func loadTypes(typesDict:[Dictionary<String,AnyObject>]) {
+        var tmpType: String = ""
+        for typesItems in typesDict {
+            
+            if let typesItem = typesItems["type"] as? Dictionary<String, String> where typesItem.count > 0 {
+                if let typeName = typesItem["name"] {
+                    tmpType.appendContentsOf(typeName)
+                    tmpType.appendContentsOf("\u{A0}")
+                }
+            }
+        }
+        //cut the last slash
+        self._type = String(tmpType.characters.dropLast()).capitalizedString
+    }
+    
+ 
+    /*
+        1-3 abilities
+    */
+    func loadAbilities(abilitiesArr:[Dictionary<String,AnyObject>]) {
+        for abilityDict in abilitiesArr {
+            if let abilitySpec = abilityDict["ability"] as? Dictionary<String, String> where abilitySpec.count > 0 {
+                let abilityName = abilitySpec["name"]
+                if abilityName != "" {
+                    self._abilities.append(abilityName!.capitalizedString)
+                }
+            }
+        }
+        self._abilities.sortInPlace ({ (element1:String, element2:String) -> Bool in
+            return element1 < element2})
+    }
+    
+    
+    /* 
+        species name and url
+    */
+    func loadSpeciesNameAndUrl(topDict:Dictionary<String,AnyObject>) {
+        if let speciesDict = topDict["species"] as? Dictionary<String, String> where speciesDict.count > 0 {
+            self._speciesName = speciesDict["name"]
+            self._speciesUrl = speciesDict["url"] //use for description later
+        } else {
+            self._speciesName = "Unknown"
+            self._speciesUrl = ""
+        }
+    }
+    
+    /*
+        all moves
+    */
+    func loadMoves(movesArr: [Dictionary<String,AnyObject>]) {
+        for moveDict in movesArr {
+            if let moveSpec = moveDict["move"] as? Dictionary<String, String> where moveSpec.count > 0 {
+                let moveName = moveSpec["name"]
+                if moveName != "" {
+                    self._moves.append(moveName!.capitalizedString)
+                }
+            }
+        }
+        self._moves.sortInPlace ({ (element1:String, element2:String) -> Bool in
+            return element1 < element2})
+    }
+    
+    /*
+        all evolutions
+    */
+    func loadEvolutions(evolutionsArr: [Dictionary<String, AnyObject>]) {
+        //get only the first evolution
+        if let to = evolutionsArr[0]["to"] as? String  {
+            self._next_evolution_text = to
+
+            if  to.rangeOfString("mega") == nil {
+                if let evo1Uri = evolutionsArr[0]["resource_uri"] as? String {
+                    var evo2Uri = String(evo1Uri.characters.dropLast()) //lose the slash
+                    evo2Uri = evo2Uri.stringByReplacingOccurrencesOfString("/api/v1/pokemon/", withString: "")
+                    if let evoId = Int(evo2Uri) {
+                        self._next_evolution_id = evoId
+                    }
+                }
+                if let evo1Lev = evolutionsArr[0]["level"] as? Int {
+                    self._next_evolution_level = evo1Lev
+                }
+            }
+            
+        }
+    }
+    
+    /*
+    
+        species description for EN
+    */
+    func loadSpeciesDescription() {
+        //preassigned in caller
     }
     
     //MARK: getter / setter

@@ -116,16 +116,8 @@
                                             <constraint firstItem="XKc-HL-cAU" firstAttribute="leading" secondItem="1C3-eH-hQg" secondAttribute="leading" constant="5" id="Q75-gE-ZMt"/>
                                             <constraint firstItem="7nQ-DB-JEr" firstAttribute="top" secondItem="1C3-eH-hQg" secondAttribute="topMargin" id="SB5-dv-oAT"/>
                                             <constraint firstAttribute="trailing" secondItem="XKc-HL-cAU" secondAttribute="trailing" constant="5" id="ac2-wh-5Gd"/>
-                                            <constraint firstItem="XKc-HL-cAU" firstAttribute="trailing" secondItem="1C3-eH-hQg" secondAttribute="trailingMargin" id="j8L-GF-odd"/>
-                                            <constraint firstItem="XKc-HL-cAU" firstAttribute="leading" secondItem="1C3-eH-hQg" secondAttribute="leadingMargin" id="s4c-eC-1Gs"/>
                                             <constraint firstItem="7nQ-DB-JEr" firstAttribute="trailing" secondItem="1C3-eH-hQg" secondAttribute="trailingMargin" id="tc7-3e-xhz"/>
                                         </constraints>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="j8L-GF-odd"/>
-                                                <exclude reference="s4c-eC-1Gs"/>
-                                            </mask>
-                                        </variation>
                                         <connections>
                                             <outlet property="nameLabel" destination="XKc-HL-cAU" id="N4Z-AL-Zqb"/>
                                             <outlet property="thumbImg" destination="7nQ-DB-JEr" id="sbA-4z-g9j"/>

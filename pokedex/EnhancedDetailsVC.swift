@@ -72,18 +72,18 @@ class EnhancedDetailsVC: UIViewController,
 //        colMoves.hidden = true
 
         if !pokeExists {
-            pokemon.downloadPokemonDetails { () -> () in
+            
+            pokemon.downloadPokemonBasicDetails({ () -> () in
                 self.updateUI()
-                //place these here so that the table isn't loaded until the data is complete.
-                
-    //            self.colMoves.delegate = self
-    //            self.colMoves.dataSource = self
-    //            self.colMoves.reloadData()
-                
+//            self.colMoves.delegate = self
+//            self.colMoves.dataSource = self
+//            self.colMoves.reloadData()
+
                 self.statsView.hidden = false
+                print("updated UI")
                 
-                
-            }
+            })
+            
         } else {
             self.updateUI()
             self.statsView.hidden = false
@@ -266,6 +266,7 @@ class EnhancedDetailsVC: UIViewController,
     
     
     @IBAction func btnBack_Press(sender: UIButton) {
+        
         dismissViewControllerAnimated(true, completion: nil)
     }
     

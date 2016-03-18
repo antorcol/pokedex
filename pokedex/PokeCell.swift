@@ -14,6 +14,7 @@ class PokeCell: UICollectionViewCell {
     //MARK: IBOutlets and vars
     @IBOutlet weak var thumbImg: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var lblLoading: UILabel!
     
     var pokemon: Pokemon!
     
@@ -21,6 +22,9 @@ class PokeCell: UICollectionViewCell {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        self.layer.borderWidth = 0.75
+        self.layer.borderColor = UIColor(colorLiteralRed: 59/255, green: 59/255, blue: 59/255, alpha: 1.0).CGColor
+        self.layer.backgroundColor = UIColor(colorLiteralRed: 59/255, green: 59/255, blue: 59/255, alpha: 0.2).CGColor
         self.layer.cornerRadius = 5.0
         self.clipsToBounds = true
     }
@@ -31,6 +35,7 @@ class PokeCell: UICollectionViewCell {
         self.pokemon = pokemon
         nameLabel.text = self.pokemon.name.capitalizedString
         thumbImg.image = UIImage(named: "\(self.pokemon.csvRowId)")
-        
     }
+    
+    
 }

@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import Alamofire
 
 class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDelegate {
 
@@ -114,7 +115,9 @@ class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         }
     }
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    
+    func collectionView(collectionView: UICollectionView, didHighlightItemAtIndexPath indexPath: NSIndexPath) {
+        
         let poke : Pokemon!
         if inSearchMode {
             poke = filteredPokemon[indexPath.row]
@@ -122,8 +125,46 @@ class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
             poke = pokemon[indexPath.row]
         }
 
-        performSegueWithIdentifier("EnhancedDetailsVC", sender: poke)
+        if !pokemonCache.isInCache(poke) {
+            if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? PokeCell {
+
+                let animation = CABasicAnimation(keyPath: "transform.scale")
+                animation.toValue = NSNumber(float: 0.9)
+                animation.duration = 0.5
+                animation.repeatCount = 10.0
+                animation.autoreverses = true
+                cell.nameLabel.layer.addAnimation(animation, forKey: nil)
+            }
+        }
     }
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        let poke : Pokemon!
+        if inSearchMode {
+            poke = filteredPokemon[indexPath.row]
+        } else {
+            poke = pokemon[indexPath.row]
+        }
+        
+        if !pokemonCache.isInCache(poke) {
+            
+            let speciesUrlStr = "\(URL_BASE)/api/v2/pokemon-species/\(poke.speciesId)/"
+            poke.downloadPokemonSpeciesDescription(speciesUrlStr) { () -> () in
+                print("description obtained")
+                self.performSegueWithIdentifier("EnhancedDetailsVC", sender: poke)
+                
+                if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? PokeCell {
+                    cell.nameLabel.text = poke.name.capitalizedString
+                }
+                
+            }
+        } else {
+            self.performSegueWithIdentifier("EnhancedDetailsVC", sender: poke)
+        }
+                
+    }
+    
+    
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if inSearchMode {
@@ -157,6 +198,7 @@ class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
             collection.reloadData()
         }
     }
+    
     
     //MARK: Segue
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
