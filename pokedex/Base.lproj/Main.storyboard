@@ -483,7 +483,7 @@
                                                     <constraint firstAttribute="height" constant="1" id="w9Q-ac-KeT"/>
                                                 </constraints>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="End" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kOc-Ik-F5c" userLabel="lblDone">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="End" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kOc-Ik-F5c" userLabel="lblStatsDone">
                                                 <rect key="frame" x="540" y="382" width="19" height="12"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="10"/>
                                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -653,7 +653,6 @@
                         <outlet property="lblAttackVal" destination="Ktg-yH-wCQ" id="z0V-rQ-jwN"/>
                         <outlet property="lblBaseDescription" destination="YPr-IA-Lo6" id="qxJ-bS-w3g"/>
                         <outlet property="lblDefenseVal" destination="wmR-Kv-Ala" id="j37-7f-9LY"/>
-                        <outlet property="lblDone" destination="kOc-Ik-F5c" id="cSP-MG-yDn"/>
                         <outlet property="lblExperience" destination="a2G-fh-uQ1" id="13u-pP-Egn"/>
                         <outlet property="lblHeightVal" destination="60k-XY-wpj" id="lJK-bc-dXH"/>
                         <outlet property="lblHitPointsVal" destination="3vQ-61-Yzu" id="Iz7-Uj-iRy"/>
@@ -662,6 +661,7 @@
                         <outlet property="lblSpDefenseVal" destination="8xg-Qh-PA0" id="utA-nI-PxW"/>
                         <outlet property="lblSpeciesVal" destination="2gn-gC-1cX" id="gLA-Ag-yMe"/>
                         <outlet property="lblSpeedVal" destination="MdQ-a2-REX" id="gDN-pq-95I"/>
+                        <outlet property="lblStatsDone" destination="kOc-Ik-F5c" id="1bT-D0-0Vd"/>
                         <outlet property="lblTypeVal" destination="X7K-Xz-RnA" id="Oxw-UI-hIB"/>
                         <outlet property="lblWeightVal" destination="zCD-jI-ozO" id="Oop-f1-cIb"/>
                         <outlet property="mainHScroller" destination="tzO-MQ-SWI" id="HoH-98-zFc"/>
