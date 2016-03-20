@@ -27,5 +27,6 @@ class MoveCell: UICollectionViewCell {
     //MARK: Utility
     func configureCell(move: String) {
         moveLabel.text = move
+        
     }
 }

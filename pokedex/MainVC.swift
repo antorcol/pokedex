@@ -133,6 +133,7 @@ class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
                 animation.duration = 0.5
                 animation.repeatCount = 10.0
                 animation.autoreverses = true
+                cell.nameLabel.text = "...loading..."
                 cell.nameLabel.layer.addAnimation(animation, forKey: nil)
             }
         }

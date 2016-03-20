@@ -16,6 +16,22 @@ class EnhancedDetailsVC: UIViewController,
 
     var pokemon: Pokemon!
     var pokemonCache: PokemonCache = PokemonCache()
+    var activeView : String = "statsView" {
+        didSet {
+            if activeView == "statsView" {
+                statsView.hidden = false
+                movesView.hidden = true
+            }
+            if activeView == "movesView" {
+                statsView.hidden = true
+                movesView.hidden = false
+            }
+            if activeView == "spritesView" {
+                statsView.hidden = true
+                movesView.hidden = true
+            }
+        }
+    }
 
     //MARK: Basic Stats - these are fixed in number
     @IBOutlet weak var lblPokeName: UILabel!
@@ -35,7 +51,6 @@ class EnhancedDetailsVC: UIViewController,
     @IBOutlet weak var lblSpAttackVal: PokeDataLabelData!
     @IBOutlet weak var lblSpDefenseVal: PokeDataLabelData!
     @IBOutlet weak var sgCategories: UISegmentedControl!
-    @IBOutlet weak var lblDone: UILabel!
     
     //there's a maximum of 3 abilities
     @IBOutlet weak var lblAbilityOne: PokeAbilitiesLabelData!
@@ -57,6 +72,10 @@ class EnhancedDetailsVC: UIViewController,
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+//        statsView.translatesAutoresizingMaskIntoConstraints = false
+//        movesView.translatesAutoresizingMaskIntoConstraints = false
+        
         var pokeExists: Bool = false
         
         if(!pokemonCache.isInCache(pokemon)) {
@@ -68,9 +87,10 @@ class EnhancedDetailsVC: UIViewController,
         
         self.lblPokeName.text = pokemon.name.capitalizedString
         mainHScroller.delegate = self
-        
+
         statsView.hidden = true
         movesView.hidden = true
+        //spritesView.hidden = true
 
         if !pokeExists {
             
@@ -81,8 +101,7 @@ class EnhancedDetailsVC: UIViewController,
                 self.movesCol.dataSource = self
                 self.movesCol.reloadData()
 
-                self.statsView.hidden = false
-                print("updated UI")
+                self.activeView = "statsView"
                 
             })
             
@@ -91,30 +110,12 @@ class EnhancedDetailsVC: UIViewController,
             self.movesCol.delegate = self
             self.movesCol.dataSource = self
             
-            self.statsView.hidden = false
+            self.activeView = "statsView"
         }
         
 
     }
     
-    
-    
-    /* 
-        make sure the content size of the scroller is appropriate
-        got burned by this after I changed the view in IB
-    */
-    override func viewDidLayoutSubviews() {
-    
-        //TODO: adjust for moves, sprites segments
-        let lblWidth: CGFloat = lblDone.frame.size.width
-        
-        let lblTopY : CGFloat = lblDone.frame.origin.y
-        let lblSize : CGFloat = lblDone.frame.size.height
-        
-        let contentSize = CGSizeMake(lblWidth, lblTopY + lblSize + 5)
-        mainHScroller.contentSize = contentSize
-    
-    }
 
     func updateUI() {
         self.imgMain.image = UIImage(named: String(self.pokemon.speciesId))
@@ -239,27 +240,42 @@ class EnhancedDetailsVC: UIViewController,
         }
     }
     
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 2
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 2
+    }
+    
+//    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+//        return CGSize(width: (collectionView.frame.size.width - 10)/2, height: 17)
+//    }
+
 
     //MARK: Actions
     @IBAction func sgCategories_Pressed(sender: UISegmentedControl) {
         
         switch sender.selectedSegmentIndex {
         case 0:
-            statsView.hidden = false
-            movesView.hidden = true
+            self.activeView = "statsView"
+//            statsView.hidden = false
+//            movesView.hidden = true
 //            spritesView.hidden = true
 //            evoView.hidden = true
             break
         case 1:
-            statsView.hidden = true
-            movesView.hidden = false
+            self.activeView = "movesView"
+//            statsView.hidden = true
+//            movesView.hidden = false
 //            spritesView.hidden = true
 //            evoView.hidden = true
             break
         
         case 2:
-            statsView.hidden = true
-            movesView.hidden = true
+            self.activeView = "spritesView"
+//            statsView.hidden = true
+//            movesView.hidden = true
 //            spritesView.hidden = false
 //            evoView.hidden = false
             break

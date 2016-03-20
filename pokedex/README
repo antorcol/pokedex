@@ -6,380 +6,306 @@ http://s3ntrydesigns.deviantart.com/art/Pikachu-Digital-WaterColor-Painting-2699
 PaddedLabel Class courtesy of http://wynnelo.com/2015/10/adding-padding-to-uilabels-in-swift/
 
 
-
+Title font Pokemon Solid by TODO:
 
 
 //
-//  Pokemon.swift
+//  EnhancedDetailsVC.swift
 //  pokedex
 //
-//  Created by Anthony Torrero Collins on 2/29/16.
+//  Created by Anthony Torrero Collins on 3/7/16.
 //  Copyright © 2016 Anthony Torrero Collins. All rights reserved.
 //
-// CSV File has: id,identifier,species_id,height,weight,base_experience,order,is_default
 
-import Foundation
-import Alamofire
+import UIKit
 
-class Pokemon { //: NSObject
+class EnhancedDetailsVC: UIViewController,
+UIScrollViewDelegate,
+UICollectionViewDelegate,
+UICollectionViewDataSource,
+UICollectionViewDelegateFlowLayout {
 
-//MARK: data source
-private var _resourceUrl : String = "\(URL_BASE)\(URL_POKEMON)"
+var pokemon: Pokemon!
+var pokemonCache: PokemonCache = PokemonCache()
 
-//MARK: in csv file
-// ---- stats view ---- //
-private var _csvRowId : Int! //PokeId and Image ID
-private var _identifier: String! //same as PokeId and Image ID in the csv file
-private var _species_id: Int!
-private var _height: Int!
-private var _weight: Int!
-private var _base_experience: Int!
-private var _order: Int! //?
-private var _is_default: Bool! //?
+//MARK: Basic Stats - these are fixed in number
+@IBOutlet weak var lblPokeName: UILabel!
+@IBOutlet weak var imgMain: UIImageView!
+@IBOutlet weak var lblExperience: UILabel!
+@IBOutlet weak var lblBaseDescription: UILabel!
+@IBOutlet weak var statsView: UIView!
 
-//MARK: others in app
-private var _description: String!
-private var _speciesName: String!
-private var _speciesUrl: String!
-private var _hitPoints: Int!
-private var _speed: Int!
-private var _type: String!
-private var _attack: Int!
-private var _defense: Int!
-private var _specialAttack: Int!
-private var _specialDefense: Int!
+@IBOutlet weak var lblSpeciesVal: PokeDataLabelData!
+@IBOutlet weak var lblHitPointsVal: PokeDataLabelData!
+@IBOutlet weak var lblHeightVal: PokeDataLabelData!
+@IBOutlet weak var lblWeightVal: PokeDataLabelData!
+@IBOutlet weak var lblSpeedVal: PokeDataLabelData!
+@IBOutlet weak var lblAttackVal: PokeDataLabelData!
+@IBOutlet weak var lblTypeVal: PokeDataLabelData!
+@IBOutlet weak var lblDefenseVal: PokeDataLabelData!
+@IBOutlet weak var lblSpAttackVal: PokeDataLabelData!
+@IBOutlet weak var lblSpDefenseVal: PokeDataLabelData!
+@IBOutlet weak var sgCategories: UISegmentedControl!
+@IBOutlet weak var lblStatsDone: UILabel!
+@IBOutlet weak var lblMovesDone: UILabel!
 
-//MARK: abilities
-private var _abilities = [String]()
+//there's a maximum of 3 abilities
+@IBOutlet weak var lblAbilityOne: PokeAbilitiesLabelData!
+@IBOutlet weak var lblAbilityTwo: PokeAbilitiesLabelData!
+@IBOutlet weak var lblAbilityThree: PokeAbilitiesLabelData!
 
-//MARK: moves
-private var _moves = [String]()
+//MARK: Moves
+@IBOutlet weak var movesView: UIView!
+@IBOutlet weak var movesCol: UICollectionView!
 
-//part of evo view
-private var _next_evolution_text: String = ""
-private var _next_evolution_id: Int = -1
-private var _next_evolution_level: Int = -1
 
-init(name:String, id:Int) {
-self._identifier = name
-self._csvRowId = id
-self._species_id = id
-self._resourceUrl.appendContentsOf("\(id)/")
+//    @IBOutlet weak var spritesView: UIView!
+//    @IBOutlet weak var evoView: UIView!
 
+
+//scroller
+@IBOutlet weak var mainHScroller: UIScrollView!
+
+
+var activeView : String = "statsView" {
+didSet {
+if activeView == "statsView" {
+statsView.hidden = false
+movesView.hidden = true
+//            spritesView.hidden = true
+let lblWidth: CGFloat = lblStatsDone.frame.size.width
+let lblTopY : CGFloat = lblStatsDone.frame.origin.y
+let lblSize : CGFloat = lblStatsDone.frame.size.height
+
+let statsContentSize = CGSizeMake(lblWidth, lblTopY + lblSize + 5)
+mainHScroller.contentSize = statsContentSize
+}
+if activeView == "movesView" {
+statsView.hidden = true
+movesView.hidden = false
+//            spritesView.hidden = true
+let lblWidth: CGFloat = lblMovesDone.frame.size.width
+let lblTopY : CGFloat = lblMovesDone.frame.origin.y
+let lblSize : CGFloat = lblMovesDone.frame.size.height
+
+let movesContentSize = CGSizeMake(lblWidth, lblTopY + lblSize + 5)
+mainHScroller.contentSize = movesContentSize
+}
+if activeView == "spritesView" {
+statsView.hidden = true
+movesView.hidden = true
+//            spritesView.hidden = false
+//                let lblWidth: CGFloat = lblSpritesDone.frame.size.width
+//                let lblTopY : CGFloat = lblSpritesDone.frame.origin.y
+//                let lblSize : CGFloat = lblSpritesDone.frame.size.height
+//
+//                let spritesContentSize = CGSizeMake(lblWidth, lblTopY + lblSize + 5)
+//                mainHScroller.contentSize = spritesContentSize
+}
+}
 }
 
+override func viewDidLoad() {
+super.viewDidLoad()
 
-//    override func isEqual(object: AnyObject?) -> Bool {
-//        if let rhs = object as? Pokemon {
-//            if rhs.csvRowId == self.csvRowId {
-//                return true
-//            }
-//        }
-//        return false
-//    }
+var pokeExists: Bool = false
 
-
-//MARK: util
-func downloadPokemonDetails(completed: DownloadComplete) {
-//NOTE: for V1, the training vid had using nan NSURL in the request, but that
-//doesn't work, as it returns nil. String works. For V2, though the NSURL works
-let url = NSURL(string: self._resourceUrl)!
-var myResult : Alamofire.Result<AnyObject, NSError>!
-
-Alamofire.request(.GET, url).responseJSON { response in
-//let result = response.result
-myResult = response.result
-
-if let dict = myResult.value as? Dictionary<String,AnyObject> {
-
-//                if let speciesDict = dict["species"] as? Dictionary<String, String> where speciesDict.count > 0 {
-//                    self._speciesName = speciesDict["name"]
-//                    self._speciesUrl = speciesDict["url"] //use for description later
-//                } else {
-//                    self._speciesName = "Unknown"
-//                }
-
-//v2 descriptions are buried
-if self._speciesUrl != nil && self._speciesUrl != "" {
-
-Alamofire.request(.GET, self._speciesUrl).responseJSON(completionHandler: { response in
-let destResult = response.result
-
-//will use the first 'en' encountered - there's one for each of the many version groups
-found: if let speciesFullDict = destResult.value as? Dictionary<String, AnyObject> {
-if let flavorTextDicts = speciesFullDict["flavor_text_entries"] as? [AnyObject] {
-for flavorTextDict in flavorTextDicts {
-if let langDict = flavorTextDict["language"] as? Dictionary<String, AnyObject> {
-if let langName  = langDict["name"] as? String {
-if langName == "en" {
-if let desc = flavorTextDict["flavor_text"] as? String {
-if desc != "" {
-self._description = desc.stringByReplacingOccurrencesOfString("\n",withString: " ")
+if(!pokemonCache.isInCache(pokemon)) {
+self.pokemon.wipePokemon()
+pokemonCache.addToCache(pokemon)
 } else {
-self._description = "No description available"
-}
-}
-break found
-}
-}
-}
-}
-}
+pokeExists = true
 }
 
-completed()
+self.lblPokeName.text = pokemon.name.capitalizedString
+mainHScroller.delegate = self
+
+self.activeView = "statsView"
+
+self.movesCol.delegate = self
+self.movesCol.dataSource = self
+
+self.statsView.hidden = false
+
+if !pokeExists {
+
+pokemon.downloadPokemonBasicDetails({ () -> () in
+self.updateUI()
+
+self.movesCol.delegate = self
+self.movesCol.dataSource = self
+//                self.movesCol.reloadData()
+
+self.statsView.hidden = false
+print("updated UI")
+
 })
 
-}
-
-
-
-//moving here to see if I can get the table to see the count
-if let abilitiesArr = dict["abilities"] as? [Dictionary<String, AnyObject>] where abilitiesArr.count > 0 {
-self.loadAbilities(abilitiesArr)
-//                    for abilityDict in abilitiesArr {
-//                        if let abilitySpec = abilityDict["ability"] as? Dictionary<String, String> where abilitySpec.count > 0 {
-//                            let abilityName = abilitySpec["name"]
-//                            if abilityName != "" {
-//                                self._abilities.append(abilityName!.capitalizedString)
-//                            }
-//                        }
-//                    }
-//                    self._abilities.sortInPlace ({ (element1:String, element2:String) -> Bool in
-//                        return element1 < element2})
-}
-
-/* moves
-if let movesArr = dict["moves"] as? [Dictionary<String, AnyObject>] where movesArr.count > 0 {
-for moveDict in movesArr {
-if let moveSpec = moveDict["move"] as? Dictionary<String, String> where moveSpec.count > 0 {
-let moveName = moveSpec["name"]
-if moveName != "" {
-self._moves.append(moveName!.capitalizedString)
-}
-}
-}
-self._moves.sortInPlace ({ (element1:String, element2:String) -> Bool in
-return element1 < element2})
-}
-*/
-
-/* I set to a negative value to indicate 'unknown' */
-//TODO: Set other integer values to -1 to indicate unknown?
-
-self.loadLevel1Stats(dict)
-//                if let weight = dict["weight"] as? Int {
-//                    self._weight = weight
-//                } else {
-//                    self._weight = -1
-//                }
-//
-//                if let height = dict["height"] as? Int {
-//                    self._height = height
-//                } else {
-//                    self._height = -1
-//                }
-//
-//                if let expBase = dict["base_experience"] as? Int {
-//                    self._base_experience = expBase
-//                } else {
-//                    self._base_experience = -1
-//                }
-
-// to func statsDict
-if let statsDict = dict["stats"] as? [Dictionary<String, AnyObject>] where statsDict.count > 0 {
-self.loadBasicStats(statsDict)
-//                    for statItems in statsDict {
-//                        if let statValue = statItems["base_stat"] as? Int  {
-//
-//                            if let statNameDict = statItems["stat"] as? Dictionary<String, String> where statNameDict.count > 0 {
-//                                let curName = statNameDict["name"]!
-//                                switch curName {
-//                                case "hp" :
-//                                    self._hitPoints = statValue
-//                                    break
-//                                case "attack" :
-//                                    self._attack = statValue
-//                                    break
-//                                case "defense" :
-//                                    self._defense = statValue
-//                                    break
-//                                case "speed" :
-//                                    self._speed = statValue
-//                                    break
-//                                case "special-defense" :
-//                                    self._specialDefense = statValue
-//                                    break
-//                                case "special-attack" :
-//                                    self._specialAttack = statValue
-//                                    break
-//                                default:
-//                                    break
-//                                }
-//
-//                            }
-//
-//                        }
-//                    }
-
-}
-
-
-
-if let typesDict = dict["types"] as? [Dictionary<String, AnyObject>] where typesDict.count > 0 {
-self.loadTypes(typesDict)
-//                    var tmpType: String = ""
-//                    for typesItems in typesDict {
-//
-//                        if let typesItem = typesItems["type"] as? Dictionary<String, String> where typesItem.count > 0 {
-//                            if let typeName = typesItem["name"] {
-//                                tmpType.appendContentsOf(typeName)
-//                                tmpType.appendContentsOf("\u{A0}")
-//                            }
-//                        }
-//                    }
-//                    //cut the last slash
-//                    self._type = String(tmpType.characters.dropLast()).capitalizedString
 } else {
-self._type = ""
+self.updateUI()
+self.movesCol.delegate = self
+self.movesCol.dataSource = self
 }
 
 
-
-//
-//                func downloadDescriptions(speciesUrl: String, completed: DownloadComplete) {
-//
-//
-//                    completed()
-//                }
-
-// v1 descriptions were much easier
-//                if let descriptionsDict = dict["descriptions"] as? [Dictionary<String, String>] where descriptionsDict.count > 0 {
-//                    //get only the first description
-//                    if let uri = descriptionsDict[0]["resource_uri"]  {
-//
-//                        let urlStr :String = "\(URL_BASE)\(uri)"
-//                        Alamofire.request(.GET, urlStr).responseJSON(completionHandler: { response in
-//                            let destResult = response.result
-//                            if let descDict = destResult.value as? Dictionary<String, AnyObject> {
-//                                if let description = descDict["description"] as? String {
-//                                    self._description = description
-//                                    print("description: \(description)")
-//                                }
-//                            }
-//
-//                            completed()
-//                        })
-//                    }
-//                } else {
-//                    self._description = ""
-//                }
-
-
-
-
-//                if let evolutionsDict = dict["evolutions"] as? [Dictionary<String, AnyObject>] where evolutionsDict.count > 0 {
-//
-//                    //get only the first evolution
-//                    if let to = evolutionsDict[0]["to"] as? String  {
-//                        self._next_evolution_text = to
-//
-//
-//                        if  to.rangeOfString("mega") == nil {
-//                            if let evo1Uri = evolutionsDict[0]["resource_uri"] as? String {
-//                                var evo2Uri = String(evo1Uri.characters.dropLast()) //lose the slash
-//                                evo2Uri = evo2Uri.stringByReplacingOccurrencesOfString("/api/v1/pokemon/", withString: "")
-//                                if let evoId = Int(evo2Uri) {
-//                                    self._next_evolution_id = evoId
-//                                }
-//                            }
-//                            if let evo1Lev = evolutionsDict[0]["level"] as? Int {
-//                                self._next_evolution_level = evo1Lev
-//                            }
-//                        }
-//
-//                    }
-//                }
-
-}
-}
 }
 
-
-//MARK: utility
-
-/*
-Call this before assigning new items to prevent previous entry content
-from being displayed with the new one
-
-TODO: all items, not just arrays.
-*/
-func wipePokemon() {
-self._abilities.removeAll()
-self._moves.removeAll()
-}
 
 
 /*
-weight, height, base_experience, species.name and species.url
+make sure the content size of the scroller is appropriate
+got burned by this after I changed the view in IB
 */
-func loadLevel1Stats(topDict:Dictionary<String,AnyObject>) {
-if let weight = topDict["weight"] as? Int {
-self._weight = weight
+override func viewDidLayoutSubviews() {
+
+//TODO: adjust for moves, sprites segments
+let lblWidth: CGFloat = lblStatsDone.frame.size.width
+let lblTopY : CGFloat = lblStatsDone.frame.origin.y
+let lblSize : CGFloat = lblStatsDone.frame.size.height
+
+let statsContentSize = CGSizeMake(lblWidth, lblTopY + lblSize + 5)
+mainHScroller.contentSize = statsContentSize
+
+}
+
+
+func updateUI() {
+self.imgMain.image = UIImage(named: String(self.pokemon.speciesId))
+if pokemon.type != "" {
+self.lblTypeVal.text = pokemon.type
+self.lblTypeVal.sizeToFit()
 } else {
-self._weight = -1
+self.lblTypeVal.text = "Unknown"
 }
 
-if let height = topDict["height"] as? Int {
-self._height = height
+if self.pokemon.height > 0 {
+self.lblHeightVal.text = String(self.pokemon.height)
 } else {
-self._height = -1
+self.lblHeightVal.text = "Unknown"
 }
 
-if let expBase = topDict["base_experience"] as? Int {
-self._base_experience = expBase
+if self.pokemon.weight > 0 {
+self.lblWeightVal.text = String(self.pokemon.weight)
 } else {
-self._base_experience = -1
+self.lblWeightVal.text = "Unknown"
 }
 
-if let speciesDict = topDict["species"] as? Dictionary<String, String> where speciesDict.count > 0 {
-self._speciesName = speciesDict["name"]
-self._speciesUrl = speciesDict["url"] //use for description later
+if self.pokemon.baseExperience > 0 {
+self.lblExperience.text = String(self.pokemon.baseExperience)
 } else {
-self._speciesName = "Unknown"
-self._speciesUrl = ""
+self.lblExperience.text = "Unknown"
+}
+
+if String(self.pokemon.attack) != "" {
+self.lblAttackVal.text = String(self.pokemon.attack)
+}else {
+self.lblAttackVal.text = "Unknown"
+}
+
+if String(self.pokemon.defense) != "" {
+self.lblDefenseVal.text = String(self.pokemon.defense)
+}else {
+self.lblDefenseVal.text = "Unknown!"
+}
+
+if String(self.pokemon.speed) != nil {
+self.lblSpeedVal.text = String(self.pokemon.speed)
+} else {
+self.lblSpeedVal.text = "Unknown"
+}
+
+if String(self.pokemon.hitPoints) != nil {
+self.lblHitPointsVal.text = String(self.pokemon.hitPoints)
+} else {
+self.lblHitPointsVal.text = String("0")
+}
+
+if String(self.pokemon.specialAttack) != nil {
+self.lblSpAttackVal.text = String(self.pokemon.specialAttack)
+} else {
+self.lblSpAttackVal.text = "Unknown"
+}
+
+if String(self.pokemon.specialDefense) != nil {
+self.lblSpDefenseVal.text = String(self.pokemon.specialDefense)
+} else {
+self.lblSpDefenseVal.text = "Unknown"
+}
+
+if String(self.pokemon.speciesName) != "" {
+self.lblSpeciesVal.text = String(self.pokemon.speciesName).capitalizedString
+} else {
+self.lblSpeciesVal.text = "Unknown"
+}
+
+if self.pokemon.description != "" {
+self.lblBaseDescription.text = self.pokemon.description
+} else {
+self.lblBaseDescription.text = "Unknown"
+}
+
+//TODO: create the number of needed cells in a loop
+self.lblAbilityOne.hidden = true
+self.lblAbilityTwo.hidden = true
+self.lblAbilityThree.hidden = true
+if self.pokemon.abilities.count > 0 {
+self.lblAbilityOne.text = self.pokemon.abilities[0]
+self.lblAbilityOne.hidden = false
+if self.pokemon.abilities.count == 3 {
+self.lblAbilityTwo.text = self.pokemon.abilities[1]
+self.lblAbilityThree.text = self.pokemon.abilities[2]
+self.lblAbilityTwo.hidden = false
+self.lblAbilityThree.hidden = false
+} else if self.pokemon.abilities.count == 2 {
+self.lblAbilityTwo.text = self.pokemon.abilities[1]
+self.lblAbilityTwo.hidden = false
+self.lblAbilityThree.hidden = true
+}
+} else {
+self.lblAbilityOne.text = "None"
 }
 
 }
 
-/*
-hp, name, attack, defense, speed, special-defense, special-attack
-*/
-func loadBasicStats(statsDict:[Dictionary<String,AnyObject>]) {
+//MARK: collectionView methods
+func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+return self.pokemon.moves.count
+}
 
-for statItems in statsDict {
-if let statValue = statItems["base_stat"] as? Int  {
+func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+return 1
+}
 
-if let statNameDict = statItems["stat"] as? Dictionary<String, String> where statNameDict.count > 0 {
-let curName = statNameDict["name"]!
-switch curName {
-case "hp" :
-self._hitPoints = statValue
+func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+return CGSizeMake(120, 17)
+}
+
+func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+if let cell = collectionView.dequeueReusableCellWithReuseIdentifier("MoveCell", forIndexPath: indexPath) as? MoveCell {
+let moveName : String!
+moveName = pokemon.moves[indexPath.row]
+cell.configureCell(moveName)
+return cell
+
+} else {
+return UICollectionViewCell()
+}
+}
+
+
+//MARK: Actions
+@IBAction func sgCategories_Pressed(sender: UISegmentedControl) {
+
+switch sender.selectedSegmentIndex {
+case 0:
+self.activeView = "statsView"
 break
-case "attack" :
-self._attack = statValue
+case 1:
+self.activeView = "movesView"
 break
-case "defense" :
-self._defense = statValue
-break
-case "speed" :
-self._speed = statValue
-break
-case "special-defense" :
-self._specialDefense = statValue
-break
-case "special-attack" :
-self._specialAttack = statValue
+
+case 2:
+self.activeView = "spritesView"
 break
 default:
 break
@@ -387,189 +313,19 @@ break
 
 }
 
+
+@IBAction func btnBack_Press(sender: UIButton) {
+
+dismissViewControllerAnimated(true, completion: nil)
+}
+
+//MARK: Segue
+override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+if segue.identifier == "MainVC" {
+if let mainVC = segue.destinationViewController as? MainVC {
+mainVC.pokemonCache = pokemonCache
+}
 }
 }
 
-}
-
-/*
-1-3 types
-*/
-func loadTypes(typesDict:[Dictionary<String,AnyObject>]) {
-var tmpType: String = ""
-for typesItems in typesDict {
-
-if let typesItem = typesItems["type"] as? Dictionary<String, String> where typesItem.count > 0 {
-if let typeName = typesItem["name"] {
-tmpType.appendContentsOf(typeName)
-tmpType.appendContentsOf("\u{A0}")
-}
-}
-}
-//cut the last slash
-self._type = String(tmpType.characters.dropLast()).capitalizedString
-}
-
-/*
-1-3 types
-*/
-func loadAbilities(abilitiesArr:[Dictionary<String,AnyObject>]) {
-for abilityDict in abilitiesArr {
-if let abilitySpec = abilityDict["ability"] as? Dictionary<String, String> where abilitySpec.count > 0 {
-let abilityName = abilitySpec["name"]
-if abilityName != "" {
-self._abilities.append(abilityName!.capitalizedString)
-}
-}
-}
-self._abilities.sortInPlace ({ (element1:String, element2:String) -> Bool in
-return element1 < element2})
-}
-
-//MARK: getter / setter
-var csvRowId: Int {
-get {
-return self._csvRowId
-}
-}
-
-var name: String {
-get {
-return self._identifier
-}
-}
-
-
-var speciesId: Int {
-get {
-return self._species_id
-}
-set {
-self._species_id = newValue
-}
-}
-
-var height: Int {
-get {
-return self._height
-}
-set {
-self._height = newValue
-}
-}
-
-var weight: Int {
-get {
-return self._weight
-}
-set {
-self._weight = newValue
-}
-}
-
-var baseExperience: Int {
-get {
-return self._base_experience
-}
-}
-
-var order: Int {
-get {
-return self._order
-}
-}
-
-var isDefault: Bool {
-get {
-return self._is_default
-}
-}
-
-var description: String {
-get {
-return self._description
-}
-}
-
-var speciesName: String {
-get {
-return self._speciesName
-}
-}
-
-var type: String {
-get {
-return self._type
-}
-}
-
-var attack: Int {
-get {
-return self._attack
-}
-}
-
-var defense: Int {
-get {
-return self._defense
-}
-}
-
-var speed: Int {
-get {
-return self._speed
-}
-}
-
-var hitPoints: Int {
-get {
-return self._hitPoints
-}
-}
-
-var specialAttack: Int {
-get {
-return self._specialAttack
-}
-}
-
-var specialDefense: Int {
-get {
-return self._specialDefense
-}
-}
-
-var abilities: [String] {
-get {
-return self._abilities
-}
-}
-
-/* comment */
-var moves: [String] {
-get {
-return self._moves
-}
-}
-
-/* comment */
-var next_evolution_text: String {
-get {
-return self._next_evolution_text
-}
-}
-
-/* comment */
-var next_evolution_id: Int {
-get {
-return self._next_evolution_id
-}
-}
-
-/* comment */
-var next_evolution_level: Int {
-get {
-return self._next_evolution_level
-}
-}
 }
