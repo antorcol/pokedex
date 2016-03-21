@@ -16,6 +16,7 @@ class Pokemon { //: NSObject
     private var _resourceUrl : String = "\(URL_BASE)\(URL_POKEMON)"
     var myPokemonApiResult : Alamofire.Result<AnyObject, NSError>!
     var myPokemonSpeciesApiResult : Alamofire.Result<AnyObject, NSError>!
+    var myPokemonEvolutionsApiResult : Alamofire.Result<AnyObject, NSError>!
     
     //MARK: in csv file
     // ---- stats view ---- //
@@ -47,6 +48,11 @@ class Pokemon { //: NSObject
     private var _spriteUrls = [String]()
     
     //part of evo view
+    private var _ancestor_species_name: String = ""
+    private var _ancestor_species_url: String = ""
+    private var _evolution_chain_url: String = ""
+    
+    //del
     private var _next_evolution_text: String = ""
     private var _next_evolution_id: Int = -1
     private var _next_evolution_level: Int = -1
@@ -98,42 +104,20 @@ class Pokemon { //: NSObject
                 
                 if let spritesDict = dict["sprites"] as? Dictionary<String, AnyObject> where spritesDict.count > 0 {
                     
-                    //sort special
-                    /*
-                        each file is named as
-                        front_ <suffix>
-                        need to sort by <suffix> first, then have front before back
-                        so I sort by the reverse string
-                    
-                        the result is an array of [(String, AnyObject)] tuples (because some items are NSNull)
-                    */
-                    let sortedKeysAndValues = spritesDict.sort( {
-                        let str1 = String($0.0.characters.reverse())
-                        let str2 = String($1.0.characters.reverse())
-                        return str1 < str2
-                    })
-                    
-                    
-                    for sortedKey in sortedKeysAndValues {
-                        if let url = sortedKey.1 as? String {
-                            if url.lowercaseString != "null" {
-                                self._spriteNames.append(sortedKey.0.capitalizedString)
-                                self._spriteUrls.append(sortedKey.1 as! String)
-                            }
-                        }
-                    }
-                }
-                
-                
-                if let evolutionsArr = dict["evolutions"] as? [Dictionary<String, AnyObject>] where evolutionsArr.count > 0 {
-                    self.loadEvolutions(evolutionsArr)
+                    self.loadSpriteImages(spritesDict)
                 }
                 
                 self.loadSpeciesNameAndUrl(dict)
                 
+                //must load species first
+                // this is an alamofire call
                 
                 
-                completed()
+               // self.downLoadEvolutions(self._evolution_chain_url, completed: { () -> () in
+                    completed()
+               // })
+
+                
             }
         }
     }
@@ -144,6 +128,9 @@ class Pokemon { //: NSObject
         before the segue occurs. This is to same a little time, plus for a 
         future enhancement, the description can be presented in a popup
         enabling the user to cancel the navigation.
+    
+        Also get the evolves_from species and evolution chain url here, 
+        as they are needed separately
     */
     func downloadPokemonSpeciesDescription(speciesUrl: String, completed: DownloadComplete) {
         let url = NSURL(string: speciesUrl)!
@@ -152,6 +139,18 @@ class Pokemon { //: NSObject
             //let result = response.result
             self.myPokemonSpeciesApiResult = response.result
             found: if let speciesFullDict = self.myPokemonSpeciesApiResult.value as? Dictionary<String, AnyObject> {
+
+                //ancestor species - simplest first
+                if let evolvesFrom = speciesFullDict["evolves_from_species"] as? Dictionary<String, String>  where evolvesFrom.count > 0 {
+                    
+                    self._ancestor_species_name = evolvesFrom["name"]!
+                    self._ancestor_species_url = evolvesFrom["url"]!
+                }
+                
+                //evolution chain
+                if let evolutionChain = speciesFullDict["evolution_chain"] as? Dictionary<String, String> where evolutionChain.count > 0 {
+                    self._evolution_chain_url = evolutionChain["url"]!
+                }
                 
                 if let flavorTextDicts = speciesFullDict["flavor_text_entries"] as? [AnyObject] {
                     for flavorTextDict in flavorTextDicts {
@@ -171,12 +170,31 @@ class Pokemon { //: NSObject
                         }
                     }
                 }
+                
             }
+            
             completed()
         }
         
     }
     
+    /*
+        all evolutions
+        get only the first evolution, as they are multi-pathed
+        must run downloadPokemonSpeciesDescription prior to this, as it gets
+        the ancestor and descendant species urls
+    */
+    
+    func downLoadEvolutions(speciesUrl: String, completed: DownloadComplete) {
+        let url = NSURL(string: speciesUrl)!
+        
+        Alamofire.request(.GET, url).responseJSON { response in
+            self.myPokemonEvolutionsApiResult = response.result
+            
+        }
+        
+        completed()
+    }
     
     //MARK: utility
     
@@ -324,35 +342,33 @@ class Pokemon { //: NSObject
 
     /* 
         sprite images
+        each file is named as
+            front_ <suffix>
+        so I need to sort by <suffix> first, then have front before back
+        do this by comparing the reverse string
+        
     */
-    func loadSpriteImages() {
+    func loadSpriteImages(spritesDict:Dictionary<String, AnyObject>) {
+        /*
+        */
+        let sortedKeysAndValues = spritesDict.sort( {
+            let str1 = String($0.0.characters.reverse())
+            let str2 = String($1.0.characters.reverse())
+            return str1 < str2
+        })
+        //the result is an array of [(String, AnyObject)] 
+        //   tuples (because some items are NSNull)
         
         
-        
-    }
-    
-    /*
-        all evolutions
-    */
-    func loadEvolutions(evolutionsArr: [Dictionary<String, AnyObject>]) {
-        //get only the first evolution
-        if let to = evolutionsArr[0]["to"] as? String  {
-            self._next_evolution_text = to
-
-            if  to.rangeOfString("mega") == nil {
-                if let evo1Uri = evolutionsArr[0]["resource_uri"] as? String {
-                    var evo2Uri = String(evo1Uri.characters.dropLast()) //lose the slash
-                    evo2Uri = evo2Uri.stringByReplacingOccurrencesOfString("/api/v1/pokemon/", withString: "")
-                    if let evoId = Int(evo2Uri) {
-                        self._next_evolution_id = evoId
-                    }
-                }
-                if let evo1Lev = evolutionsArr[0]["level"] as? Int {
-                    self._next_evolution_level = evo1Lev
+        for sortedKey in sortedKeysAndValues {
+            if let url = sortedKey.1 as? String {
+                if url.lowercaseString != "null" {
+                    self._spriteNames.append(sortedKey.0.capitalizedString)
+                    self._spriteUrls.append(sortedKey.1 as! String)
                 }
             }
-            
         }
+        
     }
     
     
@@ -491,6 +507,24 @@ class Pokemon { //: NSObject
     var spriteUrls: [String] {
         get {
             return self._spriteUrls
+        }
+    }
+    
+    var ancestorSpeciesName: String {
+        get {
+            return self._ancestor_species_name
+        }
+    }
+    
+    var ancestorSpeciesUrl: String {
+        get {
+            return self._ancestor_species_url
+        }
+    }
+
+    var evolutionChainUrl: String {
+        get {
+            return self._evolution_chain_url
         }
     }
     

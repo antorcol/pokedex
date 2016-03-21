@@ -150,7 +150,6 @@ class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
             
             let speciesUrlStr = "\(URL_BASE)/api/v2/pokemon-species/\(poke.speciesId)/"
             poke.downloadPokemonSpeciesDescription(speciesUrlStr) { () -> () in
-                print("description obtained")
                 self.performSegueWithIdentifier("EnhancedDetailsVC", sender: poke)
                 
                 if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? PokeCell {
