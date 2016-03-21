@@ -8,7 +8,6 @@
 
 import UIKit
 import AVFoundation
-import Alamofire
 
 class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDelegate {
 

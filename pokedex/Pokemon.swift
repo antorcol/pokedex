@@ -40,11 +40,11 @@ class Pokemon { //: NSObject
     private var _specialAttack: Int!
     private var _specialDefense: Int!
     
-    //MARK: abilities
+    //MARK: arrays used to hold 1:N items to this pokemon
     private var _abilities = [String]()
-    
-    //MARK: moves
     private var _moves = [String]()
+    private var _spriteNames = [String]()
+    private var _spriteUrls = [String]()
     
     //part of evo view
     private var _next_evolution_text: String = ""
@@ -56,7 +56,6 @@ class Pokemon { //: NSObject
         self._csvRowId = id
         self._species_id = id
         self._resourceUrl.appendContentsOf("\(id)/")
-        
     }
     
     
@@ -97,11 +96,42 @@ class Pokemon { //: NSObject
                     self.loadMoves(movesArr)
                 }
                 
+                if let spritesDict = dict["sprites"] as? Dictionary<String, AnyObject> where spritesDict.count > 0 {
+                    
+                    //sort special
+                    /*
+                        each file is named as
+                        front_ <suffix>
+                        need to sort by <suffix> first, then have front before back
+                        so I sort by the reverse string
+                    
+                        the result is an array of [(String, AnyObject)] tuples (because some items are NSNull)
+                    */
+                    let sortedKeysAndValues = spritesDict.sort( {
+                        let str1 = String($0.0.characters.reverse())
+                        let str2 = String($1.0.characters.reverse())
+                        return str1 < str2
+                    })
+                    
+                    
+                    for sortedKey in sortedKeysAndValues {
+                        if let url = sortedKey.1 as? String {
+                            if url.lowercaseString != "null" {
+                                self._spriteNames.append(sortedKey.0.capitalizedString)
+                                self._spriteUrls.append(sortedKey.1 as! String)
+                            }
+                        }
+                    }
+                }
+                
+                
                 if let evolutionsArr = dict["evolutions"] as? [Dictionary<String, AnyObject>] where evolutionsArr.count > 0 {
                     self.loadEvolutions(evolutionsArr)
                 }
                 
                 self.loadSpeciesNameAndUrl(dict)
+                
+                
                 
                 completed()
             }
@@ -110,6 +140,10 @@ class Pokemon { //: NSObject
 
     /* 
         species name and url required to get description
+        This is called from MainVC.swift when the user selects a pokemon, 
+        before the segue occurs. This is to same a little time, plus for a 
+        future enhancement, the description can be presented in a popup
+        enabling the user to cancel the navigation.
     */
     func downloadPokemonSpeciesDescription(speciesUrl: String, completed: DownloadComplete) {
         let url = NSURL(string: speciesUrl)!
@@ -286,6 +320,16 @@ class Pokemon { //: NSObject
         self._moves.sortInPlace ({ (element1:String, element2:String) -> Bool in
             return element1 < element2})
     }
+
+
+    /* 
+        sprite images
+    */
+    func loadSpriteImages() {
+        
+        
+        
+    }
     
     /*
         all evolutions
@@ -311,13 +355,6 @@ class Pokemon { //: NSObject
         }
     }
     
-    /*
-    
-        species description for EN
-    */
-    func loadSpeciesDescription() {
-        //preassigned in caller
-    }
     
     //MARK: getter / setter
     var csvRowId: Int {
@@ -438,10 +475,22 @@ class Pokemon { //: NSObject
         }
     }
     
-    /* comment */
     var moves: [String] {
         get {
             return self._moves
+        }
+    }
+    
+
+    var spriteNames: [String] {
+        get {
+            return self._spriteNames
+        }
+    }
+    
+    var spriteUrls: [String] {
+        get {
+            return self._spriteUrls
         }
     }
     

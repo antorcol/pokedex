@@ -15,8 +15,12 @@ class PokemonCache : NSObject {
     
     private var _browseSet: [Pokemon]!
     
+    //TODO: store image objects in core data
+    private var _pokeImages: [Dictionary<String,String>]!
+    
     override init() {
         _browseSet = [Pokemon]()
+        _pokeImages = [Dictionary<String,String>]()
     }
     
     func addToCache(item: Pokemon) {

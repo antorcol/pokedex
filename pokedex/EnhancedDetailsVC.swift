@@ -16,19 +16,27 @@ class EnhancedDetailsVC: UIViewController,
 
     var pokemon: Pokemon!
     var pokemonCache: PokemonCache = PokemonCache()
-    var activeView : String = "statsView" {
+    var activeView : String = "noView" {
         didSet {
             if activeView == "statsView" {
                 statsView.hidden = false
                 movesView.hidden = true
+                evoView.hidden = true
             }
             if activeView == "movesView" {
                 statsView.hidden = true
                 movesView.hidden = false
+                evoView.hidden = true
             }
             if activeView == "spritesView" {
                 statsView.hidden = true
                 movesView.hidden = true
+                evoView.hidden = false
+            }
+            if activeView == "noView" {
+                statsView.hidden = true
+                movesView.hidden = true
+                evoView.hidden = true
             }
         }
     }
@@ -38,7 +46,6 @@ class EnhancedDetailsVC: UIViewController,
     @IBOutlet weak var imgMain: UIImageView!
     @IBOutlet weak var lblExperience: UILabel!
     @IBOutlet weak var lblBaseDescription: UILabel!
-    @IBOutlet weak var statsView: UIView!
     
     @IBOutlet weak var lblSpeciesVal: PokeDataLabelData!
     @IBOutlet weak var lblHitPointsVal: PokeDataLabelData!
@@ -57,13 +64,16 @@ class EnhancedDetailsVC: UIViewController,
     @IBOutlet weak var lblAbilityTwo: PokeAbilitiesLabelData!
     @IBOutlet weak var lblAbilityThree: PokeAbilitiesLabelData!
 
+    //MARK: Stats
+    @IBOutlet weak var statsView: UIView!
+
     //MARK: Moves
     @IBOutlet weak var movesView: UIView!
     @IBOutlet weak var movesCol: UICollectionView!
     
-    
-    //    @IBOutlet weak var spritesView: UIView!
-    //    @IBOutlet weak var evoView: UIView!
+    //MARK: Images
+    @IBOutlet weak var evoView: UIView!
+    @IBOutlet weak var spritesCol: UICollectionView!
     
     
     //scroller
@@ -71,11 +81,7 @@ class EnhancedDetailsVC: UIViewController,
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-//        statsView.translatesAutoresizingMaskIntoConstraints = false
-//        movesView.translatesAutoresizingMaskIntoConstraints = false
-        
+                
         var pokeExists: Bool = false
         
         if(!pokemonCache.isInCache(pokemon)) {
@@ -87,10 +93,8 @@ class EnhancedDetailsVC: UIViewController,
         
         self.lblPokeName.text = pokemon.name.capitalizedString
         mainHScroller.delegate = self
+        self.activeView = "noView"
 
-        statsView.hidden = true
-        movesView.hidden = true
-        //spritesView.hidden = true
 
         if !pokeExists {
             
@@ -100,8 +104,12 @@ class EnhancedDetailsVC: UIViewController,
                 self.movesCol.delegate = self
                 self.movesCol.dataSource = self
                 self.movesCol.reloadData()
-
+                
+                self.spritesCol.delegate = self
+                self.spritesCol.dataSource = self
+                
                 self.activeView = "statsView"
+
                 
             })
             
@@ -109,7 +117,8 @@ class EnhancedDetailsVC: UIViewController,
             self.updateUI()
             self.movesCol.delegate = self
             self.movesCol.dataSource = self
-            
+            self.spritesCol.delegate = self
+            self.spritesCol.dataSource = self
             self.activeView = "statsView"
         }
         
@@ -217,7 +226,13 @@ class EnhancedDetailsVC: UIViewController,
 
     //MARK: collectionView methods
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.pokemon.moves.count
+        if collectionView == movesCol {
+            return self.pokemon.moves.count
+        } else if collectionView == spritesCol {
+            return self.pokemon.spriteNames.count
+        } else {
+            return 1
+        }
     }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
@@ -225,19 +240,37 @@ class EnhancedDetailsVC: UIViewController,
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return CGSizeMake(120, 17)
+        if collectionView == movesCol {
+            return CGSizeMake(120, 17)
+        } else if collectionView == spritesCol {
+            return CGSizeMake(100, 100)
+        }
+        return CGSizeMake(100, 100)
     }
     
+    /* 
+        to have multiple collections on the same view you need to distinguish between the 
+        collections. I did this via tags on the collections
+    */
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if let cell = collectionView.dequeueReusableCellWithReuseIdentifier("MoveCell", forIndexPath: indexPath) as? MoveCell {
-            let moveName : String!
-            moveName = pokemon.moves[indexPath.row]
-            cell.configureCell(moveName)
-            return cell
-            
-        } else {
-            return UICollectionViewCell()
+        if collectionView.tag == 10 {
+            if let moveCell = collectionView.dequeueReusableCellWithReuseIdentifier("MoveCell", forIndexPath: indexPath) as? MoveCell {
+                let moveName : String!
+                moveName = pokemon.moves[indexPath.row]
+                moveCell.configureCell(moveName)
+                return moveCell
+            }
+        } else if collectionView.tag == 20 {
+            if let spriteCell = collectionView.dequeueReusableCellWithReuseIdentifier("SpriteCell", forIndexPath: indexPath) as? SpriteCell {
+                let spriteName = self.pokemon.spriteNames[indexPath.row] //key is the same as the sprite name
+                let spriteUrl: String = self.pokemon.spriteUrls[indexPath.row]
+                
+                spriteCell.configureCell(spriteName, spriteUrlStr: spriteUrl)
+                return spriteCell
+            }
         }
+        
+        return UICollectionViewCell()
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
@@ -259,25 +292,13 @@ class EnhancedDetailsVC: UIViewController,
         switch sender.selectedSegmentIndex {
         case 0:
             self.activeView = "statsView"
-//            statsView.hidden = false
-//            movesView.hidden = true
-//            spritesView.hidden = true
-//            evoView.hidden = true
             break
         case 1:
             self.activeView = "movesView"
-//            statsView.hidden = true
-//            movesView.hidden = false
-//            spritesView.hidden = true
-//            evoView.hidden = true
             break
         
         case 2:
             self.activeView = "spritesView"
-//            statsView.hidden = true
-//            movesView.hidden = true
-//            spritesView.hidden = false
-//            evoView.hidden = false
             break
         default:
             break
