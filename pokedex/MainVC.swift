@@ -126,14 +126,7 @@ class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
 
         if !pokemonCache.isInCache(poke) {
             if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? PokeCell {
-
-                let animation = CABasicAnimation(keyPath: "transform.scale")
-                animation.toValue = NSNumber(float: 0.9)
-                animation.duration = 0.5
-                animation.repeatCount = 10.0
-                animation.autoreverses = true
-                cell.nameLabel.text = "...loading..."
-                cell.nameLabel.layer.addAnimation(animation, forKey: nil)
+                cell.nameLabel.pulseOn("...loading...")
             }
         }
     }
@@ -153,7 +146,7 @@ class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
                 self.performSegueWithIdentifier("EnhancedDetailsVC", sender: poke)
                 
                 if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? PokeCell {
-                    cell.nameLabel.text = poke.name.capitalizedString
+                    cell.nameLabel.pulseOff(poke.name.capitalizedString)
                 }
                 
             }

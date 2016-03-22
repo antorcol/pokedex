@@ -71,13 +71,16 @@ class EnhancedDetailsVC: UIViewController,
     @IBOutlet weak var movesView: UIView!
     @IBOutlet weak var movesCol: UICollectionView!
     
-    //MARK: Images
+    //MARK: Evo Images
     @IBOutlet weak var evoView: UIView!
     @IBOutlet weak var spritesCol: UICollectionView!
-    
+    @IBOutlet weak var imgAncestor: UIImageView!
+    @IBOutlet weak var lblAncestor: PokeDataLabelData!
     
     //scroller
     @IBOutlet weak var mainHScroller: UIScrollView!
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,9 +95,9 @@ class EnhancedDetailsVC: UIViewController,
         }
         
         self.lblPokeName.text = pokemon.name.capitalizedString
+        self.lblBaseDescription.pulseOn("...loading...")
         mainHScroller.delegate = self
         self.activeView = "noView"
-
 
         if !pokeExists {
             
@@ -109,8 +112,6 @@ class EnhancedDetailsVC: UIViewController,
                 self.spritesCol.dataSource = self
                 
                 self.activeView = "statsView"
-
-                
             })
             
         } else {
@@ -128,6 +129,7 @@ class EnhancedDetailsVC: UIViewController,
 
     func updateUI() {
         self.imgMain.image = UIImage(named: String(self.pokemon.speciesId))
+        
         if pokemon.type != "" {
             self.lblTypeVal.text = pokemon.type
             self.lblTypeVal.sizeToFit()
@@ -184,9 +186,9 @@ class EnhancedDetailsVC: UIViewController,
         }
         
         if String(self.pokemon.specialDefense) != nil {
-        self.lblSpDefenseVal.text = String(self.pokemon.specialDefense)
+            self.lblSpDefenseVal.text = String(self.pokemon.specialDefense)
         } else {
-        self.lblSpDefenseVal.text = "Unknown"
+            self.lblSpDefenseVal.text = "Unknown"
         }
         
         if String(self.pokemon.speciesName) != "" {
@@ -220,6 +222,36 @@ class EnhancedDetailsVC: UIViewController,
             }
         } else {
             self.lblAbilityOne.text = "None"
+        }
+        
+        //add the ancestor name, if it exists
+        if self.pokemon.ancestorSpeciesName != "" {
+            self.lblAncestor.text = self.pokemon.ancestorSpeciesName
+        } else {
+            self.lblAncestor.text = "None"
+        }
+        
+        //add the ancestor image, if it exists
+        if self.pokemon.ancestorSpeciesUrl != "" {
+            var speciesId: String = ""
+            var tmpUrl: String = self.pokemon.ancestorSpeciesUrl
+            if self.pokemon.ancestorSpeciesUrl.characters.last ==  "/" {
+                tmpUrl = String(tmpUrl.characters.dropLast(1))
+            }
+            
+            for i in (0..<tmpUrl.characters.count).reverse() {
+               if String(tmpUrl[tmpUrl.startIndex.advancedBy(i)]) == "/" {
+                    speciesId = String(tmpUrl.characters.suffix(tmpUrl.characters.count-i-1))
+                    break
+                }
+            }
+
+            if(speciesId != "") {
+                self.imgAncestor.image = UIImage(named: String(speciesId))
+                self.imgAncestor.hidden = false
+            } else {
+                self.imgAncestor.hidden = true
+            }
         }
         
     }
@@ -281,10 +313,6 @@ class EnhancedDetailsVC: UIViewController,
         return 2
     }
     
-//    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-//        return CGSize(width: (collectionView.frame.size.width - 10)/2, height: 17)
-//    }
-
 
     //MARK: Actions
     @IBAction func sgCategories_Pressed(sender: UISegmentedControl) {
@@ -296,7 +324,6 @@ class EnhancedDetailsVC: UIViewController,
         case 1:
             self.activeView = "movesView"
             break
-        
         case 2:
             self.activeView = "spritesView"
             break
@@ -320,5 +347,7 @@ class EnhancedDetailsVC: UIViewController,
             }
         }
     }
+    
+    
 
 }

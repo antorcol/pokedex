@@ -141,9 +141,10 @@ class Pokemon { //: NSObject
             found: if let speciesFullDict = self.myPokemonSpeciesApiResult.value as? Dictionary<String, AnyObject> {
 
                 //ancestor species - simplest first
+                // we can set the image and name directly from these
                 if let evolvesFrom = speciesFullDict["evolves_from_species"] as? Dictionary<String, String>  where evolvesFrom.count > 0 {
                     
-                    self._ancestor_species_name = evolvesFrom["name"]!
+                    self._ancestor_species_name = evolvesFrom["name"]!.capitalizedString
                     self._ancestor_species_url = evolvesFrom["url"]!
                 }
                 
@@ -152,6 +153,7 @@ class Pokemon { //: NSObject
                     self._evolution_chain_url = evolutionChain["url"]!
                 }
                 
+                //description
                 if let flavorTextDicts = speciesFullDict["flavor_text_entries"] as? [AnyObject] {
                     for flavorTextDict in flavorTextDicts {
                         if let langDict = flavorTextDict["language"] as? Dictionary<String, AnyObject> {
@@ -185,8 +187,8 @@ class Pokemon { //: NSObject
         the ancestor and descendant species urls
     */
     
-    func downLoadEvolutions(speciesUrl: String, completed: DownloadComplete) {
-        let url = NSURL(string: speciesUrl)!
+    func downLoadEvolutions(evoChainUrl: String, completed: DownloadComplete) {
+        let url = NSURL(string: evoChainUrl)!
         
         Alamofire.request(.GET, url).responseJSON { response in
             self.myPokemonEvolutionsApiResult = response.result

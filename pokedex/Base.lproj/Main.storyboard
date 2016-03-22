@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="Pokemon Solid.ttf">
@@ -236,20 +237,70 @@
                                                     <constraint firstAttribute="width" constant="1" id="41Y-jw-5bD"/>
                                                 </constraints>
                                             </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Evolutions" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gO9-mN-L4Q" userLabel="titleEvos" customClass="PokeDataLabelTitle" customModule="pokedex" customModuleProvider="target">
+                                                <rect key="frame" x="461" y="8" width="79" height="21"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <view contentMode="scaleAspectFit" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cI9-iT-4sw" userLabel="ancestorView">
+                                                <rect key="frame" x="372" y="37" width="102" height="162"/>
+                                                <subviews>
+                                                    <stackView opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="LBl-fd-bCn">
+                                                        <rect key="frame" x="0.0" y="12" width="102" height="142"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Ancestors" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D6e-5z-4KY" userLabel="lblAncestorTitle">
+                                                                <rect key="frame" x="12" y="0.0" width="78" height="21"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fqg-zq-XrH" userLabel="imgAncestor">
+                                                                <rect key="frame" x="1" y="21" width="100" height="100"/>
+                                                            </imageView>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="lblPokeName" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0J4-vu-29X" customClass="PokeDataLabelData" customModule="pokedex" customModuleProvider="target">
+                                                                <rect key="frame" x="0.0" y="121" width="102" height="21"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                    </stackView>
+                                                </subviews>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Descendents" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J9v-6y-Txf" userLabel="titleDescendants">
+                                                <rect key="frame" x="372" y="207" width="102" height="21"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
+                                            <constraint firstItem="J9v-6y-Txf" firstAttribute="centerX" secondItem="D6e-5z-4KY" secondAttribute="centerX" id="1Vz-od-gdz"/>
                                             <constraint firstAttribute="bottom" secondItem="MnS-sW-EfZ" secondAttribute="bottom" constant="8" id="1zJ-Zr-9A6"/>
+                                            <constraint firstItem="J9v-6y-Txf" firstAttribute="top" secondItem="0J4-vu-29X" secondAttribute="bottom" constant="8" id="5ZQ-n6-Fkm"/>
+                                            <constraint firstItem="gO9-mN-L4Q" firstAttribute="leading" secondItem="Vpl-2S-7qX" secondAttribute="centerX" multiplier="1.3" id="Bgb-BN-8aA"/>
+                                            <constraint firstItem="yn4-Ax-FTO" firstAttribute="trailing" secondItem="Vpl-2S-7qX" secondAttribute="centerX" multiplier="0.66" id="EtY-QK-lzl"/>
+                                            <constraint firstItem="cI9-iT-4sw" firstAttribute="leading" secondItem="Vpl-2S-7qX" secondAttribute="centerX" multiplier="1.25" id="KxB-BO-Nhf"/>
+                                            <constraint firstItem="cI9-iT-4sw" firstAttribute="top" secondItem="gO9-mN-L4Q" secondAttribute="bottom" constant="8" id="NTZ-1W-KQV"/>
                                             <constraint firstItem="JBc-EH-xO1" firstAttribute="leading" secondItem="Vpl-2S-7qX" secondAttribute="leading" constant="25" id="OEU-rJ-4lf"/>
                                             <constraint firstItem="MnS-sW-EfZ" firstAttribute="top" secondItem="Vpl-2S-7qX" secondAttribute="top" constant="8" id="VW7-KN-i01"/>
                                             <constraint firstAttribute="bottom" secondItem="JBc-EH-xO1" secondAttribute="bottom" constant="8" id="Zjs-Cv-UKe"/>
+                                            <constraint firstItem="J9v-6y-Txf" firstAttribute="top" secondItem="cI9-iT-4sw" secondAttribute="bottom" constant="8" id="cDr-3x-mJH"/>
                                             <constraint firstItem="JBc-EH-xO1" firstAttribute="top" secondItem="yn4-Ax-FTO" secondAttribute="bottom" constant="8" id="emm-4N-phL"/>
                                             <constraint firstItem="MnS-sW-EfZ" firstAttribute="centerX" secondItem="Vpl-2S-7qX" secondAttribute="centerX" id="fVI-C8-b2e"/>
                                             <constraint firstItem="MnS-sW-EfZ" firstAttribute="leading" secondItem="JBc-EH-xO1" secondAttribute="trailing" constant="22" id="guf-Ab-rSr"/>
-                                            <constraint firstItem="yn4-Ax-FTO" firstAttribute="leading" secondItem="Vpl-2S-7qX" secondAttribute="leading" constant="20" id="q4M-p4-F1V"/>
+                                            <constraint firstItem="gO9-mN-L4Q" firstAttribute="top" secondItem="Vpl-2S-7qX" secondAttribute="top" constant="8" id="iEc-jz-Y9i"/>
                                             <constraint firstItem="yn4-Ax-FTO" firstAttribute="top" secondItem="Vpl-2S-7qX" secondAttribute="top" constant="8" id="qGb-4F-GB6"/>
                                             <constraint firstItem="MnS-sW-EfZ" firstAttribute="centerY" secondItem="Vpl-2S-7qX" secondAttribute="centerY" id="zrG-ni-KpT"/>
                                         </constraints>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="cDr-3x-mJH"/>
+                                            </mask>
+                                        </variation>
                                     </view>
                                     <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nvQ-mA-A9b" userLabel="movesView">
                                         <rect key="frame" x="0.0" y="0.0" width="560" height="400"/>
@@ -634,10 +685,12 @@
                     </view>
                     <connections>
                         <outlet property="evoView" destination="Vpl-2S-7qX" id="6GV-Iq-NET"/>
+                        <outlet property="imgAncestor" destination="Fqg-zq-XrH" id="gHa-ei-pxz"/>
                         <outlet property="imgMain" destination="izq-Bq-Sul" id="gUn-si-t92"/>
                         <outlet property="lblAbilityOne" destination="gHX-7Y-Bki" id="qxI-Wy-po7"/>
                         <outlet property="lblAbilityThree" destination="tVC-iZ-z3k" id="JvA-1H-VOT"/>
                         <outlet property="lblAbilityTwo" destination="MKo-kS-Wjh" id="ldb-oW-GWy"/>
+                        <outlet property="lblAncestor" destination="0J4-vu-29X" id="HGt-dc-HOB"/>
                         <outlet property="lblAttackVal" destination="Ktg-yH-wCQ" id="z0V-rQ-jwN"/>
                         <outlet property="lblBaseDescription" destination="YPr-IA-Lo6" id="qxJ-bS-w3g"/>
                         <outlet property="lblDefenseVal" destination="wmR-Kv-Ala" id="j37-7f-9LY"/>
