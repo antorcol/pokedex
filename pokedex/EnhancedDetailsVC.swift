@@ -41,6 +41,12 @@ class EnhancedDetailsVC: UIViewController,
         }
     }
 
+    //MARK: Constants
+    let MOVES_COL_TAG = 10
+    let SPRITES_COL_TAG = 20
+    let DESCENDANTS_COL_TAG = 3
+    
+    
     //MARK: Basic Stats - these are fixed in number
     @IBOutlet weak var lblPokeName: UILabel!
     @IBOutlet weak var imgMain: UIImageView!
@@ -76,11 +82,11 @@ class EnhancedDetailsVC: UIViewController,
     @IBOutlet weak var spritesCol: UICollectionView!
     @IBOutlet weak var imgAncestor: UIImageView!
     @IBOutlet weak var lblAncestor: PokeDataLabelData!
+    @IBOutlet weak var descendantsCol: UICollectionView!
+    @IBOutlet weak var lblNoDescs: PokeDataLabelData!
     
     //scroller
     @IBOutlet weak var mainHScroller: UIScrollView!
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -95,10 +101,14 @@ class EnhancedDetailsVC: UIViewController,
         }
         
         self.lblPokeName.text = pokemon.name.capitalizedString
+
+        //TODO: pulseOn not working here
         self.lblBaseDescription.pulseOn("...loading...")
         mainHScroller.delegate = self
         self.activeView = "noView"
 
+        
+        
         if !pokeExists {
             
             pokemon.downloadPokemonBasicDetails({ () -> () in
@@ -106,13 +116,26 @@ class EnhancedDetailsVC: UIViewController,
                 
                 self.movesCol.delegate = self
                 self.movesCol.dataSource = self
-                self.movesCol.reloadData()
                 
                 self.spritesCol.delegate = self
                 self.spritesCol.dataSource = self
-                
+
+                self.lblBaseDescription.pulseOff(self.pokemon.description)
                 self.activeView = "statsView"
             })
+            
+            //I wanted to have this unnested
+            if !self.pokemon.hasEvoinfo {
+                
+                self.pokemon.downLoadEvolutions(self.pokemon.evolutionChainUrl) { () -> () in
+                    
+                    self.descendantsCol.delegate = self
+                    self.descendantsCol.dataSource = self
+                    //self.activeView = "spritesView"
+                }
+            } //else {
+            //self.activeView = "spritesView"
+            //}
             
         } else {
             self.updateUI()
@@ -120,10 +143,15 @@ class EnhancedDetailsVC: UIViewController,
             self.movesCol.dataSource = self
             self.spritesCol.delegate = self
             self.spritesCol.dataSource = self
+            self.descendantsCol.delegate = self
+            self.descendantsCol.dataSource = self
             self.activeView = "statsView"
         }
         
-
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.navigateAncestor))
+        
+        imgAncestor.addGestureRecognizer(tap)
+        imgAncestor.userInteractionEnabled = true
     }
     
 
@@ -232,36 +260,24 @@ class EnhancedDetailsVC: UIViewController,
         }
         
         //add the ancestor image, if it exists
-        if self.pokemon.ancestorSpeciesUrl != "" {
-            var speciesId: String = ""
-            var tmpUrl: String = self.pokemon.ancestorSpeciesUrl
-            if self.pokemon.ancestorSpeciesUrl.characters.last ==  "/" {
-                tmpUrl = String(tmpUrl.characters.dropLast(1))
-            }
-            
-            for i in (0..<tmpUrl.characters.count).reverse() {
-               if String(tmpUrl[tmpUrl.startIndex.advancedBy(i)]) == "/" {
-                    speciesId = String(tmpUrl.characters.suffix(tmpUrl.characters.count-i-1))
-                    break
-                }
-            }
-
-            if(speciesId != "") {
-                self.imgAncestor.image = UIImage(named: String(speciesId))
-                self.imgAncestor.hidden = false
-            } else {
-                self.imgAncestor.hidden = true
-            }
+        if self.pokemon.ancestorSpeciesId > 0 {
+            self.imgAncestor.image = UIImage(named: String(self.pokemon.ancestorSpeciesId))
+            self.imgAncestor.hidden = false
+        } else {
+            self.imgAncestor.hidden = true
         }
+        
         
     }
 
     //MARK: collectionView methods
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if collectionView == movesCol {
+        if collectionView.tag == MOVES_COL_TAG {
             return self.pokemon.moves.count
-        } else if collectionView == spritesCol {
+        } else if collectionView.tag == SPRITES_COL_TAG {
             return self.pokemon.spriteNames.count
+        } else if collectionView.tag == DESCENDANTS_COL_TAG {
+            return self.pokemon.descendants.count
         } else {
             return 1
         }
@@ -272,10 +288,12 @@ class EnhancedDetailsVC: UIViewController,
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        if collectionView == movesCol {
+        if collectionView.tag == MOVES_COL_TAG {
             return CGSizeMake(120, 17)
-        } else if collectionView == spritesCol {
+        } else if collectionView.tag == SPRITES_COL_TAG {
             return CGSizeMake(100, 100)
+        } else if collectionView.tag == DESCENDANTS_COL_TAG {
+            return CGSizeMake(100, 120)
         }
         return CGSizeMake(100, 100)
     }
@@ -285,14 +303,14 @@ class EnhancedDetailsVC: UIViewController,
         collections. I did this via tags on the collections
     */
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if collectionView.tag == 10 {
+        if collectionView.tag == MOVES_COL_TAG {
             if let moveCell = collectionView.dequeueReusableCellWithReuseIdentifier("MoveCell", forIndexPath: indexPath) as? MoveCell {
                 let moveName : String!
                 moveName = pokemon.moves[indexPath.row]
                 moveCell.configureCell(moveName)
                 return moveCell
             }
-        } else if collectionView.tag == 20 {
+        } else if collectionView.tag == SPRITES_COL_TAG {
             if let spriteCell = collectionView.dequeueReusableCellWithReuseIdentifier("SpriteCell", forIndexPath: indexPath) as? SpriteCell {
                 let spriteName = self.pokemon.spriteNames[indexPath.row] //key is the same as the sprite name
                 let spriteUrl: String = self.pokemon.spriteUrls[indexPath.row]
@@ -300,6 +318,31 @@ class EnhancedDetailsVC: UIViewController,
                 spriteCell.configureCell(spriteName, spriteUrlStr: spriteUrl)
                 return spriteCell
             }
+        } else if collectionView.tag == DESCENDANTS_COL_TAG {
+            print("Found Descendant")
+            if let descendantCell = collectionView.dequeueReusableCellWithReuseIdentifier("DescendantCell", forIndexPath: indexPath) as? DescendantCell {
+                
+                let descendantDict = self.pokemon.descendants[indexPath.row]
+                descendantCell.configureCell(descendantDict["name"]!, descendantId: descendantDict["id"]!)
+                
+                return descendantCell
+            }
+            
+            //        //add the descendant name, if it exists
+            //        if self.pokemon.descendantName != "" {
+            //            self.lblDescendant.text = self.pokemon.descendantName
+            //        } else {
+            //            self.lblDescendant.text = "None"
+            //        }
+            //
+            //        //add the descendant image, if it exists
+            //        if self.pokemon.descendantSpeciesId > 0 {
+            //            self.imgDescendant.image = UIImage(named: String(self.pokemon.descendantSpeciesId))
+            //            self.lblDescendant.text = self.pokemon.descendantName
+            //        } else {
+            //            self.imgDescendant.hidden = true
+            //        }
+
         }
         
         return UICollectionViewCell()
@@ -325,7 +368,24 @@ class EnhancedDetailsVC: UIViewController,
             self.activeView = "movesView"
             break
         case 2:
-            self.activeView = "spritesView"
+            self.descendantsCol.reloadData()
+            self.lblNoDescs.hidden = false
+            self.lblNoDescs.text = String(self.pokemon.descendants.count)
+            
+            //must load species first
+            // this is an alamofire call
+            
+//            if !pokemon.hasEvoinfo {
+//                
+//                self.pokemon.downLoadEvolutions(self.pokemon.evolutionChainUrl) { () -> () in
+//
+//                    self.descendantsCol.reloadData()
+//                    self.activeView = "spritesView"
+//                }
+//            } else {
+                self.activeView = "spritesView"
+//            }
+            
             break
         default:
             break
@@ -338,6 +398,33 @@ class EnhancedDetailsVC: UIViewController,
         
         dismissViewControllerAnimated(true, completion: nil)
     }
+    
+    
+    func navigateAncestor() {
+        let poke :Pokemon = Pokemon(name: self.pokemon.ancestorSpeciesName, id: self.pokemon.ancestorSpeciesId)
+        
+        self.activeView = "noView"
+        self.pokemon = poke
+        
+        if !pokemonCache.isInCache(poke) {
+            
+            let speciesUrlStr = "\(URL_BASE)/api/v2/pokemon-species/\(poke.speciesId)/"
+            poke.downloadPokemonSpeciesDescription(speciesUrlStr) { () -> () in
+                self.lblBaseDescription.text = poke.description
+                self.imgMain.image = UIImage(named: String(poke.speciesId))
+                self.sgCategories.selectedSegmentIndex = 0
+                self.viewDidLoad()
+            }
+        } else {
+            self.lblBaseDescription.text = poke.description
+            self.imgMain.image = UIImage(named: String(poke.speciesId))
+            self.sgCategories.selectedSegmentIndex = 0
+            self.viewDidLoad()
+        }
+        
+    }
+    
+    
     
     //MARK: Segue
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

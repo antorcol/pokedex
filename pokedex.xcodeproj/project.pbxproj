@@ -15,6 +15,7 @@
 		241012351C8D3E6300D74A91 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241012341C8D3E6300D74A91 /* PaddingLabel.swift */; };
 		241188181C952D7A00D9643C /* PokeAbilitiesLabelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241188171C952D7A00D9643C /* PokeAbilitiesLabelData.swift */; };
 		2435ABA01C97690A009C8AC6 /* MoveCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2435AB9F1C97690A009C8AC6 /* MoveCell.swift */; };
+		249CD5811CA464320081380D /* DescendantCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249CD5801CA464320081380D /* DescendantCell.swift */; };
 		24BE41A11C8E87B900ADB3BF /* EnhancedDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24BE41A01C8E87B900ADB3BF /* EnhancedDetailsVC.swift */; };
 		24BE41A31C8E9EAB00ADB3BF /* PokeTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24BE41A21C8E9EAB00ADB3BF /* PokeTitleLabel.swift */; };
 		24C206851C9A200B00857841 /* PokemonCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C206841C9A200B00857841 /* PokemonCache.swift */; };
@@ -42,6 +43,7 @@
 		241012341C8D3E6300D74A91 /* PaddingLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		241188171C952D7A00D9643C /* PokeAbilitiesLabelData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PokeAbilitiesLabelData.swift; sourceTree = "<group>"; };
 		2435AB9F1C97690A009C8AC6 /* MoveCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoveCell.swift; sourceTree = "<group>"; };
+		249CD5801CA464320081380D /* DescendantCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DescendantCell.swift; sourceTree = "<group>"; };
 		24BE41A01C8E87B900ADB3BF /* EnhancedDetailsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnhancedDetailsVC.swift; sourceTree = "<group>"; };
 		24BE41A21C8E9EAB00ADB3BF /* PokeTitleLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PokeTitleLabel.swift; sourceTree = "<group>"; };
 		24C206841C9A200B00857841 /* PokemonCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PokemonCache.swift; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 				24C7EAC91C8550C900694D8C /* PokeCell.swift */,
 				2435AB9F1C97690A009C8AC6 /* MoveCell.swift */,
 				24ECD0C71C9EF9F5005FD1AA /* SpriteCell.swift */,
+				249CD5801CA464320081380D /* DescendantCell.swift */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -320,6 +323,7 @@
 				2435ABA01C97690A009C8AC6 /* MoveCell.swift in Sources */,
 				241012331C8D3A8500D74A91 /* PokeDataLabelData.swift in Sources */,
 				241188181C952D7A00D9643C /* PokeAbilitiesLabelData.swift in Sources */,
+				249CD5811CA464320081380D /* DescendantCell.swift in Sources */,
 				241012351C8D3E6300D74A91 /* PaddingLabel.swift in Sources */,
 				24BE41A31C8E9EAB00ADB3BF /* PokeTitleLabel.swift in Sources */,
 				24C7EAC81C84CAA200694D8C /* Pokemon.swift in Sources */,

@@ -18,6 +18,7 @@ class Pokemon { //: NSObject
     var myPokemonSpeciesApiResult : Alamofire.Result<AnyObject, NSError>!
     var myPokemonEvolutionsApiResult : Alamofire.Result<AnyObject, NSError>!
     
+    
     //MARK: in csv file
     // ---- stats view ---- //
     private var _csvRowId : Int! //PokeId and Image ID
@@ -49,13 +50,15 @@ class Pokemon { //: NSObject
     
     //part of evo view
     private var _ancestor_species_name: String = ""
+    private var _ancestor_species_id: Int = -1
     private var _ancestor_species_url: String = ""
     private var _evolution_chain_url: String = ""
     
     //del
-    private var _next_evolution_text: String = ""
-    private var _next_evolution_id: Int = -1
-    private var _next_evolution_level: Int = -1
+    private var _descendants: [Dictionary<String, String>] = Array()
+//    private var _descendant_name : String = ""
+//    private var _descendant_species_url: String = ""
+//    private var _descendant_species_id: Int = -1
     
     init(name:String, id:Int) {
         self._identifier = name
@@ -109,14 +112,7 @@ class Pokemon { //: NSObject
                 
                 self.loadSpeciesNameAndUrl(dict)
                 
-                //must load species first
-                // this is an alamofire call
-                
-                
-               // self.downLoadEvolutions(self._evolution_chain_url, completed: { () -> () in
-                    completed()
-               // })
-
+                completed()
                 
             }
         }
@@ -146,6 +142,7 @@ class Pokemon { //: NSObject
                     
                     self._ancestor_species_name = evolvesFrom["name"]!.capitalizedString
                     self._ancestor_species_url = evolvesFrom["url"]!
+                    self._ancestor_species_id = self.extractSpeciesIdFromUrl(self._ancestor_species_url)
                 }
                 
                 //evolution chain
@@ -193,6 +190,29 @@ class Pokemon { //: NSObject
         Alamofire.request(.GET, url).responseJSON { response in
             self.myPokemonEvolutionsApiResult = response.result
             
+            if let evoChainFullRecord = self.myPokemonEvolutionsApiResult.value as? Dictionary<String, AnyObject> where evoChainFullRecord.count > 0 {
+                
+                if let evoChain = evoChainFullRecord["chain"] as? Dictionary<String, AnyObject> where evoChain.count > 0 {
+                    
+                    if let evoArray = evoChain["evolves_to"] as? [Dictionary<String, AnyObject>] where evoArray.count > 0 {
+                        
+                        for oneTopLevelEvo in evoArray  {
+                            
+                            if let evoSpecies = oneTopLevelEvo["species"] as? Dictionary<String, String> where evoSpecies.count > 0 {
+                                
+                                var evoDict: Dictionary<String, String> = Dictionary<String, String>()
+                                evoDict["name"] = evoSpecies["name"]!
+                                
+                                let speciesUrl:String = evoSpecies["url"]!
+                                let speciesId:String = String(self.extractSpeciesIdFromUrl(speciesUrl))
+                                evoDict["id"] = speciesId
+                                
+                                self._descendants.append(evoDict)
+                            }
+                        }
+                    }
+                }
+            }
         }
         
         completed()
@@ -372,9 +392,46 @@ class Pokemon { //: NSObject
         }
         
     }
+
     
+    func extractSpeciesIdFromUrl(url: String) -> Int {
+        
+        var speciesId: String = ""
+        var tmpUrl: String = url
+        if tmpUrl.characters.last ==  "/" {
+            tmpUrl = String(tmpUrl.characters.dropLast(1))
+        }
+        
+        for i in (0..<tmpUrl.characters.count).reverse() {
+            if String(tmpUrl[tmpUrl.startIndex.advancedBy(i)]) == "/" {
+                speciesId = String(tmpUrl.characters.suffix(tmpUrl.characters.count-i-1))
+                break
+            }
+        }
+        
+        return Int(speciesId)!
+    }
     
     //MARK: getter / setter
+    
+    var hasBasicInfo: Bool {
+        get {
+            return myPokemonApiResult != nil && myPokemonApiResult.isSuccess
+        }
+    }
+    
+    var hasSpeciesInfo: Bool {
+        get {
+            return myPokemonSpeciesApiResult != nil && myPokemonSpeciesApiResult.isSuccess
+        }
+    }
+    
+    var hasEvoinfo: Bool {
+        get {
+            return myPokemonEvolutionsApiResult != nil && myPokemonEvolutionsApiResult.isSuccess
+        }
+    }
+    
     var csvRowId: Int {
         get {
             return self._csvRowId
@@ -524,30 +581,40 @@ class Pokemon { //: NSObject
         }
     }
 
+    var ancestorSpeciesId: Int {
+        get {
+            return self._ancestor_species_id
+        }
+    }
+    
     var evolutionChainUrl: String {
         get {
             return self._evolution_chain_url
         }
     }
     
-    /* comment */
-    var next_evolution_text: String {
+    var descendants: [Dictionary<String, String>] {
         get {
-            return self._next_evolution_text
+            return self._descendants
         }
     }
     
-    /* comment */
-    var next_evolution_id: Int {
-        get {
-            return self._next_evolution_id
-        }
-    }
-    
-    /* comment */
-    var next_evolution_level: Int {
-        get {
-            return self._next_evolution_level
-        }
-    }
+//    var descendantName: String {
+//        get {
+//            return self._descendant_name
+//        }
+//    }
+//    
+//    var descendantSpeciesUrl: String {
+//        get {
+//            return self._descendant_species_url
+//        }
+//    }
+//    
+//    var descendantSpeciesId: Int {
+//        get {
+//            return self._descendant_species_id
+//        }
+//    }
+
 }

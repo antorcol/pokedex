@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -243,64 +243,108 @@
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <view contentMode="scaleAspectFit" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cI9-iT-4sw" userLabel="ancestorView">
-                                                <rect key="frame" x="372" y="37" width="102" height="162"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Zfl-Jx-TEP" userLabel="stkAncDesc">
+                                                <rect key="frame" x="372" y="37" width="103" height="290"/>
                                                 <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="LBl-fd-bCn">
-                                                        <rect key="frame" x="0.0" y="12" width="102" height="142"/>
+                                                    <stackView opaque="NO" contentMode="scaleAspectFit" ambiguous="YES" misplaced="YES" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="LBl-fd-bCn" userLabel="stkAncestors">
+                                                        <rect key="frame" x="0.0" y="0.0" width="103" height="142"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Ancestors" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D6e-5z-4KY" userLabel="lblAncestorTitle">
-                                                                <rect key="frame" x="12" y="0.0" width="78" height="21"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Ancestor" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D6e-5z-4KY" userLabel="lblAncestorTitle">
+                                                                <rect key="frame" x="17" y="0.0" width="69" height="21"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fqg-zq-XrH" userLabel="imgAncestor">
-                                                                <rect key="frame" x="1" y="21" width="100" height="100"/>
+                                                                <rect key="frame" x="1" y="21" width="101" height="100"/>
                                                             </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="lblPokeName" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0J4-vu-29X" customClass="PokeDataLabelData" customModule="pokedex" customModuleProvider="target">
-                                                                <rect key="frame" x="0.0" y="121" width="102" height="21"/>
+                                                                <rect key="frame" x="1" y="121" width="101" height="21"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                         </subviews>
                                                     </stackView>
+                                                    <stackView opaque="NO" contentMode="scaleAspectFit" ambiguous="YES" misplaced="YES" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="rLh-7x-rNV" userLabel="stkDesc">
+                                                        <rect key="frame" x="0.0" y="152" width="103" height="138"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Descendents" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J9v-6y-Txf" userLabel="titleDescendants">
+                                                                <rect key="frame" x="1" y="0.0" width="101" height="21"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" tag="3" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="wFJ-Vu-EAF" userLabel="descendentsCol">
+                                                                <rect key="frame" x="0.0" y="21" width="103" height="117"/>
+                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="t0j-6x-kGH">
+                                                                    <size key="itemSize" width="99" height="116"/>
+                                                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                                </collectionViewFlowLayout>
+                                                                <cells>
+                                                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="DescendantCell" id="GRo-SG-iGF" customClass="DescendantCell" customModule="pokedex" customModuleProvider="target">
+                                                                        <rect key="frame" x="2" y="0.0" width="99" height="116"/>
+                                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="99" height="116"/>
+                                                                            <autoresizingMask key="autoresizingMask"/>
+                                                                            <subviews>
+                                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dAJ-4J-QyL" userLabel="imgDescendant">
+                                                                                    <rect key="frame" x="0.0" y="0.0" width="99" height="99"/>
+                                                                                </imageView>
+                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Species" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lnl-CL-B5b" userLabel="lblDescendant" customClass="PokeDataLabelData" customModule="pokedex" customModuleProvider="target">
+                                                                                    <rect key="frame" x="0.0" y="99" width="99" height="17"/>
+                                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                                                    <nil key="highlightedColor"/>
+                                                                                </label>
+                                                                            </subviews>
+                                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                                        </view>
+                                                                        <constraints>
+                                                                            <constraint firstItem="lnl-CL-B5b" firstAttribute="centerX" secondItem="GRo-SG-iGF" secondAttribute="centerX" id="Uk1-YC-B9e"/>
+                                                                            <constraint firstItem="lnl-CL-B5b" firstAttribute="top" secondItem="dAJ-4J-QyL" secondAttribute="bottom" id="Vdr-Fi-nsV"/>
+                                                                            <constraint firstItem="dAJ-4J-QyL" firstAttribute="top" secondItem="GRo-SG-iGF" secondAttribute="top" id="dWt-MV-ldQ"/>
+                                                                            <constraint firstItem="dAJ-4J-QyL" firstAttribute="centerX" secondItem="GRo-SG-iGF" secondAttribute="centerX" id="psq-z4-bhL"/>
+                                                                        </constraints>
+                                                                        <connections>
+                                                                            <outlet property="imgDescendant" destination="dAJ-4J-QyL" id="EQv-OW-Go3"/>
+                                                                            <outlet property="lblDescendantName" destination="lnl-CL-B5b" id="c52-T8-Og4"/>
+                                                                        </connections>
+                                                                    </collectionViewCell>
+                                                                </cells>
+                                                            </collectionView>
+                                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="None" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s99-BP-faK" customClass="PokeDataLabelData" customModule="pokedex" customModuleProvider="target">
+                                                                <rect key="frame" x="31" y="138" width="41" height="0.0"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                    </stackView>
                                                 </subviews>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                            </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Descendents" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J9v-6y-Txf" userLabel="titleDescendants">
-                                                <rect key="frame" x="372" y="207" width="102" height="21"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
+                                            </stackView>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstItem="J9v-6y-Txf" firstAttribute="centerX" secondItem="D6e-5z-4KY" secondAttribute="centerX" id="1Vz-od-gdz"/>
                                             <constraint firstAttribute="bottom" secondItem="MnS-sW-EfZ" secondAttribute="bottom" constant="8" id="1zJ-Zr-9A6"/>
-                                            <constraint firstItem="J9v-6y-Txf" firstAttribute="top" secondItem="0J4-vu-29X" secondAttribute="bottom" constant="8" id="5ZQ-n6-Fkm"/>
                                             <constraint firstItem="gO9-mN-L4Q" firstAttribute="leading" secondItem="Vpl-2S-7qX" secondAttribute="centerX" multiplier="1.3" id="Bgb-BN-8aA"/>
+                                            <constraint firstItem="Zfl-Jx-TEP" firstAttribute="top" secondItem="gO9-mN-L4Q" secondAttribute="bottom" constant="8" id="Bl4-nI-WFu"/>
                                             <constraint firstItem="yn4-Ax-FTO" firstAttribute="trailing" secondItem="Vpl-2S-7qX" secondAttribute="centerX" multiplier="0.66" id="EtY-QK-lzl"/>
-                                            <constraint firstItem="cI9-iT-4sw" firstAttribute="leading" secondItem="Vpl-2S-7qX" secondAttribute="centerX" multiplier="1.25" id="KxB-BO-Nhf"/>
-                                            <constraint firstItem="cI9-iT-4sw" firstAttribute="top" secondItem="gO9-mN-L4Q" secondAttribute="bottom" constant="8" id="NTZ-1W-KQV"/>
                                             <constraint firstItem="JBc-EH-xO1" firstAttribute="leading" secondItem="Vpl-2S-7qX" secondAttribute="leading" constant="25" id="OEU-rJ-4lf"/>
                                             <constraint firstItem="MnS-sW-EfZ" firstAttribute="top" secondItem="Vpl-2S-7qX" secondAttribute="top" constant="8" id="VW7-KN-i01"/>
                                             <constraint firstAttribute="bottom" secondItem="JBc-EH-xO1" secondAttribute="bottom" constant="8" id="Zjs-Cv-UKe"/>
-                                            <constraint firstItem="J9v-6y-Txf" firstAttribute="top" secondItem="cI9-iT-4sw" secondAttribute="bottom" constant="8" id="cDr-3x-mJH"/>
                                             <constraint firstItem="JBc-EH-xO1" firstAttribute="top" secondItem="yn4-Ax-FTO" secondAttribute="bottom" constant="8" id="emm-4N-phL"/>
                                             <constraint firstItem="MnS-sW-EfZ" firstAttribute="centerX" secondItem="Vpl-2S-7qX" secondAttribute="centerX" id="fVI-C8-b2e"/>
+                                            <constraint firstItem="Zfl-Jx-TEP" firstAttribute="leading" secondItem="Vpl-2S-7qX" secondAttribute="centerX" multiplier="1.27" id="gc8-CP-88o"/>
                                             <constraint firstItem="MnS-sW-EfZ" firstAttribute="leading" secondItem="JBc-EH-xO1" secondAttribute="trailing" constant="22" id="guf-Ab-rSr"/>
                                             <constraint firstItem="gO9-mN-L4Q" firstAttribute="top" secondItem="Vpl-2S-7qX" secondAttribute="top" constant="8" id="iEc-jz-Y9i"/>
                                             <constraint firstItem="yn4-Ax-FTO" firstAttribute="top" secondItem="Vpl-2S-7qX" secondAttribute="top" constant="8" id="qGb-4F-GB6"/>
                                             <constraint firstItem="MnS-sW-EfZ" firstAttribute="centerY" secondItem="Vpl-2S-7qX" secondAttribute="centerY" id="zrG-ni-KpT"/>
                                         </constraints>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="cDr-3x-mJH"/>
-                                            </mask>
-                                        </variation>
                                     </view>
                                     <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nvQ-mA-A9b" userLabel="movesView">
                                         <rect key="frame" x="0.0" y="0.0" width="560" height="400"/>
@@ -684,6 +728,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="descendantsCol" destination="wFJ-Vu-EAF" id="ugW-rw-Qn0"/>
                         <outlet property="evoView" destination="Vpl-2S-7qX" id="6GV-Iq-NET"/>
                         <outlet property="imgAncestor" destination="Fqg-zq-XrH" id="gHa-ei-pxz"/>
                         <outlet property="imgMain" destination="izq-Bq-Sul" id="gUn-si-t92"/>
@@ -697,6 +742,7 @@
                         <outlet property="lblExperience" destination="a2G-fh-uQ1" id="13u-pP-Egn"/>
                         <outlet property="lblHeightVal" destination="60k-XY-wpj" id="lJK-bc-dXH"/>
                         <outlet property="lblHitPointsVal" destination="3vQ-61-Yzu" id="Iz7-Uj-iRy"/>
+                        <outlet property="lblNoDescs" destination="s99-BP-faK" id="KC5-5N-LSf"/>
                         <outlet property="lblPokeName" destination="DD0-aw-Hun" id="PaB-G0-7YU"/>
                         <outlet property="lblSpAttackVal" destination="BKQ-ek-48b" id="GvA-M9-lYv"/>
                         <outlet property="lblSpDefenseVal" destination="8xg-Qh-PA0" id="utA-nI-PxW"/>
@@ -714,7 +760,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J2O-dq-aiB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1004" y="406"/>
+            <point key="canvasLocation" x="1005" y="406"/>
         </scene>
     </scenes>
     <resources>
