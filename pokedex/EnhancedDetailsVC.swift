@@ -119,6 +119,9 @@ class EnhancedDetailsVC: UIViewController,
                 
                 self.spritesCol.delegate = self
                 self.spritesCol.dataSource = self
+                
+                self.descendantsCol.delegate = self
+                self.descendantsCol.dataSource = self
 
                 self.lblBaseDescription.pulseOff(self.pokemon.description)
                 self.activeView = "statsView"
@@ -129,8 +132,8 @@ class EnhancedDetailsVC: UIViewController,
                 
                 self.pokemon.downLoadEvolutions(self.pokemon.evolutionChainUrl) { () -> () in
                     
-                    self.descendantsCol.delegate = self
-                    self.descendantsCol.dataSource = self
+                    //self.descendantsCol.delegate = self
+                    //self.descendantsCol.dataSource = self
                     //self.activeView = "spritesView"
                 }
             } //else {
@@ -343,6 +346,8 @@ class EnhancedDetailsVC: UIViewController,
             //            self.imgDescendant.hidden = true
             //        }
 
+        } else {
+            let b: Int = 0
         }
         
         return UICollectionViewCell()
@@ -402,13 +407,16 @@ class EnhancedDetailsVC: UIViewController,
     
     func navigateAncestor() {
         let poke :Pokemon = Pokemon(name: self.pokemon.ancestorSpeciesName, id: self.pokemon.ancestorSpeciesId)
-        
+
+        let speciesUrlStr = "\(URL_BASE)/api/v2/pokemon-species/\(poke.speciesId)/"
+        self.imgMain.image = UIImage(named: String(poke.speciesId))
+        self.lblBaseDescription.text = "...navigating ancestor..."
+
         self.activeView = "noView"
         self.pokemon = poke
         
         if !pokemonCache.isInCache(poke) {
             
-            let speciesUrlStr = "\(URL_BASE)/api/v2/pokemon-species/\(poke.speciesId)/"
             poke.downloadPokemonSpeciesDescription(speciesUrlStr) { () -> () in
                 self.lblBaseDescription.text = poke.description
                 self.imgMain.image = UIImage(named: String(poke.speciesId))
