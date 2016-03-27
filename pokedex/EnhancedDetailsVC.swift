@@ -86,8 +86,7 @@ class EnhancedDetailsVC: UIViewController,
     
     //Descendants: 0..Many
     @IBOutlet weak var descendantsCol: UICollectionView!
-    
-    @IBOutlet weak var lblNoDescs: PokeDataLabelData!
+    @IBOutlet weak var lblNoDesc: PokeDataLabelData!
     
     //scroller
     @IBOutlet weak var mainHScroller: UIScrollView!
@@ -152,9 +151,10 @@ class EnhancedDetailsVC: UIViewController,
             self.activeView = "statsView"
         }
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(self.navigateAncestor))
-        
+//        let tap = UITapGestureRecognizer(target: self, action: #selector(navigateRelation(_:pID:)))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(navigateRelation(_:)))
         imgAncestor.addGestureRecognizer(tap)
+        
         imgAncestor.userInteractionEnabled = true
     }
     
@@ -271,6 +271,8 @@ class EnhancedDetailsVC: UIViewController,
             self.imgAncestor.hidden = true
         }
         
+        //add label if no descendants
+        self.lblNoDesc.hidden = (self.pokemon.descendants.count <= 0)
         
     }
 
@@ -387,7 +389,7 @@ class EnhancedDetailsVC: UIViewController,
     }
     
     
-    func navigateAncestor() {
+    func navigateRelation(sender:AnyObject) {
         let poke :Pokemon = Pokemon(name: self.pokemon.ancestorSpeciesName, id: self.pokemon.ancestorSpeciesId)
 
         let speciesUrlStr = "\(URL_BASE)/api/v2/pokemon-species/\(poke.speciesId)/"

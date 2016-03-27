@@ -183,34 +183,46 @@ class Pokemon { //: NSObject
         must run downloadPokemonSpeciesDescription prior to this, as it gets
         the ancestor and descendant species urls
     */
-    
+    //TODO: turns out that you have to dig into the chain to find your current, and then 
+    // get its immediate descendant.
     func downLoadEvolutions(evoChainUrl: String, completed: DownloadComplete) {
         let url = NSURL(string: evoChainUrl)!
         
         Alamofire.request(.GET, url).responseJSON { response in
             self.myPokemonEvolutionsApiResult = response.result
             
+            //get the full record
             if let evoChainFullRecord = self.myPokemonEvolutionsApiResult.value as? Dictionary<String, AnyObject> where evoChainFullRecord.count > 0 {
                 
+                //get the top-level chain object
                 if let evoChain = evoChainFullRecord["chain"] as? Dictionary<String, AnyObject> where evoChain.count > 0 {
+                    //get the species name of the lowest species on the chain
+                    let evoSpecies = evoChain["species"] as? Dictionary<String, String>
+                    let evoSpeName = evoSpecies!["name"]
                     
-                    if let evoArray = evoChain["evolves_to"] as? [Dictionary<String, AnyObject>] where evoArray.count > 0 {
+                    //found at top level
+                    if evoSpeName == self._speciesName {
                         
-                        for oneTopLevelEvo in evoArray  {
-                            
-                            if let evoSpecies = oneTopLevelEvo["species"] as? Dictionary<String, String> where evoSpecies.count > 0 {
-                                
-                                var evoDict: Dictionary<String, String> = Dictionary<String, String>()
-                                evoDict["name"] = evoSpecies["name"]!
-                                
-                                let speciesUrl:String = evoSpecies["url"]!
-                                let speciesId:String = String(self.extractSpeciesIdFromUrl(speciesUrl))
-                                evoDict["id"] = speciesId
-                                
-                                self._descendants.append(evoDict)
+                        if let evoArray = evoChain["evolves_to"] as? [Dictionary<String, AnyObject>] {
+
+                            self.addDescendantsFromArray(evoArray)
+                        } else {
+                            //no descendants
+                        }
+                        
+                    } else {
+                        if let evoArray = evoChain["evolves_to"] as? [Dictionary<String, AnyObject>] {
+                            let retVal = self.getNodeWithSpeciesName(evoArray)
+                            if retVal.count > 0 {
+                                self.addDescendantsFromArray(retVal)
                             }
+                        } else {
+                            //no descendants
                         }
                     }
+                    
+                    
+                    
                 }
             }
         }
@@ -219,6 +231,56 @@ class Pokemon { //: NSObject
     }
     
     //MARK: utility
+    
+    //you have found the item with the species name.
+    // find its evolves-to pokemon and add it to the descendants array
+    func addDescendantsFromArray(evoArray: [Dictionary<String, AnyObject>] ) {
+        for evoItem in evoArray {
+            addDescendantFromNode(evoItem)
+        }
+    }
+    
+    
+    func addDescendantFromNode(evoItem: Dictionary<String, AnyObject>) {
+        let moreInfo = self.getEvolvesToSpeciesInfo(evoItem)
+        var evoDict: Dictionary<String, String> = Dictionary<String, String>()
+        evoDict["name"] = moreInfo.newName
+        evoDict["id"] = String(moreInfo.newId)
+        self._descendants.append(evoDict)
+        
+    }
+    
+    //recursively drill into the node until you have the item with the species name
+    // sending in an evolves_to
+    func getNodeWithSpeciesName(source:[Dictionary<String, AnyObject>]) -> [Dictionary<String, AnyObject>] {
+
+        for evoToNodes in source {
+            if let evoCurrNode = evoToNodes["species"] as? Dictionary<String, AnyObject> {
+                let evoCurrSpeName = evoCurrNode["name"] as? String
+                if evoCurrSpeName == self._speciesName {
+                    //return the next node
+                    let evoToNode = evoToNodes["evolves_to"] as? [Dictionary<String, AnyObject>]
+                    return evoToNode!
+                } else {
+                    //todo: get more
+                    //return self.getNodeWithSpeciesName(evoToNode)
+                }
+            }
+        }
+        
+        let emptyArray =  [Dictionary<String, AnyObject>]()
+        return emptyArray
+    }
+    
+    
+    func getEvolvesToSpeciesInfo(source:Dictionary<String, AnyObject>) -> (newId:Int, newName:String) {
+    
+        let evoSpecies = source["species"] as? Dictionary<String, String>
+        let evoSpeName = evoSpecies!["name"]
+        let evoId = extractSpeciesIdFromUrl((evoSpecies!["url"])!)
+        
+        return (evoId, evoSpeName!)
+    }
     
     /*
         Call this before assigning new items to prevent previous entry content
