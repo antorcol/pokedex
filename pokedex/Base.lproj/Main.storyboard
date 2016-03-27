@@ -244,22 +244,22 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Zfl-Jx-TEP" userLabel="stkAncDesc">
-                                                <rect key="frame" x="372" y="37" width="103" height="290"/>
+                                                <rect key="frame" x="372" y="37" width="113" height="294"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleAspectFit" ambiguous="YES" misplaced="YES" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="LBl-fd-bCn" userLabel="stkAncestors">
-                                                        <rect key="frame" x="0.0" y="0.0" width="103" height="142"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="113" height="142"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Ancestor" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D6e-5z-4KY" userLabel="lblAncestorTitle">
-                                                                <rect key="frame" x="17" y="0.0" width="69" height="21"/>
+                                                                <rect key="frame" x="22" y="0.0" width="69" height="21"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fqg-zq-XrH" userLabel="imgAncestor">
-                                                                <rect key="frame" x="1" y="21" width="101" height="100"/>
+                                                                <rect key="frame" x="6" y="21" width="101" height="100"/>
                                                             </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="lblPokeName" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0J4-vu-29X" customClass="PokeDataLabelData" customModule="pokedex" customModuleProvider="target">
-                                                                <rect key="frame" x="1" y="121" width="101" height="21"/>
+                                                                <rect key="frame" x="6" y="121" width="101" height="21"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
@@ -267,36 +267,39 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleAspectFit" ambiguous="YES" misplaced="YES" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="rLh-7x-rNV" userLabel="stkDesc">
-                                                        <rect key="frame" x="0.0" y="152" width="103" height="138"/>
+                                                        <rect key="frame" x="0.0" y="152" width="113" height="142"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Descendents" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J9v-6y-Txf" userLabel="titleDescendants">
-                                                                <rect key="frame" x="1" y="0.0" width="101" height="21"/>
+                                                                <rect key="frame" x="6" y="0.0" width="101" height="21"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" tag="3" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="wFJ-Vu-EAF" userLabel="descendentsCol">
-                                                                <rect key="frame" x="0.0" y="21" width="103" height="117"/>
+                                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" tag="30" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="pvK-oh-cgi" userLabel="descendantsCol">
+                                                                <rect key="frame" x="0.0" y="21" width="113" height="121"/>
                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="t0j-6x-kGH">
-                                                                    <size key="itemSize" width="99" height="116"/>
+                                                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="erd-JE-hK5">
+                                                                    <size key="itemSize" width="100" height="120"/>
                                                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                                 </collectionViewFlowLayout>
                                                                 <cells>
-                                                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="DescendantCell" id="GRo-SG-iGF" customClass="DescendantCell" customModule="pokedex" customModuleProvider="target">
-                                                                        <rect key="frame" x="2" y="0.0" width="99" height="116"/>
+                                                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="DescendantCell" id="UcC-JZ-Zj5" customClass="DescendantCell" customModule="pokedex" customModuleProvider="target">
+                                                                        <rect key="frame" x="7" y="0.0" width="100" height="120"/>
                                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="99" height="116"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="100" height="120"/>
                                                                             <autoresizingMask key="autoresizingMask"/>
                                                                             <subviews>
-                                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dAJ-4J-QyL" userLabel="imgDescendant">
-                                                                                    <rect key="frame" x="0.0" y="0.0" width="99" height="99"/>
+                                                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Pzw-Ng-X2J" userLabel="imgDescendant">
+                                                                                    <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                                                                 </imageView>
-                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Species" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lnl-CL-B5b" userLabel="lblDescendant" customClass="PokeDataLabelData" customModule="pokedex" customModuleProvider="target">
-                                                                                    <rect key="frame" x="0.0" y="99" width="99" height="17"/>
+                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="lblDescName" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DdH-nZ-Akb" customClass="PokeDataLabelData" customModule="pokedex" customModuleProvider="target">
+                                                                                    <rect key="frame" x="0.0" y="100" width="100" height="24"/>
+                                                                                    <constraints>
+                                                                                        <constraint firstAttribute="height" constant="21" id="I58-fW-ASL"/>
+                                                                                    </constraints>
                                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                                                     <nil key="highlightedColor"/>
@@ -305,24 +308,21 @@
                                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                         </view>
                                                                         <constraints>
-                                                                            <constraint firstItem="lnl-CL-B5b" firstAttribute="centerX" secondItem="GRo-SG-iGF" secondAttribute="centerX" id="Uk1-YC-B9e"/>
-                                                                            <constraint firstItem="lnl-CL-B5b" firstAttribute="top" secondItem="dAJ-4J-QyL" secondAttribute="bottom" id="Vdr-Fi-nsV"/>
-                                                                            <constraint firstItem="dAJ-4J-QyL" firstAttribute="top" secondItem="GRo-SG-iGF" secondAttribute="top" id="dWt-MV-ldQ"/>
-                                                                            <constraint firstItem="dAJ-4J-QyL" firstAttribute="centerX" secondItem="GRo-SG-iGF" secondAttribute="centerX" id="psq-z4-bhL"/>
+                                                                            <constraint firstAttribute="trailingMargin" secondItem="DdH-nZ-Akb" secondAttribute="trailing" id="NMC-t2-II4"/>
+                                                                            <constraint firstItem="Pzw-Ng-X2J" firstAttribute="leading" secondItem="UcC-JZ-Zj5" secondAttribute="leadingMargin" id="Pjf-fQ-cXv"/>
+                                                                            <constraint firstItem="DdH-nZ-Akb" firstAttribute="leading" secondItem="UcC-JZ-Zj5" secondAttribute="leadingMargin" id="UID-6U-3nL"/>
+                                                                            <constraint firstAttribute="trailingMargin" secondItem="Pzw-Ng-X2J" secondAttribute="trailing" id="WbQ-K3-5Re"/>
+                                                                            <constraint firstItem="Pzw-Ng-X2J" firstAttribute="top" secondItem="UcC-JZ-Zj5" secondAttribute="topMargin" id="e8U-pj-fhH"/>
+                                                                            <constraint firstItem="DdH-nZ-Akb" firstAttribute="top" secondItem="Pzw-Ng-X2J" secondAttribute="bottom" id="jmR-xn-bCg"/>
+                                                                            <constraint firstItem="Pzw-Ng-X2J" firstAttribute="centerX" secondItem="UcC-JZ-Zj5" secondAttribute="centerX" id="qgM-e4-7SK"/>
                                                                         </constraints>
                                                                         <connections>
-                                                                            <outlet property="imgDescendant" destination="dAJ-4J-QyL" id="EQv-OW-Go3"/>
-                                                                            <outlet property="lblDescendantName" destination="lnl-CL-B5b" id="c52-T8-Og4"/>
+                                                                            <outlet property="imgDescendant" destination="Pzw-Ng-X2J" id="EKe-LW-aFl"/>
+                                                                            <outlet property="lblDescendantName" destination="DdH-nZ-Akb" id="Wsc-e7-dwv"/>
                                                                         </connections>
                                                                     </collectionViewCell>
                                                                 </cells>
                                                             </collectionView>
-                                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="None" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s99-BP-faK" customClass="PokeDataLabelData" customModule="pokedex" customModuleProvider="target">
-                                                                <rect key="frame" x="31" y="138" width="41" height="0.0"/>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
                                                         </subviews>
                                                     </stackView>
                                                 </subviews>
@@ -589,13 +589,11 @@
                                             <constraint firstItem="MKo-kS-Wjh" firstAttribute="top" secondItem="gHX-7Y-Bki" secondAttribute="bottom" constant="8" id="1Ae-RF-DSK"/>
                                             <constraint firstItem="c1y-AL-paj" firstAttribute="centerX" secondItem="3EE-0Y-UHY" secondAttribute="centerX" id="1Ds-p6-y25"/>
                                             <constraint firstItem="gHX-7Y-Bki" firstAttribute="top" secondItem="c1y-AL-paj" secondAttribute="bottom" constant="8" id="7cz-fO-MXN"/>
-                                            <constraint firstItem="MKo-kS-Wjh" firstAttribute="top" secondItem="tVC-iZ-z3k" secondAttribute="bottom" constant="8" id="7fb-e6-k75"/>
                                             <constraint firstItem="MKo-kS-Wjh" firstAttribute="centerX" secondItem="3EE-0Y-UHY" secondAttribute="centerX" id="LKS-pe-wrv"/>
                                             <constraint firstItem="I2c-wn-YbV" firstAttribute="centerX" secondItem="3EE-0Y-UHY" secondAttribute="centerX" id="Pot-zQ-Rqh"/>
                                             <constraint firstItem="tVC-iZ-z3k" firstAttribute="top" secondItem="MKo-kS-Wjh" secondAttribute="bottom" constant="8" id="S7Y-Vz-BTg"/>
                                             <constraint firstItem="LfI-Wk-5lu" firstAttribute="centerX" secondItem="3EE-0Y-UHY" secondAttribute="centerX" id="V1r-zH-1SL"/>
                                             <constraint firstItem="LfI-Wk-5lu" firstAttribute="bottom" secondItem="I2c-wn-YbV" secondAttribute="top" constant="8" id="WL1-B8-8kO"/>
-                                            <constraint firstItem="tVC-iZ-z3k" firstAttribute="top" secondItem="gHX-7Y-Bki" secondAttribute="bottom" constant="8" id="Yq1-7V-RiV"/>
                                             <constraint firstItem="2Pb-jq-zn5" firstAttribute="leading" secondItem="3EE-0Y-UHY" secondAttribute="leading" id="Z52-ZL-Deu"/>
                                             <constraint firstItem="LfI-Wk-5lu" firstAttribute="top" secondItem="3EE-0Y-UHY" secondAttribute="top" id="cLN-YD-x8j"/>
                                             <constraint firstItem="tVC-iZ-z3k" firstAttribute="centerX" secondItem="3EE-0Y-UHY" secondAttribute="centerX" id="deV-8J-qf4"/>
@@ -605,12 +603,6 @@
                                             <constraint firstItem="c1y-AL-paj" firstAttribute="top" secondItem="2Pb-jq-zn5" secondAttribute="bottom" constant="8" id="upg-Ge-Bgk"/>
                                             <constraint firstAttribute="trailing" secondItem="2Pb-jq-zn5" secondAttribute="trailing" id="z4s-o0-DfL"/>
                                         </constraints>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="7fb-e6-k75"/>
-                                                <exclude reference="Yq1-7V-RiV"/>
-                                            </mask>
-                                        </variation>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -728,7 +720,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="descendantsCol" destination="wFJ-Vu-EAF" id="ugW-rw-Qn0"/>
+                        <outlet property="descendantsCol" destination="pvK-oh-cgi" id="owi-Tn-qZH"/>
                         <outlet property="evoView" destination="Vpl-2S-7qX" id="6GV-Iq-NET"/>
                         <outlet property="imgAncestor" destination="Fqg-zq-XrH" id="gHa-ei-pxz"/>
                         <outlet property="imgMain" destination="izq-Bq-Sul" id="gUn-si-t92"/>
@@ -742,7 +734,6 @@
                         <outlet property="lblExperience" destination="a2G-fh-uQ1" id="13u-pP-Egn"/>
                         <outlet property="lblHeightVal" destination="60k-XY-wpj" id="lJK-bc-dXH"/>
                         <outlet property="lblHitPointsVal" destination="3vQ-61-Yzu" id="Iz7-Uj-iRy"/>
-                        <outlet property="lblNoDescs" destination="s99-BP-faK" id="KC5-5N-LSf"/>
                         <outlet property="lblPokeName" destination="DD0-aw-Hun" id="PaB-G0-7YU"/>
                         <outlet property="lblSpAttackVal" destination="BKQ-ek-48b" id="GvA-M9-lYv"/>
                         <outlet property="lblSpDefenseVal" destination="8xg-Qh-PA0" id="utA-nI-PxW"/>
@@ -760,7 +751,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J2O-dq-aiB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1005" y="406"/>
+            <point key="canvasLocation" x="1006" y="406"/>
         </scene>
     </scenes>
     <resources>

@@ -11,10 +11,9 @@ import UIKit
 class DescendantCell: UICollectionViewCell {
     
     
-    //MARK: IBOutlets and vars
+    //MARK: IBOutlets and vars    
     @IBOutlet weak var lblDescendantName: UILabel!
     @IBOutlet weak var imgDescendant: UIImageView!
-    
     var pokemon: Pokemon!
     
     //MARK: Init

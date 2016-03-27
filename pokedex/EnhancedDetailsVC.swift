@@ -44,7 +44,7 @@ class EnhancedDetailsVC: UIViewController,
     //MARK: Constants
     let MOVES_COL_TAG = 10
     let SPRITES_COL_TAG = 20
-    let DESCENDANTS_COL_TAG = 3
+    let DESCENDANTS_COL_TAG = 30
     
     
     //MARK: Basic Stats - these are fixed in number
@@ -52,7 +52,6 @@ class EnhancedDetailsVC: UIViewController,
     @IBOutlet weak var imgMain: UIImageView!
     @IBOutlet weak var lblExperience: UILabel!
     @IBOutlet weak var lblBaseDescription: UILabel!
-    
     @IBOutlet weak var lblSpeciesVal: PokeDataLabelData!
     @IBOutlet weak var lblHitPointsVal: PokeDataLabelData!
     @IBOutlet weak var lblHeightVal: PokeDataLabelData!
@@ -65,12 +64,12 @@ class EnhancedDetailsVC: UIViewController,
     @IBOutlet weak var lblSpDefenseVal: PokeDataLabelData!
     @IBOutlet weak var sgCategories: UISegmentedControl!
     
-    //there's a maximum of 3 abilities
+    //Abilities: maximum of 3
     @IBOutlet weak var lblAbilityOne: PokeAbilitiesLabelData!
     @IBOutlet weak var lblAbilityTwo: PokeAbilitiesLabelData!
     @IBOutlet weak var lblAbilityThree: PokeAbilitiesLabelData!
 
-    //MARK: Stats
+    //MARK: Stats view, which contains all stats info. Has a static 'collection'
     @IBOutlet weak var statsView: UIView!
 
     //MARK: Moves
@@ -80,9 +79,14 @@ class EnhancedDetailsVC: UIViewController,
     //MARK: Evo Images
     @IBOutlet weak var evoView: UIView!
     @IBOutlet weak var spritesCol: UICollectionView!
+    
+    //Ancestor: maximum of one
     @IBOutlet weak var imgAncestor: UIImageView!
     @IBOutlet weak var lblAncestor: PokeDataLabelData!
+    
+    //Descendants: 0..Many
     @IBOutlet weak var descendantsCol: UICollectionView!
+    
     @IBOutlet weak var lblNoDescs: PokeDataLabelData!
     
     //scroller
@@ -120,25 +124,22 @@ class EnhancedDetailsVC: UIViewController,
                 self.spritesCol.delegate = self
                 self.spritesCol.dataSource = self
                 
-                self.descendantsCol.delegate = self
-                self.descendantsCol.dataSource = self
+                //I wanted to have this unnested, but it wouldn't work
+                if !self.pokemon.hasEvoinfo {
+                    
+                    self.pokemon.downLoadEvolutions(self.pokemon.evolutionChainUrl) { () -> () in
+                        
+                        self.descendantsCol.delegate = self
+                        self.descendantsCol.dataSource = self
+                        self.descendantsCol.reloadData()
+                    }
+                }
+                
 
                 self.lblBaseDescription.pulseOff(self.pokemon.description)
                 self.activeView = "statsView"
             })
             
-            //I wanted to have this unnested
-            if !self.pokemon.hasEvoinfo {
-                
-                self.pokemon.downLoadEvolutions(self.pokemon.evolutionChainUrl) { () -> () in
-                    
-                    //self.descendantsCol.delegate = self
-                    //self.descendantsCol.dataSource = self
-                    //self.activeView = "spritesView"
-                }
-            } //else {
-            //self.activeView = "spritesView"
-            //}
             
         } else {
             self.updateUI()
@@ -280,7 +281,7 @@ class EnhancedDetailsVC: UIViewController,
         } else if collectionView.tag == SPRITES_COL_TAG {
             return self.pokemon.spriteNames.count
         } else if collectionView.tag == DESCENDANTS_COL_TAG {
-            return self.pokemon.descendants.count
+            return  self.pokemon.descendants.count
         } else {
             return 1
         }
@@ -298,7 +299,7 @@ class EnhancedDetailsVC: UIViewController,
         } else if collectionView.tag == DESCENDANTS_COL_TAG {
             return CGSizeMake(100, 120)
         }
-        return CGSizeMake(100, 100)
+        return CGSizeMake(110, 140)
     }
     
     /* 
@@ -306,7 +307,17 @@ class EnhancedDetailsVC: UIViewController,
         collections. I did this via tags on the collections
     */
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if collectionView.tag == MOVES_COL_TAG {
+        
+        if collectionView.tag == DESCENDANTS_COL_TAG {
+            if let descendantCell = collectionView.dequeueReusableCellWithReuseIdentifier("DescendantCell", forIndexPath: indexPath) as? DescendantCell {
+                
+                let descendantDict = self.pokemon.descendants[indexPath.row]
+                descendantCell.configureCell(descendantDict["name"]!, descendantId: descendantDict["id"]!)
+                
+                return descendantCell
+            }
+            
+        } else if collectionView.tag == MOVES_COL_TAG {
             if let moveCell = collectionView.dequeueReusableCellWithReuseIdentifier("MoveCell", forIndexPath: indexPath) as? MoveCell {
                 let moveName : String!
                 moveName = pokemon.moves[indexPath.row]
@@ -321,34 +332,7 @@ class EnhancedDetailsVC: UIViewController,
                 spriteCell.configureCell(spriteName, spriteUrlStr: spriteUrl)
                 return spriteCell
             }
-        } else if collectionView.tag == DESCENDANTS_COL_TAG {
-            print("Found Descendant")
-            if let descendantCell = collectionView.dequeueReusableCellWithReuseIdentifier("DescendantCell", forIndexPath: indexPath) as? DescendantCell {
-                
-                let descendantDict = self.pokemon.descendants[indexPath.row]
-                descendantCell.configureCell(descendantDict["name"]!, descendantId: descendantDict["id"]!)
-                
-                return descendantCell
-            }
-            
-            //        //add the descendant name, if it exists
-            //        if self.pokemon.descendantName != "" {
-            //            self.lblDescendant.text = self.pokemon.descendantName
-            //        } else {
-            //            self.lblDescendant.text = "None"
-            //        }
-            //
-            //        //add the descendant image, if it exists
-            //        if self.pokemon.descendantSpeciesId > 0 {
-            //            self.imgDescendant.image = UIImage(named: String(self.pokemon.descendantSpeciesId))
-            //            self.lblDescendant.text = self.pokemon.descendantName
-            //        } else {
-            //            self.imgDescendant.hidden = true
-            //        }
-
-        } else {
-            let b: Int = 0
-        }
+        } 
         
         return UICollectionViewCell()
     }
@@ -374,8 +358,6 @@ class EnhancedDetailsVC: UIViewController,
             break
         case 2:
             self.descendantsCol.reloadData()
-            self.lblNoDescs.hidden = false
-            self.lblNoDescs.text = String(self.pokemon.descendants.count)
             
             //must load species first
             // this is an alamofire call
