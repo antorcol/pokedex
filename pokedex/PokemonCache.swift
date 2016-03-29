@@ -37,5 +37,13 @@ class PokemonCache : NSObject {
         return false
     }
     
+    var count: Int {
+        return _browseSet.count
+    }
     
+    var browseSet: [Pokemon] {
+        get {
+            return self._browseSet
+        }
+    }
 }

@@ -15,12 +15,15 @@ class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
    
     var pokemon: [Pokemon] = [Pokemon]()
     var filteredPokemon: [Pokemon] = [Pokemon]()
+    var pokemonFavs: [Pokemon] = [Pokemon]()
     var pokemonCache: PokemonCache = PokemonCache()
     var musicPlayer: AVAudioPlayer!
     var inSearchMode: Bool = false
     
     @IBOutlet weak var collection: UICollectionView!
     @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var btnCache: UIButton!
+    @IBOutlet weak var btnFavs: UIButton!
     
     //MARK: Overrides
     override func viewDidLoad() {
@@ -37,6 +40,13 @@ class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         
     }
 
+    override func viewWillAppear(animated: Bool) {
+        
+        if pokemonCache.count > 0 {
+            self.collection.reloadData()
+        }
+    }
+    
     //MARK: Util
     func initAudio() {
         let pkMonMusicPath = NSBundle.mainBundle().pathForResource("MainTheme-Stadium", ofType: "mp3")
@@ -103,10 +113,18 @@ class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
             let poke : Pokemon!
             if inSearchMode {
                 poke = filteredPokemon[indexPath.row]
+            } else if btnFavs.selected {
+                poke = pokemonFavs[indexPath.row]
+            } else if btnCache.selected {
+                poke = pokemonCache.browseSet[indexPath.row]
             } else {
                 poke = pokemon[indexPath.row]
             }
-            cell.configureCell(poke)
+            
+            let highlightCell: Bool = pokemonCache.isInCache(poke)
+            
+            cell.configureCell(poke, isInCache: highlightCell)
+            
             return cell
             
         } else {
@@ -120,6 +138,10 @@ class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         let poke : Pokemon!
         if inSearchMode {
             poke = filteredPokemon[indexPath.row]
+        } else if btnFavs.selected {
+            poke = pokemonFavs[indexPath.row]
+        } else if btnCache.selected {
+            poke = pokemonCache.browseSet[indexPath.row]
         } else {
             poke = pokemon[indexPath.row]
         }
@@ -135,6 +157,10 @@ class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         let poke : Pokemon!
         if inSearchMode {
             poke = filteredPokemon[indexPath.row]
+        } else if btnFavs.selected {
+            poke = pokemonFavs[indexPath.row]
+        } else if btnCache.selected {
+            poke = pokemonCache.browseSet[indexPath.row]
         } else {
             poke = pokemon[indexPath.row]
         }
@@ -161,6 +187,10 @@ class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if inSearchMode {
             return filteredPokemon.count
+        } else if btnFavs.selected {
+            return pokemonFavs.count
+        } else if btnCache.selected {
+            return pokemonCache.browseSet.count
         } else {
             return pokemon.count
         }
@@ -183,7 +213,7 @@ class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         if searchBar.text == nil || searchBar.text == "" {
             inSearchMode = false
             collection.reloadData()
-            view.endEditing(true)
+            //view.endEditing(true)
         } else {
             inSearchMode = true
             filteredPokemon = pokemon.filter {$0.name.rangeOfString(searchText, options: .CaseInsensitiveSearch) != nil }
@@ -191,6 +221,25 @@ class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         }
     }
     
+    //MARK: Favorites and Cache
+    @IBAction func btnFavs_Press(sender: UIButton) {
+        sender.selected = !sender.selected
+        if sender.selected {
+            btnCache.selected = false //temporarily switch until you see the effect
+        }
+    }
+    
+    @IBAction func btnCache_Press(sender: UIButton) {
+        sender.selected = !sender.selected
+        if sender.selected {
+            btnFavs.selected = false
+            filteredPokemon = pokemonCache.browseSet
+            collection.reloadData()
+        } else {
+            view.endEditing(true)
+            collection.reloadData()
+        }
+    }
     
     //MARK: Segue
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
