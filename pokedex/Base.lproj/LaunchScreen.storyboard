@@ -37,7 +37,7 @@
                                         <color key="shadowColor" red="0.85098039219999999" green="0.30196078430000001" blue="0.2274509804" alpha="1" colorSpace="calibratedRGB"/>
                                         <size key="shadowOffset" width="3" height="-1"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Anthony Torrero Collins Copyright (C) 2016" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2XC-S4-KwD">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Anthony Torrero Collins Copyright © 2016" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2XC-S4-KwD">
                                         <rect key="frame" x="186" y="180" width="228" height="103"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="228" id="ckW-bE-a4L"/>
@@ -46,13 +46,37 @@
                                         <color key="textColor" red="0.41960784309999999" green="0.35294117650000001" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Background Art &quot;Pikachu&quot; Copyright ©" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aE8-FS-98E">
+                                        <rect key="frame" x="165" y="503" width="297" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jeshar Escoffery" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9de-aV-SW8">
+                                        <rect key="frame" x="236" y="535" width="129" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="http://s3ntrydesigns.wix.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J2V-WD-Qab">
+                                        <rect key="frame" x="189" y="564" width="222" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="0Dg-B6-H5l" firstAttribute="top" secondItem="t7b-We-Cxb" secondAttribute="top" constant="125" id="9eZ-6r-kIw"/>
                                     <constraint firstItem="0Dg-B6-H5l" firstAttribute="centerX" secondItem="t7b-We-Cxb" secondAttribute="centerX" id="9z7-j8-Blq"/>
                                     <constraint firstItem="2XC-S4-KwD" firstAttribute="top" secondItem="0Dg-B6-H5l" secondAttribute="bottom" constant="8" id="BuW-jD-v2H"/>
+                                    <constraint firstItem="aE8-FS-98E" firstAttribute="centerX" secondItem="t7b-We-Cxb" secondAttribute="centerX" id="Eqw-NU-ON6"/>
                                     <constraint firstItem="0Dg-B6-H5l" firstAttribute="top" secondItem="t7b-We-Cxb" secondAttribute="top" constant="8" id="GEc-VJ-w8a"/>
+                                    <constraint firstItem="J2V-WD-Qab" firstAttribute="centerX" secondItem="t7b-We-Cxb" secondAttribute="centerX" id="I6a-so-o1Q"/>
+                                    <constraint firstItem="9de-aV-SW8" firstAttribute="centerX" secondItem="t7b-We-Cxb" secondAttribute="centerX" id="RCP-dh-r6e"/>
+                                    <constraint firstAttribute="bottom" secondItem="J2V-WD-Qab" secondAttribute="bottom" constant="15" id="UYN-Sy-X7A"/>
                                     <constraint firstItem="2XC-S4-KwD" firstAttribute="centerX" secondItem="t7b-We-Cxb" secondAttribute="centerX" id="jaE-G0-fxD"/>
+                                    <constraint firstItem="9de-aV-SW8" firstAttribute="top" secondItem="aE8-FS-98E" secondAttribute="bottom" constant="8" id="qes-zm-mbd"/>
+                                    <constraint firstItem="J2V-WD-Qab" firstAttribute="top" secondItem="9de-aV-SW8" secondAttribute="bottom" constant="8" id="xfL-EK-1yK"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
