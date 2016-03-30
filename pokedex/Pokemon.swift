@@ -54,11 +54,10 @@ class Pokemon { //: NSObject
     private var _ancestor_species_url: String = ""
     private var _evolution_chain_url: String = ""
     
-    //del
+    //descendants - just name and ID
     private var _descendants: [Dictionary<String, String>] = Array()
-//    private var _descendant_name : String = ""
-//    private var _descendant_species_url: String = ""
-//    private var _descendant_species_id: Int = -1
+    
+    private var _isFavorite: Bool = false
     
     init(name:String, id:Int) {
         self._identifier = name
@@ -661,22 +660,12 @@ class Pokemon { //: NSObject
         }
     }
     
-//    var descendantName: String {
-//        get {
-//            return self._descendant_name
-//        }
-//    }
-//    
-//    var descendantSpeciesUrl: String {
-//        get {
-//            return self._descendant_species_url
-//        }
-//    }
-//    
-//    var descendantSpeciesId: Int {
-//        get {
-//            return self._descendant_species_id
-//        }
-//    }
-
+    var isFavorite: Bool {
+        get {
+            return self._isFavorite
+        }
+        set {
+            self._isFavorite = newValue
+        }
+    }
 }

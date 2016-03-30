@@ -221,21 +221,32 @@ class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         }
     }
     
+    
     //MARK: Favorites and Cache
     @IBAction func btnFavs_Press(sender: UIButton) {
         sender.selected = !sender.selected
         if sender.selected {
-            btnCache.selected = false //temporarily switch until you see the effect
+            btnCache.selected = false
+            sender.highlighted = true
+            filteredPokemon = pokemonFavs
+            collection.reloadData()
+        } else {
+            sender.highlighted = false
+            view.endEditing(true)
+            collection.reloadData()
         }
     }
     
+    
+
     @IBAction func btnCache_Press(sender: UIButton) {
         sender.selected = !sender.selected
         if sender.selected {
+            sender.highlighted = true
             btnFavs.selected = false
-            filteredPokemon = pokemonCache.browseSet
             collection.reloadData()
         } else {
+            sender.highlighted = false
             view.endEditing(true)
             collection.reloadData()
         }

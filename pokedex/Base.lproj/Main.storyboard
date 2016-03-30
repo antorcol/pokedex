@@ -73,32 +73,56 @@
                                 <color key="barTintColor" red="0.85098039219999999" green="0.30196078430000001" blue="0.2274509804" alpha="1" colorSpace="calibratedRGB"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Xi-Pc-jHD" userLabel="btnCache">
+                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Xi-Pc-jHD" userLabel="btnCache">
                                 <rect key="frame" x="520" y="55" width="40" height="44"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="Fr2-4h-9fa"/>
                                     <constraint firstAttribute="width" constant="40" id="WGf-UF-1z1"/>
                                 </constraints>
-                                <state key="normal" title="♻️"/>
+                                <fontDescription key="fontDescription" name="AppleColorEmoji" family="Apple Color Emoji" pointSize="16"/>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <state key="normal" title="♲">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <state key="selected" title="♻️"/>
+                                <state key="highlighted" title="♻️"/>
                                 <connections>
                                     <action selector="btnCache_Press:" destination="BYZ-38-t0r" eventType="touchUpInside" id="N1s-M7-Bob"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="84o-rU-vuN" userLabel="btnFavs">
+                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="84o-rU-vuN" userLabel="btnFavs">
                                 <rect key="frame" x="560" y="55" width="40" height="44"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="CaP-ll-3Xf"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="cN6-L3-bja"/>
                                     <constraint firstAttribute="height" constant="44" id="n3U-iY-SAv"/>
                                     <constraint firstAttribute="width" constant="40" id="xq6-rM-cFL"/>
                                 </constraints>
-                                <state key="normal" title="❤️"/>
+                                <fontDescription key="fontDescription" name="AppleColorEmoji" family="Apple Color Emoji" pointSize="15"/>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <state key="normal" title="♡">
+                                    <color key="titleColor" red="0.85098039219999999" green="0.30196078430000001" blue="0.2274509804" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <state key="disabled">
+                                    <color key="titleColor" red="0.85098039219999999" green="0.30196078430000001" blue="0.2274509804" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <state key="selected" title="❤️">
+                                    <color key="titleColor" red="0.85098039219999999" green="0.30196078430000001" blue="0.2274509804" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <state key="highlighted" title="❤️">
+                                    <color key="titleColor" red="0.85098039219999999" green="0.30196078430000001" blue="0.2274509804" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <state key="focused">
+                                    <color key="titleColor" red="0.85098039219999999" green="0.30196078430000001" blue="0.2274509804" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="btnFavs_Press:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BF8-mh-mI5"/>
                                 </connections>
                             </button>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="0bn-2D-7On">
-                                <rect key="frame" x="20" y="119" width="560" height="461"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="0bn-2D-7On">
+                                <rect key="frame" x="20" y="107" width="560" height="461"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="560" id="zz2-9d-JZk"/>
@@ -130,20 +154,46 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yt2-nV-BLe">
+                                                    <rect key="frame" x="81" y="8" width="21" height="21"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="21" id="1Nx-4t-95J"/>
+                                                        <constraint firstAttribute="height" constant="21" id="deK-32-Gqf"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="AppleColorEmoji" family="Apple Color Emoji" pointSize="13"/>
+                                                    <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <size key="titleShadowOffset" width="2.2250738585072014e-308" height="2.2250738585072014e-308"/>
+                                                    <state key="normal" title="♡">
+                                                        <color key="titleColor" red="0.85098039219999999" green="0.30196078430000001" blue="0.2274509804" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </state>
+                                                    <state key="selected" title="❤️">
+                                                        <color key="titleColor" red="0.85098039219999999" green="0.30196078430000001" blue="0.2274509804" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </state>
+                                                    <state key="highlighted" title="❤️">
+                                                        <color key="titleColor" red="0.85098039219999999" green="0.30196078430000001" blue="0.2274509804" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="btnFav_Pressed:" destination="1C3-eH-hQg" eventType="touchUpInside" id="gOy-5P-0qK"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <color key="backgroundColor" white="1" alpha="0.69846443965517246" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstItem="7nQ-DB-JEr" firstAttribute="leading" secondItem="1C3-eH-hQg" secondAttribute="leadingMargin" id="6q9-jd-OPK"/>
+                                            <constraint firstItem="yt2-nV-BLe" firstAttribute="top" secondItem="1C3-eH-hQg" secondAttribute="topMargin" id="FF2-f2-DjL"/>
                                             <constraint firstItem="XKc-HL-cAU" firstAttribute="top" secondItem="7nQ-DB-JEr" secondAttribute="bottom" id="KsV-wl-vov"/>
                                             <constraint firstAttribute="bottomMargin" secondItem="XKc-HL-cAU" secondAttribute="bottom" id="Nph-CD-G36"/>
                                             <constraint firstItem="XKc-HL-cAU" firstAttribute="leading" secondItem="1C3-eH-hQg" secondAttribute="leading" constant="5" id="Q75-gE-ZMt"/>
                                             <constraint firstItem="7nQ-DB-JEr" firstAttribute="top" secondItem="1C3-eH-hQg" secondAttribute="topMargin" id="SB5-dv-oAT"/>
                                             <constraint firstAttribute="trailing" secondItem="XKc-HL-cAU" secondAttribute="trailing" constant="5" id="ac2-wh-5Gd"/>
+                                            <constraint firstItem="yt2-nV-BLe" firstAttribute="trailing" secondItem="1C3-eH-hQg" secondAttribute="trailingMargin" id="lx9-0q-jk3"/>
                                             <constraint firstItem="7nQ-DB-JEr" firstAttribute="trailing" secondItem="1C3-eH-hQg" secondAttribute="trailingMargin" id="tc7-3e-xhz"/>
                                         </constraints>
                                         <connections>
+                                            <outlet property="btnFav" destination="yt2-nV-BLe" id="3Kx-fZ-Xdd"/>
                                             <outlet property="nameLabel" destination="XKc-HL-cAU" id="N4Z-AL-Zqb"/>
                                             <outlet property="thumbImg" destination="7nQ-DB-JEr" id="sbA-4z-g9j"/>
                                         </connections>
