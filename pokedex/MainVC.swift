@@ -25,7 +25,7 @@ class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     @IBOutlet weak var btnCache: UIButton!
     @IBOutlet weak var btnFavs: UIButton!
     
-    //MARK: Overrides
+    //MARK: Viewcontroller Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -42,12 +42,14 @@ class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
 
     override func viewWillAppear(animated: Bool) {
         
+        //reload the collection so that the cached pokemon will have the correct highlight
         if pokemonCache.count > 0 {
             self.collection.reloadData()
         }
     }
     
     //MARK: Util
+    // I chose the battle music for the app, mostly because it was the longest clip
     func initAudio() {
         let pkMonMusicPath = NSBundle.mainBundle().pathForResource("MainTheme-Stadium", ofType: "mp3")
         let pkMonMusicPathURL = NSURL(fileURLWithPath: pkMonMusicPath!)
@@ -66,9 +68,9 @@ class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     
     
     /* 
-    
-        this sets up what info we know from the csv file
-        more available from the api
+        The pokemon.csv file has basic info on all the 780+ pokemon.
+        A performance issue.
+        TODO: Sync the file periodically.
     */
     func parsePokemonCSV() {
         
@@ -96,7 +98,6 @@ class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     //MARK: IBActions
-    
     @IBAction func btnSpeaker_Press(sender: UIButton) {
         if musicPlayer.playing {
             sender.alpha = 0.2
@@ -111,6 +112,10 @@ class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCellWithReuseIdentifier("PokeCell", forIndexPath: indexPath) as? PokeCell {
             let poke : Pokemon!
+            //there are three ways to filter the collection:
+            //  search bar typing,
+            //  favorites
+            //  cached items
             if inSearchMode {
                 poke = filteredPokemon[indexPath.row]
             } else if btnFavs.selected {
@@ -132,7 +137,8 @@ class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         }
     }
     
-    
+    // I pull the highlight so that I can adjust the pokemon title to be 'loading'
+    // This is basically a time delay hack. Stuff takes a while to load down.
     func collectionView(collectionView: UICollectionView, didHighlightItemAtIndexPath indexPath: NSIndexPath) {
         
         let poke : Pokemon!
@@ -153,6 +159,9 @@ class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         }
     }
     
+    
+    // clicking a cell (outside the favorites button) navigates to that pokemon.
+    //  if cached, it pulls from the pokemonCache set
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let poke : Pokemon!
         if inSearchMode {
@@ -166,7 +175,10 @@ class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         }
         
         if !pokemonCache.isInCache(poke) {
-            
+            //I load the description first in the initial call.
+            // The V2 JSon is structured in such a way that I decided to compartmentalize
+            //  the downloading to what I can get from the single url(s), and not nest them.
+            //  There is a timing issue involved as well.
             let speciesUrlStr = "\(URL_BASE)/api/v2/pokemon-species/\(poke.speciesId)/"
             poke.downloadPokemonSpeciesDescription(speciesUrlStr) { () -> () in
                 self.performSegueWithIdentifier("EnhancedDetailsVC", sender: poke)
@@ -177,13 +189,14 @@ class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
                 
             }
         } else {
+            //The item is in the cache, just get it.
             self.performSegueWithIdentifier("EnhancedDetailsVC", sender: poke)
         }
                 
     }
     
     
-    
+    // restrict the count to the appropriate set.
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if inSearchMode {
             return filteredPokemon.count
@@ -196,10 +209,14 @@ class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         }
     }
     
+    //just one section
+    // I tried at one point to have headers for the collections, but it became an unwieldy nightmare.
+    //   I'll try that with my next app.
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
     }
     
+    //Standard collection cell size.
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         return CGSizeMake(105, 105)
     }
@@ -209,6 +226,8 @@ class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         view.endEditing(true)
     }
     
+    
+    //TODO: The search bar loses focus when the backspace key deletes the final character in the search bar.
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         if searchBar.text == nil || searchBar.text == "" {
             inSearchMode = false
@@ -223,6 +242,8 @@ class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     
     
     //MARK: Favorites and Cache
+    // Right now, the favorites and cache displays are 
+    //  exclusive
     @IBAction func btnFavs_Press(sender: UIButton) {
         sender.selected = !sender.selected
         if sender.selected {
@@ -238,7 +259,6 @@ class MainVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     
-
     @IBAction func btnCache_Press(sender: UIButton) {
         sender.selected = !sender.selected
         if sender.selected {

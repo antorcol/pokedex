@@ -16,6 +16,8 @@ class EnhancedDetailsVC: UIViewController,
 
     var pokemon: Pokemon!
     var pokemonCache: PokemonCache = PokemonCache()
+    
+    //controls which set of items is displayed for the segment.
     var activeView : String = "noView" {
         didSet {
             if activeView == "statsView" {
@@ -42,9 +44,10 @@ class EnhancedDetailsVC: UIViewController,
     }
 
     //MARK: Constants
-    let MOVES_COL_TAG = 10
-    let SPRITES_COL_TAG = 20
-    let DESCENDANTS_COL_TAG = 30
+    // needed to enable the collection overrides to distinguish between the active collections.
+    let MOVES_COL_TAG = 10 //tag ID for the moves collection
+    let SPRITES_COL_TAG = 20 //tag ID for the sprites collection
+    let DESCENDANTS_COL_TAG = 30 //tag ID for the descendants collection
     
     
     //MARK: Basic Stats - these are fixed in number
@@ -73,6 +76,7 @@ class EnhancedDetailsVC: UIViewController,
     @IBOutlet weak var statsView: UIView!
 
     //MARK: Moves
+    // some Pokemon have up to 150 moves
     @IBOutlet weak var movesView: UIView!
     @IBOutlet weak var movesCol: UICollectionView!
     
@@ -84,12 +88,17 @@ class EnhancedDetailsVC: UIViewController,
     @IBOutlet weak var imgAncestor: UIImageView!
     @IBOutlet weak var lblAncestor: PokeDataLabelData!
     
-    //Descendants: 0..Many
+    //Descendants: 0..Many. Eevee has 8 immediate ancestors
     @IBOutlet weak var descendantsCol: UICollectionView!
     @IBOutlet weak var lblNoDesc: PokeDataLabelData!
     
     //scroller
+    //TODO: If I had to do this again I would have separate Nibs for the 
+    //  segment targets. With all four collections present (three hidden), 
+    //  the scrolling got a bit unwieldy.
     @IBOutlet weak var mainHScroller: UIScrollView!
+    
+    //MARK: Overrides
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -151,6 +160,7 @@ class EnhancedDetailsVC: UIViewController,
             self.activeView = "statsView"
         }
         
+        //TODO: Use a generic gesture recognizer for ancestors and descendants.
 //        let tap = UITapGestureRecognizer(target: self, action: #selector(navigateRelation(_:pID:)))
         let tap = UITapGestureRecognizer(target: self, action: #selector(navigateRelation(_:)))
         imgAncestor.addGestureRecognizer(tap)
@@ -159,6 +169,7 @@ class EnhancedDetailsVC: UIViewController,
     }
     
 
+    //Plug in Pokemon values.
     func updateUI() {
         self.imgMain.image = UIImage(named: String(self.pokemon.speciesId))
         
@@ -235,6 +246,7 @@ class EnhancedDetailsVC: UIViewController,
             self.lblBaseDescription.text = "Unknown"
         }
         
+        //Max of 3 abilities.
         //TODO: create the number of needed cells in a loop
         self.lblAbilityOne.hidden = true
         self.lblAbilityTwo.hidden = true
@@ -256,6 +268,7 @@ class EnhancedDetailsVC: UIViewController,
             self.lblAbilityOne.text = "None"
         }
         
+        //Max of one ancestor
         //add the ancestor name, if it exists
         if self.pokemon.ancestorSpeciesName != "" {
             self.lblAncestor.text = self.pokemon.ancestorSpeciesName
@@ -277,6 +290,10 @@ class EnhancedDetailsVC: UIViewController,
     }
 
     //MARK: collectionView methods
+    /*
+        The collectionView methods rely on the collection tag number to know which 
+        collection is being triggered.
+     */
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView.tag == MOVES_COL_TAG {
             return self.pokemon.moves.count
@@ -289,10 +306,12 @@ class EnhancedDetailsVC: UIViewController,
         }
     }
     
+    //Always just one section per collection.
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
     }
     
+    //TODO: Could do some appearance optimization for the cells
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         if collectionView.tag == MOVES_COL_TAG {
             return CGSizeMake(120, 17)
@@ -305,8 +324,8 @@ class EnhancedDetailsVC: UIViewController,
     }
     
     /* 
-        to have multiple collections on the same view you need to distinguish between the 
-        collections. I did this via tags on the collections
+        To have multiple collections on the same view you need to distinguish between the
+        collections. I did this via tags on the collections.
     */
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
@@ -339,10 +358,13 @@ class EnhancedDetailsVC: UIViewController,
         return UICollectionViewCell()
     }
     
+    //set the space between collection cell columns
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
         return 2
     }
     
+    
+    //set the space between collection cell rows
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
         return 2
     }
@@ -361,7 +383,7 @@ class EnhancedDetailsVC: UIViewController,
         case 2:
             self.descendantsCol.reloadData()
             
-            //must load species first
+            //TODO: Do this here
             // this is an alamofire call
             
 //            if !pokemon.hasEvoinfo {
@@ -383,12 +405,15 @@ class EnhancedDetailsVC: UIViewController,
     }
     
     
+    //Back to the MainVC
     @IBAction func btnBack_Press(sender: UIButton) {
         
         dismissViewControllerAnimated(true, completion: nil)
     }
     
     
+    //Right now, navigates only the ancestor.
+    //TODO: figure out how to implement #selector(navigateRelation(_:pID:) with N arguments.
     func navigateRelation(sender:AnyObject) {
         let poke :Pokemon = Pokemon(name: self.pokemon.ancestorSpeciesName, id: self.pokemon.ancestorSpeciesId)
 
@@ -419,6 +444,7 @@ class EnhancedDetailsVC: UIViewController,
     
     
     //MARK: Segue
+    //Make sure the cache is updated before returning.
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "MainVC" {
             if let mainVC = segue.destinationViewController as? MainVC {

@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+//This label is slightly bold for pokemon data titles, such as Stat names.
 class PokeDataLabelTitle: PaddingLabel {
     
     override func layoutSubviews() {

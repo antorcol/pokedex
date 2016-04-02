@@ -10,6 +10,9 @@
 
 import UIKit
 
+// This extension enables a pulsing animation to the Pokemon title during 
+//  stats load. Basically this is another time delay hack -- show something
+//  to the user to detract from the fact that the retrieval is taking a while.
 extension UILabel {
     public func pulseOn(message: String) {
         let animation = CABasicAnimation(keyPath: "transform.scale")

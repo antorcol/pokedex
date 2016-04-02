@@ -8,6 +8,7 @@
 
 import Foundation
 
+// For navigation among the relations in the Evolutions segment.
 enum RelationType : String {
     case Ancestor = "ancestor"
     case Sibling = "sibling"

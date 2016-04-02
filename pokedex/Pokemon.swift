@@ -10,16 +10,20 @@
 import Foundation
 import Alamofire
 
-class Pokemon { //: NSObject
+//Everything centers on the Pokemon class
+class Pokemon {
     
     //MARK: data source
     private var _resourceUrl : String = "\(URL_BASE)\(URL_POKEMON)"
+
+    //These are the vars that receive the initial JSON. Hope to reparse
+    //  using better parser in the future.
     var myPokemonApiResult : Alamofire.Result<AnyObject, NSError>!
     var myPokemonSpeciesApiResult : Alamofire.Result<AnyObject, NSError>!
     var myPokemonEvolutionsApiResult : Alamofire.Result<AnyObject, NSError>!
     
-    
     //MARK: in csv file
+    //Some content is available in the CSV file
     // ---- stats view ---- //
     private var _csvRowId : Int! //PokeId and Image ID
     private var _identifier: String! //same as PokeId and Image ID in the csv file
@@ -30,7 +34,8 @@ class Pokemon { //: NSObject
     private var _order: Int! //?
     private var _is_default: Bool! //?
 
-    //MARK: others in app
+    //MARK: other data
+    // content used by the app, but not in the CSV
     private var _description: String!
     private var _speciesName: String!
     private var _speciesUrl: String!
@@ -48,17 +53,19 @@ class Pokemon { //: NSObject
     private var _spriteNames = [String]()
     private var _spriteUrls = [String]()
     
-    //part of evo view
+    //MARK: Evo view variables
     private var _ancestor_species_name: String = ""
     private var _ancestor_species_id: Int = -1
     private var _ancestor_species_url: String = ""
     private var _evolution_chain_url: String = ""
     
-    //descendants - just name and ID
+    //MARK: Descendants
+    //  just name and ID
     private var _descendants: [Dictionary<String, String>] = Array()
     
     private var _isFavorite: Bool = false
-    
+
+    //MARK: Init
     init(name:String, id:Int) {
         self._identifier = name
         self._csvRowId = id
@@ -66,15 +73,19 @@ class Pokemon { //: NSObject
         self._resourceUrl.appendContentsOf("\(id)/")
     }
     
-    
-//    override func isEqual(object: AnyObject?) -> Bool {
-//        if let rhs = object as? Pokemon {
-//            if rhs.csvRowId == self.csvRowId {
-//                return true
-//            }
-//        }
-//        return false
-//    }
+    /*
+        Due to the time consuming nature of the data, I download the pokemon in several stages:
+            1. The description and basic species info. This is called when the user presses
+                the pokemon on the main screen. The description and image are displayed while
+                more data is dowloaded.
+            2. Basic stats. This is called after the description is downloaded, and includes
+                the HP, Weight, etc.
+            3. Evolutions
+
+        Check the items downloaded in each section.
+     
+        TODO: Use a third-party JSON parser for better speed.
+    */
     
     func downloadPokemonBasicDetails(completed: DownloadComplete) {
         let url = NSURL(string: self._resourceUrl)!
@@ -118,14 +129,14 @@ class Pokemon { //: NSObject
     }
 
     /* 
-        species name and url required to get description
+        The species name and url are required to get the description.
         This is called from MainVC.swift when the user selects a pokemon, 
         before the segue occurs. This is to same a little time, plus for a 
         future enhancement, the description can be presented in a popup
         enabling the user to cancel the navigation.
     
         Also get the evolves_from species and evolution chain url here, 
-        as they are needed separately
+        as they are needed separately later.
     */
     func downloadPokemonSpeciesDescription(speciesUrl: String, completed: DownloadComplete) {
         let url = NSURL(string: speciesUrl)!
@@ -177,13 +188,14 @@ class Pokemon { //: NSObject
     }
     
     /*
-        all evolutions
-        get only the first evolution, as they are multi-pathed
-        must run downloadPokemonSpeciesDescription prior to this, as it gets
-        the ancestor and descendant species urls
+        All evolutions
+        Get only the first level evolutions from current, as they are multi-pathed.
+        You must run downloadPokemonSpeciesDescription prior to this, as it gets
+        the ancestor and descendant species urls.
+        
+        It turns out that you have to dig into the chain to find your current pokemon, and then
+         get its immediate descendant.
     */
-    //TODO: turns out that you have to dig into the chain to find your current, and then 
-    // get its immediate descendant.
     func downLoadEvolutions(evoChainUrl: String, completed: DownloadComplete) {
         let url = NSURL(string: evoChainUrl)!
         
@@ -231,15 +243,15 @@ class Pokemon { //: NSObject
     
     //MARK: utility
     
-    //you have found the item with the species name.
-    // find its evolves-to pokemon and add it to the descendants array
+    //You have found the item with the species name. (Assuming only  one
+    // descendant for a pokemon). Find its evolves-to pokemon and add it to the descendants array
     func addDescendantsFromArray(evoArray: [Dictionary<String, AnyObject>] ) {
         for evoItem in evoArray {
             addDescendantFromNode(evoItem)
         }
     }
     
-    
+    // just storing the name and ID, rather than the entire Pokemon
     func addDescendantFromNode(evoItem: Dictionary<String, AnyObject>) {
         let moreInfo = self.getEvolvesToSpeciesInfo(evoItem)
         var evoDict: Dictionary<String, String> = Dictionary<String, String>()
@@ -249,8 +261,8 @@ class Pokemon { //: NSObject
         
     }
     
-    //recursively drill into the node until you have the item with the species name
-    // sending in an evolves_to
+    //Drill into the node until you have the first node with the species name.
+    //TODO: Recursively drill in.
     func getNodeWithSpeciesName(source:[Dictionary<String, AnyObject>]) -> [Dictionary<String, AnyObject>] {
 
         for evoToNodes in source {
@@ -271,7 +283,7 @@ class Pokemon { //: NSObject
         return emptyArray
     }
     
-    
+    //Get enough ancestor content to store an evolution item
     func getEvolvesToSpeciesInfo(source:Dictionary<String, AnyObject>) -> (newId:Int, newName:String) {
     
         let evoSpecies = source["species"] as? Dictionary<String, String>
@@ -283,9 +295,9 @@ class Pokemon { //: NSObject
     
     /*
         Call this before assigning new items to prevent previous entry content
-        from being displayed with the new one
+        from being displayed with the new one.
     
-        TODO: all items, not just arrays.
+        TODO: wipe all pokemon content, not just arrays.
     */
     func wipePokemon() {
         self._abilities.removeAll()
@@ -294,6 +306,7 @@ class Pokemon { //: NSObject
     
     
     /*
+        Elementary initial stats - quickest retrieval
         height, weight, base_experience
     */
     func loadLevel1Stats(topDict:Dictionary<String,AnyObject>) {
@@ -318,6 +331,7 @@ class Pokemon { //: NSObject
     }
     
     /*
+        Basic V2 stats:
         hp, name, attack, defense, speed, special-defense, special-attack
     */
     func loadBasicStats(statsDict:[Dictionary<String,AnyObject>]) {
@@ -358,7 +372,8 @@ class Pokemon { //: NSObject
     }
 
     /*
-        1-3 types
+        Types. According to the lore, a Pokemon can have 1 or 2 types.
+        So we just load them.
     */
     func loadTypes(typesDict:[Dictionary<String,AnyObject>]) {
         var tmpType: String = ""
@@ -367,17 +382,19 @@ class Pokemon { //: NSObject
             if let typesItem = typesItems["type"] as? Dictionary<String, String> where typesItem.count > 0 {
                 if let typeName = typesItem["name"] {
                     tmpType.appendContentsOf(typeName)
-                    tmpType.appendContentsOf("\u{A0}")
+                    tmpType.appendContentsOf("\u{A0}") //nonbreaking space, for better presentation.
                 }
             }
         }
+        
         //cut the last slash
         self._type = String(tmpType.characters.dropLast()).capitalizedString
     }
     
  
     /*
-        1-3 abilities
+     Abilities. According to the lore, a Pokemon can have between 1 and 3 abilities.
+     So again, we just load them.
     */
     func loadAbilities(abilitiesArr:[Dictionary<String,AnyObject>]) {
         for abilityDict in abilitiesArr {
@@ -394,7 +411,7 @@ class Pokemon { //: NSObject
     
     
     /* 
-        species name and url
+        Species name and url.
     */
     func loadSpeciesNameAndUrl(topDict:Dictionary<String,AnyObject>) {
         if let speciesDict = topDict["species"] as? Dictionary<String, String> where speciesDict.count > 0 {
@@ -407,7 +424,7 @@ class Pokemon { //: NSObject
     }
     
     /*
-        all moves
+        All moves
     */
     func loadMoves(movesArr: [Dictionary<String,AnyObject>]) {
         for moveDict in movesArr {
@@ -424,16 +441,16 @@ class Pokemon { //: NSObject
 
 
     /* 
-        sprite images
+        Sprite images
         each file is named as
             front_ <suffix>
         so I need to sort by <suffix> first, then have front before back
-        do this by comparing the reverse string
-        
+        do this by comparing the reverse string.
+        I still end up with 'Back' before 'Front', which is lexically 
+        correct, but not what you would expect.
     */
     func loadSpriteImages(spritesDict:Dictionary<String, AnyObject>) {
-        /*
-        */
+        
         let sortedKeysAndValues = spritesDict.sort( {
             let str1 = String($0.0.characters.reverse())
             let str2 = String($1.0.characters.reverse())
@@ -454,7 +471,9 @@ class Pokemon { //: NSObject
         
     }
 
-    
+    //get the species id from the species url.
+    // quicker than digging into the JSon looking 
+    // for the pokemon ID.
     func extractSpeciesIdFromUrl(url: String) -> Int {
         
         var speciesId: String = ""
@@ -473,8 +492,8 @@ class Pokemon { //: NSObject
         return Int(speciesId)!
     }
     
-    //MARK: getter / setter
     
+    //MARK: getter and setters
     var hasBasicInfo: Bool {
         get {
             return myPokemonApiResult != nil && myPokemonApiResult.isSuccess
@@ -504,7 +523,6 @@ class Pokemon { //: NSObject
             return self._identifier
         }
     }
-    
 
     var speciesId: Int {
         get {

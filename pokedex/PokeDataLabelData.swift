@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+//This label is slightly subdued for pokemon data, such as Stat values.
 class PokeDataLabelData: PaddingLabel {
     
     override func layoutSubviews() {

@@ -8,16 +8,15 @@
 
 import UIKit
 
+// This is the spec for the descendant collection.
 class DescendantCell: UICollectionViewCell {
-    
     
     //MARK: IBOutlets and vars    
     @IBOutlet weak var lblDescendantName: UILabel!
     @IBOutlet weak var imgDescendant: UIImageView!
     var pokemon: Pokemon!
     
-    //MARK: Init
-    
+    //MARK: Init    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.layer.cornerRadius = 5.0

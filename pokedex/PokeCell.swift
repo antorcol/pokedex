@@ -8,15 +8,14 @@
 
 import UIKit
 
+//This is the spec for the main Pokemon collection cell
 class PokeCell: UICollectionViewCell {
-    
 
     //MARK: IBOutlets and vars
     @IBOutlet weak var thumbImg: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var lblLoading: UILabel!
     @IBOutlet weak var btnFav: UIButton!
-    
     
     var pokemon: Pokemon!
     
@@ -31,7 +30,6 @@ class PokeCell: UICollectionViewCell {
     }
     
     //MARK: Init
-    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.layer.borderWidth = 0.75
@@ -48,6 +46,7 @@ class PokeCell: UICollectionViewCell {
         self.pokemon = pokemon
         nameLabel.text = self.pokemon.name.capitalizedString
         thumbImg.image = UIImage(named: "\(self.pokemon.csvRowId)")
+        //tint the cell background darker if the pokemon is already cached.
         if isInCache {
             self.layer.backgroundColor = UIColor(colorLiteralRed: 59/255, green: 59/255, blue: 59/255, alpha: 0.6).CGColor
         } else {
@@ -56,13 +55,13 @@ class PokeCell: UICollectionViewCell {
         
         self.isFavorite = self.pokemon.isFavorite
         self.btnFav.selected = self.isFavorite
-        
     }
+    
     
     @IBAction func btnFav_Pressed(sender: UIButton) {
         sender.selected = !sender.selected
-
         
+        //This button needs to communicate with the parent viewcontroller.
         if let topController = UIApplication.sharedApplication().keyWindow?.rootViewController as? MainVC {
             //do this inside of the topController grab only
             if !sender.selected {

@@ -8,6 +8,8 @@
 
 import Foundation
 
+// The PokeTitleLabel is the pokemon caption on the 
+//  MainVC.
 class PokeTitleLabel : PokeDataLabelTitle {
     override func layoutSubviews() {
         super.layoutSubviews()

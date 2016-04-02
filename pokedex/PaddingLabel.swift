@@ -8,6 +8,8 @@
 
 import UIKit
 
+//Padding Label keeps a specific amount of space inside the label. It 
+//  also makes the size to fit -- within reason.
 class PaddingLabel: UILabel {
     
     let padding = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)

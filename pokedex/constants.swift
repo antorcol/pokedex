@@ -8,11 +8,11 @@
 
 import Foundation
 
-//works http://pokeapi.co/api/v1/pokemon/1/
-
+//the pokeapi urls
 let URL_BASE : String = "http://pokeapi.co" //http://pokeapi.co/api/v2/
 let URL_POKEMON: String = "/api/v2/pokemon/"
 
+//This alias governs the asynchronous return of api calls.
 typealias DownloadComplete = () -> ()
 
 

@@ -8,16 +8,15 @@
 
 import UIKit
 
+//This is the spec for the Moves collection cell
 class MoveCell: UICollectionViewCell {
-    
     
     //MARK: IBOutlets and vars
     @IBOutlet weak var moveLabel: UILabel!
     
     var pokemon: Pokemon!
     
-    //MARK: Init
-    
+    //MARK: Init    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.layer.cornerRadius = 5.0
