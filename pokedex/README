@@ -1,3 +1,6 @@
+All code copyright (C) Anthony Torrero Collins unless otherwise noted.
+//////////////////////////////////////////////////////////////////////
+
 App Logo and Icon courtesy of PokeMon (binacle POKEMON)
 
 Background 'Pikachu' copyright Jeshar Escoffery, S3NTRYDesigns http://s3ntrydesigns.wix.com
@@ -6,35 +9,22 @@ http://s3ntrydesigns.deviantart.com/art/Pikachu-Digital-WaterColor-Painting-2699
 PaddedLabel Class courtesy of http://wynnelo.com/2015/10/adding-padding-to-uilabels-in-swift/
 
 
-Title font Pokemon Solid by TODO:
+Title font Pokemon Solid by DaFont.com.
 
+//////////////////////////////////////////////////////////////////////
 
------
-if evo chain / species / id == current creature
-    take first evo
+TODO
 
-else
-    do until ./evolves_to / species / id != current creature id
+Ancestor / Descendant titles need to be correctly styled.
+Ancestor / Descendant stacks need to be a bit closer to the center (right now 1.27).
+Segment bar captions are truncated on smaller iPhones.
+…loading… message does not pulse on first navigation.
+Descendant navigation not implemented (need to figure out Swift 2.2 #selector with params).
+‘No Descendants’ button not implemented.
+Need to test on more devices -- only tested on 4s.
+Implement a faster JSON parser.
 
-        get next evolves_to
+//////////////////////////////////////////////////////////////////////
 
-get first spcies/url from chain node
-
-if first species/url == current creature id {
-    do exit
-} else {
-    repeat {
-
-        get evolves to ARRAY
-
-    } while ((current species/url != current creature id) && (evolves_to != nil))
-
-    if (evolves_to != nil) {
-
-        for each item in ARRAY
-            add descendant
-
-    }
-}
-
-
+I had fun working out some of the nooks and crannies of this app. Much more involved than the 
+assignment called for. 
